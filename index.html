@@ -8,7 +8,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
-/* --- TOUT LE CSS EXISTANT (inchangé) --- */
 :root{--accent:#6a0dad;--sub:#00d2ff;--glow:rgba(0,210,255,.5);--bg-dark:#020208;--bg-grad-1:rgba(106,13,173,.4);--bg-grad-2:rgba(0,210,255,.4);}
 .theme-red{--accent:#ff0000;--sub:#ff4b2b;--glow:rgba(255,0,0,.5);--bg-dark:#080101;--bg-grad-1:rgba(255,0,0,.4);--bg-grad-2:rgba(255,75,43,.4);}
 .theme-green{--accent:#00ff41;--sub:#00ff41;--glow:rgba(0,255,65,.4);--bg-dark:#010801;--bg-grad-1:rgba(0,255,65,.3);--bg-grad-2:rgba(0,255,65,.3);}
@@ -325,8 +324,19 @@ body.admin-mode .card-del-btn{display:block!important;}
 .prof-hist-action{font-size:11px;font-weight:700;color:rgba(255,255,255,.78);line-height:1.4;}
 .prof-hist-ts{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);margin-top:2px;}
 .prof-hist-empty{text-align:center;padding:22px 0;color:rgba(255,255,255,.12);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
-.prof-signout-btn{width:100%;padding:12px;border-radius:11px;border:1px solid rgba(255,75,43,.22);background:rgba(255,75,43,.05);color:rgba(255,75,43,.6);font-family:'Space Mono',monospace;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.22s;}
+.prof-signout-btn{width:100%;padding:12px;border-radius:11px;border:1px solid rgba(255,75,43,.22);background:rgba(255,75,43,.05);color:rgba(255,75,43,.6);font-family:'Space Mono',monospace;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.22s;margin-top:12px;}
 .prof-signout-btn:hover{background:rgba(255,75,43,.14);border-color:#ff4b2b;color:#ff4b2b;}
+.social-links{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0;}
+.social-link{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border-radius:30px;padding:6px 12px;font-size:11px;text-decoration:none;color:white;transition:.2s;}
+.social-link:hover{background:var(--sub);color:black;transform:translateY(-2px);}
+.friend-badge{background:rgba(0,210,255,.15);border-radius:20px;padding:4px 10px;font-size:9px;display:inline-flex;align-items:center;gap:5px;}
+.friend-btn{background:rgba(0,210,255,.1);border:1px solid var(--sub);border-radius:20px;padding:5px 12px;font-size:10px;cursor:pointer;transition:.2s;}
+.friend-btn:hover{background:var(--sub);color:black;}
+.privacy-select{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 10px;font-family:'Space Mono',monospace;font-size:10px;color:white;}
+#publicProfilePanel{position:fixed;inset:0;z-index:7100;display:none;}
+#publicProfilePanel.active{display:flex!important;}
+#publicProfileBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
+#publicProfileInner{position:absolute;top:0;right:0;bottom:0;width:min(420px,100vw);background:#060610;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;animation:adminIn .35s cubic-bezier(.2,.8,.2,1) both;}
 .member-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
 .member-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.06);flex-shrink:0;}
 .member-info{flex:1;min-width:0;}
@@ -459,7 +469,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   #adminInner{width:100vw!important;}
   #adminNav{width:130px!important;}
   .mc-bubble{flex-wrap:wrap;justify-content:center;text-align:center;}
-  #profileInner,#msgInner{width:100vw!important;}
+  #profileInner,#msgInner,#publicProfileInner{width:100vw!important;}
 }
 </style>
 </head>
@@ -671,10 +681,109 @@ body.admin-mode .card-del-btn{display:block!important;}
       </div>
     </div>
     <div class="prof-body">
-      <div class="prof-section-lbl">Historique d'activité</div>
+      <!-- BIOGRAPHIE -->
+      <div class="prof-section-lbl">📝 Biographie</div>
+      <div id="bioDisplay" class="a-card" style="padding: 12px; margin-bottom: 16px; font-size: 12px; line-height: 1.4;">—</div>
+      <button class="prof-edit-btn" id="editBioBtn" onclick="openBioEditor()" style="margin-bottom: 16px;">✏️ Modifier ma bio</button>
+      <div id="bioEditor" style="display: none; background: rgba(255,255,255,.03); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+        <textarea id="bioInput" class="a-input" rows="3" maxlength="200" placeholder="Une petite présentation... (max 200 caractères)"></textarea>
+        <div class="prof-editor-actions">
+          <button class="prof-save-btn" onclick="saveBio()">💾 Sauvegarder</button>
+          <button class="prof-cancel-btn" onclick="closeBioEditor()">Annuler</button>
+        </div>
+      </div>
+
+      <!-- LIENS SOCIAUX -->
+      <div class="prof-section-lbl">🔗 Liens sociaux</div>
+      <div id="socialLinksDisplay" class="a-card" style="padding: 12px; margin-bottom: 16px;">
+        <div style="font-size: 11px; color: rgba(255,255,255,.4);">Aucun lien</div>
+      </div>
+      <button class="prof-edit-btn" id="editSocialBtn" onclick="openSocialEditor()" style="margin-bottom: 16px;">✏️ Modifier mes liens</button>
+      <div id="socialEditor" style="display: none; background: rgba(255,255,255,.03); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+        <label class="a-label">Discord (pseudo ou URL)</label>
+        <input type="text" id="socialDiscord" class="a-input" placeholder="ex: @utilisateur ou https://discord.gg/...">
+        <label class="a-label">Twitter / X</label>
+        <input type="text" id="socialTwitter" class="a-input" placeholder="https://twitter.com/... ou @pseudo">
+        <label class="a-label">TikTok</label>
+        <input type="text" id="socialTikTok" class="a-input" placeholder="https://tiktok.com/@...">
+        <label class="a-label">YouTube</label>
+        <input type="text" id="socialYouTube" class="a-input" placeholder="https://youtube.com/c/...">
+        <div class="prof-editor-actions">
+          <button class="prof-save-btn" onclick="saveSocialLinks()">💾 Sauvegarder</button>
+          <button class="prof-cancel-btn" onclick="closeSocialEditor()">Annuler</button>
+        </div>
+      </div>
+
+      <!-- CONFIDENTIALITÉ -->
+      <div class="prof-section-lbl">🔒 Confidentialité</div>
+      <div class="a-card" style="margin-bottom: 16px;">
+        <div class="a-trow">
+          <div class="a-tinfo"><div class="a-tl">Email visible par</div><div class="a-ts">L'admin voit toujours</div></div>
+          <select id="privacyEmail" class="privacy-select" onchange="savePrivacy()">
+            <option value="nobody">Personne</option>
+            <option value="friends">Amis uniquement</option>
+            <option value="everyone">Tous les membres</option>
+          </select>
+        </div>
+        <div class="a-trow">
+          <div class="a-tinfo"><div class="a-tl">Messages autorisés</div><div class="a-ts">Qui peut vous écrire</div></div>
+          <select id="privacyMessages" class="privacy-select" onchange="savePrivacy()">
+            <option value="everyone">Tout le monde</option>
+            <option value="friends">Amis uniquement</option>
+            <option value="nobody">Personne (sauf admin)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- THÈME DU PROFIL -->
+      <div class="prof-section-lbl">🎨 Thème du profil</div>
+      <div class="a-card" style="margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 12px;">Couleur d'accent :</span>
+          <input type="color" id="profileThemeColor" value="#00d2ff" onchange="saveProfileTheme()">
+          <button class="prof-edit-btn" onclick="resetProfileTheme()">Réinitialiser</button>
+        </div>
+        <div id="profileThemePreview" style="margin-top: 12px; padding: 8px; border-radius: 8px; background: #00d2ff20; border-left: 3px solid #00d2ff;">Aperçu de votre thème</div>
+      </div>
+
+      <!-- AMIS -->
+      <div class="prof-section-lbl">👥 Mes amis</div>
+      <div id="friendsList" class="a-card" style="padding: 12px; margin-bottom: 16px;">
+        <div style="font-size: 11px; color: rgba(255,255,255,.4);">Chargement...</div>
+      </div>
+
+      <!-- HISTORIQUE -->
+      <div class="prof-section-lbl">📜 Historique</div>
       <div class="prof-hist-list" id="profHistList"></div>
+
       <button class="prof-signout-btn" onclick="signOutUser()">🚪 Se déconnecter</button>
       <button class="prof-signout-btn" id="deleteAccountBtn" style="margin-top: 12px; background: rgba(255,75,43,0.1); color: #ff4b2b; border-color: rgba(255,75,43,0.3);">⚠️ Demander la suppression</button>
+    </div>
+  </div>
+</div>
+
+<div id="publicProfilePanel">
+  <div id="publicProfileBackdrop" onclick="closePublicProfile()"></div>
+  <div id="publicProfileInner">
+    <div class="prof-header">
+      <div><div class="adm-htitle">Profil public</div><div class="adm-hsub">Membre DLM-Corp</div></div>
+      <button class="prof-close" onclick="closePublicProfile()">×</button>
+    </div>
+    <div class="prof-identity">
+      <img class="prof-avatar" id="pubAvatar" src="" alt="">
+      <div class="prof-pseudo" id="pubPseudo">—</div>
+      <span class="prof-role-badge" id="pubRoleBadge">Membre</span>
+      <div class="prof-google-email" id="pubEmail" style="margin-top: 8px;"></div>
+    </div>
+    <div class="prof-body">
+      <div class="prof-section-lbl">📝 Biographie</div>
+      <div id="pubBio" class="a-card" style="padding: 12px; font-size: 12px;">—</div>
+      <div class="prof-section-lbl">🔗 Liens sociaux</div>
+      <div id="pubSocials" class="social-links" style="margin-bottom: 20px;"></div>
+      <div class="prof-section-lbl">👥 Amis en commun</div>
+      <div id="pubMutualFriends" style="font-size: 11px; color: rgba(255,255,255,.4); margin-bottom: 20px;">—</div>
+      <button id="pubMessageBtn" class="friend-btn" style="margin-top: 10px; width: 100%;">💬 Envoyer un message</button>
+      <button id="pubAddFriendBtn" class="friend-btn" style="margin-top: 10px; width: 100%;">➕ Ajouter en ami</button>
     </div>
   </div>
 </div>
@@ -1292,7 +1401,7 @@ async function loadOrCreateProfile(user){
     profile = await pushHistory(user, idToken, profile, '🔗 Connexion au site');
     return profile;
   }else{
-    const newProfile={uid:user.uid,googleName:user.displayName||'User',photoURL:user.photoURL||'',email:user.email||'',pseudo:sanitizePseudo(user.displayName||'User'),role:'Membre',createdAt:Date.now(),lastSeen:Date.now(),history:[{action:'🎉 Compte créé',ts:Date.now()}]};
+    const newProfile={uid:user.uid,googleName:user.displayName||'User',photoURL:user.photoURL||'',email:user.email||'',pseudo:sanitizePseudo(user.displayName||'User'),role:'Membre',bio:'',socials:{},privacy:{email:'nobody',messages:'everyone'},profileTheme:'#00d2ff',createdAt:Date.now(),lastSeen:Date.now(),history:[{action:'🎉 Compte créé',ts:Date.now()}]};
     await fetch(`${FB}/users/${user.uid}.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(newProfile)});
     showToast('Bienvenue sur DLM-Corp ! 🎉');
     return newProfile;
@@ -1333,7 +1442,47 @@ function renderProfilePanel(){
     badge.textContent=role;
     badge.className='prof-role-badge role-'+role.toLowerCase().replace(/[^a-z]/g,'-');
   }
+  // Bio
+  const bioDiv = document.getElementById('bioDisplay');
+  if (bioDiv) bioDiv.innerHTML = _curProfile.bio ? escapeHtml(_curProfile.bio) : '<em>Aucune bio</em>';
+  // Liens sociaux
+  const socials = _curProfile.socials || {};
+  const socialContainer = document.getElementById('socialLinksDisplay');
+  if (socialContainer) {
+    socialContainer.innerHTML = '';
+    const socialMap = {
+      discord: { icon: '💬', url: socials.discord },
+      twitter: { icon: '🐦', url: socials.twitter },
+      tiktok: { icon: '📱', url: socials.tiktok },
+      youtube: { icon: '📺', url: socials.youtube }
+    };
+    let hasAny = false;
+    for (const [platform, data] of Object.entries(socialMap)) {
+      if (data.url) {
+        hasAny = true;
+        const a = document.createElement('a');
+        a.href = data.url.startsWith('http') ? data.url : `https://${data.url}`;
+        a.target = '_blank';
+        a.className = 'social-link';
+        a.innerHTML = `${data.icon} ${platform.charAt(0).toUpperCase() + platform.slice(1)}`;
+        socialContainer.appendChild(a);
+      }
+    }
+    if (!hasAny) socialContainer.innerHTML = '<div style="font-size: 11px; color: rgba(255,255,255,.4);">Aucun lien renseigné</div>';
+  }
+  // Confidentialité
+  const privacy = _curProfile.privacy || { email: 'nobody', messages: 'everyone' };
+  document.getElementById('privacyEmail').value = privacy.email;
+  document.getElementById('privacyMessages').value = privacy.messages;
+  // Thème profil
+  const themeColor = _curProfile.profileTheme || '#00d2ff';
+  document.getElementById('profileThemeColor').value = themeColor;
+  document.getElementById('profileThemePreview').style.borderLeftColor = themeColor;
+  document.getElementById('profileThemePreview').style.background = `${themeColor}20`;
+  // Historique
   renderHistoryList();
+  // Amis
+  loadFriendsList();
 }
 
 function renderHistoryList(){
@@ -1360,6 +1509,277 @@ async function savePseudo(){
 }
 const sanitizePseudo=name=>(name||'User').split(' ')[0].replace(/[^a-zA-Z0-9_\-.]/g,'').slice(0,20)||'User';
 
+// ======================= BIOGRAPHIE =======================
+async function openBioEditor() {
+  const editor = document.getElementById('bioEditor');
+  const input = document.getElementById('bioInput');
+  if (!editor) return;
+  input.value = _curProfile?.bio || '';
+  editor.style.display = 'block';
+}
+function closeBioEditor() {
+  document.getElementById('bioEditor').style.display = 'none';
+}
+async function saveBio() {
+  const newBio = document.getElementById('bioInput').value.trim().slice(0, 200);
+  const token = await _curUser.getIdToken();
+  await fetch(`${FB}/users/${_curUser.uid}/bio.json?auth=${token}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newBio)
+  });
+  _curProfile.bio = newBio;
+  renderProfilePanel();
+  closeBioEditor();
+  showToast('Bio mise à jour !');
+}
+
+// ======================= LIENS SOCIAUX =======================
+function openSocialEditor() {
+  const editor = document.getElementById('socialEditor');
+  if (!editor) return;
+  const socials = _curProfile?.socials || {};
+  document.getElementById('socialDiscord').value = socials.discord || '';
+  document.getElementById('socialTwitter').value = socials.twitter || '';
+  document.getElementById('socialTikTok').value = socials.tiktok || '';
+  document.getElementById('socialYouTube').value = socials.youtube || '';
+  editor.style.display = 'block';
+}
+function closeSocialEditor() {
+  document.getElementById('socialEditor').style.display = 'none';
+}
+function validateUrlOrHandle(str, platform) {
+  if (!str) return '';
+  str = str.trim();
+  if (platform === 'discord') {
+    if (str.startsWith('https://discord.gg/') || str.startsWith('@')) return str;
+    return `@${str.replace('@', '')}`;
+  }
+  if (platform === 'twitter') {
+    if (str.startsWith('https://twitter.com/') || str.startsWith('https://x.com/')) return str;
+    if (str.startsWith('@')) return `https://twitter.com/${str.slice(1)}`;
+    return `https://twitter.com/${str}`;
+  }
+  if (platform === 'tiktok') {
+    if (str.startsWith('https://tiktok.com/@')) return str;
+    if (str.startsWith('@')) return `https://tiktok.com/${str}`;
+    return `https://tiktok.com/@${str}`;
+  }
+  if (platform === 'youtube') {
+    if (str.includes('youtube.com/') || str.includes('youtu.be/')) return str;
+    return `https://youtube.com/@${str}`;
+  }
+  return str;
+}
+async function saveSocialLinks() {
+  const socials = {
+    discord: validateUrlOrHandle(document.getElementById('socialDiscord').value, 'discord'),
+    twitter: validateUrlOrHandle(document.getElementById('socialTwitter').value, 'twitter'),
+    tiktok: validateUrlOrHandle(document.getElementById('socialTikTok').value, 'tiktok'),
+    youtube: validateUrlOrHandle(document.getElementById('socialYouTube').value, 'youtube')
+  };
+  Object.keys(socials).forEach(k => { if (!socials[k]) delete socials[k]; });
+  const token = await _curUser.getIdToken();
+  await fetch(`${FB}/users/${_curUser.uid}/socials.json?auth=${token}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(socials)
+  });
+  _curProfile.socials = socials;
+  renderProfilePanel();
+  closeSocialEditor();
+  showToast('Liens sauvegardés !');
+}
+
+// ======================= CONFIDENTIALITÉ =======================
+async function savePrivacy() {
+  const privacy = {
+    email: document.getElementById('privacyEmail').value,
+    messages: document.getElementById('privacyMessages').value
+  };
+  const token = await _curUser.getIdToken();
+  await fetch(`${FB}/users/${_curUser.uid}/privacy.json?auth=${token}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(privacy)
+  });
+  _curProfile.privacy = privacy;
+  showToast('Confidentialité mise à jour');
+}
+
+// ======================= THÈME DU PROFIL =======================
+async function saveProfileTheme() {
+  const color = document.getElementById('profileThemeColor').value;
+  const token = await _curUser.getIdToken();
+  await fetch(`${FB}/users/${_curUser.uid}/profileTheme.json?auth=${token}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(color)
+  });
+  _curProfile.profileTheme = color;
+  renderProfilePanel();
+  showToast('Thème de profil sauvegardé');
+}
+async function resetProfileTheme() {
+  const defaultColor = '#00d2ff';
+  document.getElementById('profileThemeColor').value = defaultColor;
+  await saveProfileTheme();
+}
+
+// ======================= AMIS =======================
+async function loadFriendsList() {
+  if (!_curUser) return;
+  const container = document.getElementById('friendsList');
+  if (!container) return;
+  container.innerHTML = '<div style="font-size:11px;color:rgba(255,255,255,.4);">Chargement...</div>';
+  try {
+    const token = await _curUser.getIdToken();
+    const res = await fetch(`${FB}/friends/${_curUser.uid}.json?auth=${token}`);
+    const friendsObj = res.ok ? await res.json() : null;
+    const friendIds = friendsObj ? Object.keys(friendsObj).filter(id => friendsObj[id] === true) : [];
+    if (friendIds.length === 0) {
+      container.innerHTML = '<div style="font-size:11px;color:rgba(255,255,255,.4);">Aucun ami pour le moment</div>';
+      return;
+    }
+    const friendsData = await Promise.all(friendIds.map(async uid => {
+      const userRes = await fetch(`${FB}/users/${uid}.json?auth=${token}`);
+      const user = userRes.ok ? await userRes.json() : null;
+      return user ? { uid, pseudo: user.pseudo, photoURL: user.photoURL } : null;
+    }));
+    const validFriends = friendsData.filter(f => f);
+    container.innerHTML = validFriends.map(f => `
+      <div class="a-srow" style="padding: 8px 0;">
+        <img class="a-sicon" src="${f.photoURL || ''}" onerror="this.src=''">
+        <div class="a-sinfo">
+          <div class="a-sname">${escapeHtml(f.pseudo)}</div>
+        </div>
+        <button class="friend-btn" onclick="removeFriend('${f.uid}')">Retirer</button>
+        <button class="friend-btn" onclick="viewPublicProfile('${f.uid}')">Voir profil</button>
+      </div>
+    `).join('');
+  } catch (err) {
+    container.innerHTML = '<div style="font-size:11px;color:#ff4b2b;">Erreur chargement amis</div>';
+  }
+}
+async function addFriend(uid) {
+  if (!_curUser) return;
+  const token = await _curUser.getIdToken();
+  await fetch(`${FB}/friends/${_curUser.uid}/${uid}.json?auth=${token}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: 'true'
+  });
+  showToast('Ami ajouté !');
+  loadFriendsList();
+}
+async function removeFriend(uid) {
+  if (!_curUser) return;
+  const token = await _curUser.getIdToken();
+  await fetch(`${FB}/friends/${_curUser.uid}/${uid}.json?auth=${token}`, {
+    method: 'DELETE'
+  });
+  showToast('Ami retiré');
+  loadFriendsList();
+}
+async function isFriend(uid) {
+  if (!_curUser) return false;
+  const token = await _curUser.getIdToken();
+  const res = await fetch(`${FB}/friends/${_curUser.uid}/${uid}.json?auth=${token}`);
+  return res.ok ? (await res.json()) === true : false;
+}
+
+// ======================= PROFIL PUBLIC =======================
+async function viewPublicProfile(uid) {
+  if (!_curUser) return;
+  const token = await _curUser.getIdToken();
+  const res = await fetch(`${FB}/users/${uid}.json?auth=${token}`);
+  if (!res.ok) { showToast('Profil non trouvé'); return; }
+  const user = await res.json();
+  if (!user) return;
+  const privacy = user.privacy || { email: 'nobody', messages: 'everyone' };
+  const currentUserIsAdmin = _curUser.email === FB_ADMIN_EMAIL;
+  const isViewerFriend = await isFriend(uid);
+  let emailHtml = '';
+  if (currentUserIsAdmin || privacy.email === 'everyone' || (privacy.email === 'friends' && isViewerFriend)) {
+    emailHtml = `<div class="prof-google-email">${escapeHtml(user.email || '')}</div>`;
+  } else {
+    emailHtml = '<div class="prof-google-email" style="opacity:0.5;">email caché</div>';
+  }
+  document.getElementById('pubAvatar').src = user.photoURL || '';
+  document.getElementById('pubPseudo').textContent = user.pseudo || '—';
+  document.getElementById('pubRoleBadge').textContent = user.role || 'Membre';
+  document.getElementById('pubRoleBadge').className = `prof-role-badge role-${(user.role || 'membre').toLowerCase().replace(/[^a-z]/g, '-')}`;
+  document.getElementById('pubEmail').innerHTML = emailHtml;
+  document.getElementById('pubBio').innerHTML = user.bio ? escapeHtml(user.bio) : '<em>Aucune bio</em>';
+  const socials = user.socials || {};
+  const socialContainer = document.getElementById('pubSocials');
+  socialContainer.innerHTML = '';
+  const socialMap = {
+    discord: { icon: '💬', url: socials.discord },
+    twitter: { icon: '🐦', url: socials.twitter },
+    tiktok: { icon: '📱', url: socials.tiktok },
+    youtube: { icon: '📺', url: socials.youtube }
+  };
+  for (const [platform, data] of Object.entries(socialMap)) {
+    if (data.url) {
+      const a = document.createElement('a');
+      a.href = data.url.startsWith('http') ? data.url : `https://${data.url}`;
+      a.target = '_blank';
+      a.className = 'social-link';
+      a.innerHTML = `${data.icon} ${platform.charAt(0).toUpperCase() + platform.slice(1)}`;
+      socialContainer.appendChild(a);
+    }
+  }
+  if (socialContainer.children.length === 0) {
+    socialContainer.innerHTML = '<div style="font-size:11px;color:rgba(255,255,255,.4);">Aucun lien social</div>';
+  }
+  const mutual = await getMutualFriends(uid);
+  document.getElementById('pubMutualFriends').innerHTML = mutual.length ? `${mutual.length} ami(s) en commun` : 'Aucun ami en commun';
+  const msgBtn = document.getElementById('pubMessageBtn');
+  const canMsg = currentUserIsAdmin || privacy.messages === 'everyone' || (privacy.messages === 'friends' && isViewerFriend);
+  if (canMsg && uid !== _curUser.uid) {
+    msgBtn.style.display = 'block';
+    msgBtn.onclick = () => {
+      closePublicProfile();
+      openChat(uid, user.pseudo, user.photoURL);
+    };
+  } else {
+    msgBtn.style.display = 'none';
+  }
+  const addBtn = document.getElementById('pubAddFriendBtn');
+  if (uid !== _curUser.uid) {
+    const alreadyFriend = await isFriend(uid);
+    if (alreadyFriend) {
+      addBtn.textContent = '❌ Retirer des amis';
+      addBtn.onclick = () => { removeFriend(uid); closePublicProfile(); };
+    } else {
+      addBtn.textContent = '➕ Ajouter en ami';
+      addBtn.onclick = () => { addFriend(uid); closePublicProfile(); };
+    }
+    addBtn.style.display = 'block';
+  } else {
+    addBtn.style.display = 'none';
+  }
+  document.getElementById('publicProfilePanel').classList.add('active');
+}
+async function getMutualFriends(uid) {
+  if (!_curUser) return [];
+  const token = await _curUser.getIdToken();
+  const [myFriendsRes, otherFriendsRes] = await Promise.all([
+    fetch(`${FB}/friends/${_curUser.uid}.json?auth=${token}`),
+    fetch(`${FB}/friends/${uid}.json?auth=${token}`)
+  ]);
+  const myFriends = myFriendsRes.ok ? (await myFriendsRes.json()) || {} : {};
+  const otherFriends = otherFriendsRes.ok ? (await otherFriendsRes.json()) || {} : {};
+  const mySet = new Set(Object.keys(myFriends).filter(k => myFriends[k] === true));
+  const mutual = Object.keys(otherFriends).filter(k => otherFriends[k] === true && mySet.has(k));
+  return mutual;
+}
+function closePublicProfile() {
+  document.getElementById('publicProfilePanel').classList.remove('active');
+}
+
+// ======================= DEMANDE SUPPRESSION =======================
 async function requestAccountDeletion() {
   if (!_curUser) return;
   if (!confirm("⚠️ Voulez-vous vraiment demander la suppression de votre compte ?\n\nToutes vos données (messages, profil, historique) seront supprimées définitivement après validation par l'admin.\n\nCette action est irréversible.")) return;
@@ -1430,12 +1850,10 @@ async function loadDeletionRequests() {
     container.innerHTML = '<div style="padding: 18px; color: #ff4b2b;">Erreur de chargement</div>';
   }
 }
-
 async function approveDeletion(uid) {
   if (!_authToken) return;
   if (!confirm(`Supprimer définitivement le compte de ${uid} ?\n\nToutes ses données (messages, profil, historique) seront effacées.`)) return;
   try {
-    // Récupérer les conversations où l'utilisateur participe
     const convsRes = await fetch(`${FB}/userConvs/${uid}.json?auth=${_authToken}`);
     const convs = convsRes.ok ? await convsRes.json() : null;
     if (convs && typeof convs === "object") {
@@ -1451,7 +1869,6 @@ async function approveDeletion(uid) {
         await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`, { method: "DELETE" });
       }
     }
-    // Supprimer les données utilisateur
     await fetch(`${FB}/users/${uid}.json?auth=${_authToken}`, { method: "DELETE" });
     await fetch(`${FB}/publicUsers/${uid}.json?auth=${_authToken}`, { method: "DELETE" });
     await fetch(`${FB}/deletionRequests/${uid}.json?auth=${_authToken}`, { method: "DELETE" });
@@ -1462,7 +1879,6 @@ async function approveDeletion(uid) {
     showToast('Erreur lors de la suppression');
   }
 }
-
 async function rejectDeletion(uid) {
   if (!_authToken) return;
   if (!confirm(`Refuser la demande de suppression pour ${uid} ?`)) return;
@@ -1475,7 +1891,7 @@ async function rejectDeletion(uid) {
   }
 }
 
-/* MEMBRES ADMIN avec bouton voir profil */
+// ======================= MEMBRES ADMIN =======================
 async function loadMembres(){
   if(!_authToken){showToast('Connexion admin requise !');return;}
   const list=document.getElementById('membres-list'),empty=document.getElementById('membres-empty');
@@ -1504,12 +1920,11 @@ async function loadMembres(){
           <option value="Co-Fondateur" ${role==='Co-Fondateur' ?'selected':''}>Co-Fondateur ⭐</option>
           <option value="Fondateur"    ${role==='Fondateur'    ?'selected':''}>Fondateur 👑</option>
         </select>
-        <button class="member-view-btn" onclick="viewMemberProfile('${u.uid}')">👁 Voir profil</button>`;
+        <button class="member-view-btn" onclick="viewPublicProfile('${u.uid}')">👁 Voir profil</button>`;
       list.appendChild(row);
     });
   }catch{list.innerHTML='<div style="color:#ff4b2b;font-size:10px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;padding:10px;">Erreur de chargement</div>';}
 }
-
 async function setMemberRole(uid, role){
   if(!_authToken){showToast('Non autorisé !');return;}
   try{
@@ -1519,16 +1934,7 @@ async function setMemberRole(uid, role){
   }catch{showToast('Erreur réseau !');}
 }
 
-function viewMemberProfile(uid){
-  if(!_authToken) return;
-  // Ouvrir une fenêtre modale ou afficher les infos dans un panneau.
-  // Pour simplifier, on ouvre une nouvelle fenêtre avec les données brutes (admin seulement)
-  window.open(`#profile?uid=${uid}`, '_blank');
-  // Alternative : afficher un modal avec les infos du membre
-  alert('Fonctionnalité à implémenter : afficher le profil détaillé du membre (admin seulement).');
-}
-
-/* MESSAGERIE (inchangée) */
+// ======================= MESSAGERIE =======================
 const _esc   = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const _cid   = (a,b) => [a,b].sort().join('_');
 const _tsShort = ts => {
@@ -1567,7 +1973,6 @@ async function _syncPubUser(user, profile){
     });
   }catch{}
 }
-
 async function _fetchPubUsers(){
   if(!_curUser) return;
   try{
@@ -1576,17 +1981,14 @@ async function _fetchPubUsers(){
     if(r.ok){ const d=await r.json(); _pubUsers=d||{}; }
   }catch{}
 }
-
 function _updateBadge(n){
   const b=document.getElementById('msgBadge');
   if(!b) return;
   if(n>0){b.textContent=n>99?'99+':n;b.style.display='flex';}
   else b.style.display='none';
 }
-
 function _startInboxPolling(){_loadInbox(true);_stopInboxPolling();_inboxPollTimer=setInterval(()=>_loadInbox(true),12000);}
 function _stopInboxPolling(){clearInterval(_inboxPollTimer);_inboxPollTimer=null;}
-
 function openMsgPanel(){
   if(!_curUser) return;
   sfx.open();
@@ -1615,7 +2017,6 @@ function showNewMsgView(){
   document.getElementById('userSearchInput').value='';
   _fetchPubUsers().then(()=>searchUsers(''));
 }
-
 async function _loadInbox(silent=false){
   if(!_curUser) return;
   const list=document.getElementById('convList');
@@ -1636,7 +2037,6 @@ async function _loadInbox(silent=false){
         return d?{cid,...d}:null;
       })
     )).filter(Boolean).sort((a,b)=>(b.lastTs||0)-(a.lastTs||0));
-
     if(!convs.length){
       if(!silent) list.innerHTML='<div class="conv-empty">Aucune conversation<br>Envoyez votre premier message !</div>';
       _updateBadge(0); return;
@@ -1666,9 +2066,21 @@ async function _loadInbox(silent=false){
     if(!silent) list.innerHTML='<div class="conv-empty" style="color:#ff4b2b;">Erreur de chargement</div>';
   }
 }
-
 async function openChat(peerUid, peerPseudo, peerPhoto){
   if(!_curUser) return;
+  // Vérification des droits d'envoi de message
+  const token = await _curUser.getIdToken();
+  const peerRes = await fetch(`${FB}/users/${peerUid}.json?auth=${token}`);
+  const peerData = peerRes.ok ? await peerRes.json() : null;
+  if (peerData) {
+    const privacy = peerData.privacy || { messages: 'everyone' };
+    const isFriend = await isFriend(peerUid);
+    const isAdmin = _curUser.email === FB_ADMIN_EMAIL;
+    if (!isAdmin && privacy.messages !== 'everyone' && !(privacy.messages === 'friends' && isFriend)) {
+      showToast("❌ Cette personne n'accepte pas les messages de votre part.");
+      return;
+    }
+  }
   _activePeerUid=peerUid;
   _activeCid=_cid(_curUser.uid, peerUid);
   _lastMsgTs=0;
@@ -1682,7 +2094,6 @@ async function openChat(peerUid, peerPseudo, peerPhoto){
   _stopChatPoll();
   _chatPollTimer=setInterval(()=>_loadChatMsgs(true),3000);
 }
-
 async function _markRead(){
   if(!_curUser||!_activeCid) return;
   try{
@@ -1692,7 +2103,6 @@ async function _markRead(){
     _updateBadge(0);
   }catch{}
 }
-
 async function _loadChatMsgs(silent=false){
   if(!_curUser||!_activeCid) return;
   const container=document.getElementById('chatMessages');
@@ -1724,7 +2134,6 @@ async function _loadChatMsgs(silent=false){
     if(atBottom||!silent) container.scrollTop=container.scrollHeight;
   }catch{}
 }
-
 async function sendChatMsg(){
   if(!_curUser||!_activePeerUid||!_activeCid) return;
   const inp=document.getElementById('chatInput');
@@ -1767,9 +2176,7 @@ async function sendChatMsg(){
     if(btn) btn.disabled=false;
   }
 }
-
 function _stopChatPoll(){clearInterval(_chatPollTimer);_chatPollTimer=null;}
-
 let _searchTimer=null;
 function searchUsers(q){
   clearTimeout(_searchTimer);
@@ -1797,7 +2204,7 @@ function searchUsers(q){
   },280);
 }
 
-/* ADMIN MESSAGES (inchangé) */
+// ======================= ADMIN MESSAGES =======================
 async function loadAdminMessages(silent=false){
   if(!_authToken){if(!silent)showToast('Admin requis !');return;}
   const list   = document.getElementById('adm-convs-list');
