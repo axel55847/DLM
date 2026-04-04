@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
-/* ========== STYLES ORIGINAUX COMPLETS ========== */
+/* ========== VARIABLES ORIGINALES ========== */
 :root{--accent:#6a0dad;--sub:#00d2ff;--glow:rgba(0,210,255,.5);--bg-dark:#020208;--bg-grad-1:rgba(106,13,173,.4);--bg-grad-2:rgba(0,210,255,.4);}
 .theme-red{--accent:#ff0000;--sub:#ff4b2b;--glow:rgba(255,0,0,.5);--bg-dark:#080101;--bg-grad-1:rgba(255,0,0,.4);--bg-grad-2:rgba(255,75,43,.4);}
 .theme-green{--accent:#00ff41;--sub:#00ff41;--glow:rgba(0,255,65,.4);--bg-dark:#010801;--bg-grad-1:rgba(0,255,65,.3);--bg-grad-2:rgba(0,255,65,.3);}
@@ -260,6 +260,34 @@ body.admin-mode .card-del-btn{display:block!important;}
 .conv-ts{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.2);}
 .conv-unread-dot{background:var(--sub);color:#000;font-size:8px;font-weight:900;font-family:'Space Mono',monospace;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;box-shadow:0 0 8px var(--glow);}
 .conv-empty{text-align:center;padding:44px 20px;color:rgba(255,255,255,.13);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;line-height:2.2;}
+.msg-new-conv-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 16px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--sub);
+  color: var(--sub);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-align: center;
+  backdrop-filter: blur(4px);
+  width: calc(100% - 32px);
+}
+.msg-new-conv-btn:hover {
+  background: var(--sub);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px var(--glow);
+}
 .chat-top{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .chat-back{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:15px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .chat-back:hover{border-color:var(--sub);color:var(--sub);}
@@ -453,7 +481,7 @@ const getAllServers = () => {
 const slugify = n => n.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,10)+'_'+Date.now().toString(36).slice(-4);
 const extractCode = url => { const m=url.match(/discord\.gg\/([a-zA-Z0-9]+)/); return m?m[1]:url.trim(); };
 const escapeHtml = s => String(s).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]);
-const escapeJsString = s => JSON.stringify(s).slice(1,-1); // pour l'attribut onclick
+const escapeJsString = s => JSON.stringify(s).slice(1,-1);
 
 // ========== PARTICULES ==========
 const canvas=document.getElementById('particleCanvas');
@@ -1413,7 +1441,6 @@ async function _loadInbox(silent=false){
       const pPhoto=photos[peerUid]||'';
       const unread=conv[`unread_${_curUser.uid}`]||0;
       totalUnread+=unread;
-      // Sécurisation des paramètres pour l'attribut onclick
       const safeUid = escapeJsString(peerUid);
       const safePseudo = escapeJsString(pPseudo);
       const safePhoto = escapeJsString(pPhoto);
@@ -1439,7 +1466,6 @@ async function openChat(peerUid, peerPseudo, peerPhoto){
     showToast("Connectez-vous pour discuter.");
     return;
   }
-  // Vérification confidentialité
   try {
     const token = await _curUser.getIdToken();
     const peerRes = await fetch(`${FB}/users/${peerUid}.json?auth=${token}`);
