@@ -989,7 +989,16 @@ function animateCount(id,target){
 
 /* SERVEURS */
 let _overlayOpen=false;
-function openServers(){sfx.open();_overlayOpen=true;stopCanvas();document.getElementById('serversOverlay').classList.add('active');document.body.style.overflow='hidden';if(!document.querySelector('.glass-card'))renderServerCards();updateStats();checkDiscordAPI();}
+function openServers(){
+  sfx.open();
+  _overlayOpen = true;
+  stopCanvas();
+  document.getElementById('serversOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderServerCards();   // ← Correction : toujours recréer les cartes
+  updateStats();
+  checkDiscordAPI();
+}
 function closeServers(){_overlayOpen=false;startCanvas();document.getElementById('serversOverlay').classList.remove('active');document.body.style.overflow='';}
 let _sft;
 function filterSrvCards(){clearTimeout(_sft);_sft=setTimeout(()=>{const v=document.getElementById('srvSearchInput').value.toLowerCase();let n=0;document.querySelectorAll('.glass-card').forEach(c=>{const ok=c.getAttribute('data-name').toLowerCase().includes(v);c.classList.toggle('hidden',!ok);if(ok)n++;});document.getElementById('srvNoResult').style.display=(n===0&&v.length>0)?'block':'none';},150);}
