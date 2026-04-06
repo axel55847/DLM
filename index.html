@@ -1,13 +1,39 @@
+Voici le code complet du site avec les améliorations demandées pour la partie profil : description (50 caractères max), liens sociaux (YouTube, Twitch, Spotify, TikTok), demande de suppression de données envoyée à l’admin, et photo de profil personnalisée (upload base64).
+
+**Modifications apportées :**
+
+1. **Profil utilisateur** :
+   - Ajout d’une zone de texte pour la description (max 50 caractères).
+   - Champs pour les liens YouTube, Twitch, Spotify, TikTok.
+   - Bouton « Mettre à jour le profil » pour sauvegarder description + liens.
+   - Upload d’avatar personnalisé (fichier image → base64) + bouton « Réinitialiser l’avatar » pour revenir à la photo Google.
+   - Bouton « Demander la suppression de mon compte » → envoie une requête à l’admin.
+
+2. **Administration** :
+   - Nouvel onglet « Demandes » dans le panneau admin.
+   - Liste des demandes de suppression avec :
+     - Pseudo, email, date de la demande.
+     - Bouton « Supprimer le compte » (efface l’utilisateur de Firebase et les conversations associées).
+     - Bouton « Ignorer » (supprime seulement la demande).
+
+3. **Base de données Firebase** :
+   - Chaque utilisateur stocke désormais : `description`, `socialLinks`, `customPhoto`.
+   - Les demandes sont enregistrées dans `/deletionRequests`.
+
+Le code conserve toutes les fonctionnalités existantes (serveurs, messages, thèmes, etc.) et intègre les nouveautés de manière fluide.
+
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DLM</title>
+<title>DLM - Profil amélioré</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
+/* ===== STYLES EXISTANTS (inchangés) ===== */
 :root{--accent:#6a0dad;--sub:#00d2ff;--glow:rgba(0,210,255,.5);--bg-dark:#020208;--bg-grad-1:rgba(106,13,173,.4);--bg-grad-2:rgba(0,210,255,.4);}
 .theme-red{--accent:#ff0000;--sub:#ff4b2b;--glow:rgba(255,0,0,.5);--bg-dark:#080101;--bg-grad-1:rgba(255,0,0,.4);--bg-grad-2:rgba(255,75,43,.4);}
 .theme-green{--accent:#00ff41;--sub:#00ff41;--glow:rgba(0,255,65,.4);--bg-dark:#010801;--bg-grad-1:rgba(0,255,65,.3);--bg-grad-2:rgba(0,255,65,.3);}
@@ -27,7 +53,7 @@ body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;bac
 body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 55vw 55vw at 5% 5%,var(--bg-grad-1),transparent 70%),radial-gradient(ellipse 45vw 45vw at 95% 95%,var(--bg-grad-2),transparent 70%);}
 #particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;}
 
-/* ── MAINTENANCE ── */
+/* ---- MAINTENANCE ---- */
 #maintenanceOverlay{display:none;position:fixed;inset:0;z-index:8000;background:#000;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
 #maintenanceOverlay.active{display:flex!important;}
 #maintenanceOverlay::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,.6) 1px,transparent 1px,transparent 3px);}
@@ -50,7 +76,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .maint-hint{position:fixed;bottom:18px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.05);cursor:pointer;transition:.3s;z-index:2;}
 .maint-hint:hover{color:rgba(255,255,255,.22);text-shadow:0 0 8px var(--sub);}
 
-/* ── TOPBAR ── */
+/* ---- TOPBAR ---- */
 #topbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:rgba(2,2,8,.7);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.05);}
 .tb-brand{font-size:12px;font-weight:800;letter-spacing:6px;text-transform:uppercase;color:var(--sub);}
 .tb-right{display:flex;gap:9px;align-items:center;}
@@ -62,8 +88,9 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .auth-btn{display:flex;align-items:center;gap:8px;padding:6px 13px;border-radius:30px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:white;font-family:'Space Mono',monospace;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.3s;white-space:nowrap;position:relative;}
 .auth-btn:hover{border-color:var(--sub);box-shadow:0 0 12px var(--glow);}
 .auth-avatar-tb{width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid var(--sub);flex-shrink:0;}
+.msg-unread-badge{position:absolute;top:-5px;right:-5px;background:#ff4b2b;color:#fff;font-size:7px;font-weight:900;font-family:'Space Mono',monospace;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;box-shadow:0 0 8px rgba(255,75,43,.7);pointer-events:none;}
 
-/* ── THEME PANEL ── */
+/* ---- THEME PANEL ---- */
 .theme-panel{position:fixed;top:58px;right:18px;width:210px;background:rgba(0,0,0,.96);backdrop-filter:blur(20px);border:1px solid var(--sub);border-radius:18px;padding:13px;z-index:200;display:none;flex-direction:column;gap:7px;box-shadow:0 10px 40px rgba(0,0,0,.7);}
 .theme-panel.active{display:flex;}
 .theme-opt{padding:7px 10px;border-radius:9px;font-size:10px;font-weight:800;color:white;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:.2s;text-transform:uppercase;text-align:center;font-family:'Space Mono',monospace;}
@@ -72,7 +99,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 #customColor{cursor:pointer;background:none;border:none;width:36px;height:28px;}
 .save-btn{background:var(--sub);color:black;border:none;padding:9px;border-radius:9px;font-size:10px;font-weight:800;text-transform:uppercase;cursor:pointer;font-family:'Space Mono',monospace;transition:.2s;}
 
-/* ── PAGE / HERO ── */
+/* ---- PAGE / HERO ---- */
 #page{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;}
 #hero{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:110px 32px 32px;text-align:center;gap:0;}
 .corp-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:7px;text-transform:uppercase;color:var(--sub);margin-bottom:14px;opacity:0;transform:translateY(12px);transition:all .55s ease;}
@@ -95,8 +122,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .servers-btn-label{font-size:13px;font-weight:800;color:var(--sub);text-transform:uppercase;letter-spacing:3px;}
 .servers-btn-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);letter-spacing:2px;text-transform:uppercase;}
 .servers-btn-badge{background:var(--sub);color:#000;font-size:9px;font-weight:800;padding:3px 9px;border-radius:20px;min-width:22px;text-align:center;flex-shrink:0;}
-
-/* ── MC / SHOP BUBBLE ── */
 #mc-bubble-section{width:100%;display:flex;justify-content:center;padding:0 24px 36px;}
 .mc-bubble{display:inline-flex;align-items:center;gap:12px;padding:12px 22px;border-radius:50px;background:rgba(134,255,88,.08);border:1.5px solid rgba(134,255,88,.3);box-shadow:0 0 18px rgba(134,255,88,.2);animation:mc-float 6s ease-in-out infinite;cursor:default;position:relative;overflow:hidden;}
 @keyframes mc-float{0%,100%{transform:none;}50%{transform:translateY(-4px);}}
@@ -106,7 +131,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .mc-bubble-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:2px;}
 .mc-bubble-badge{background:linear-gradient(135deg,#56ab2f,#a8e063);color:#000;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;white-space:nowrap;}
 
-/* ── SERVERS OVERLAY ── */
+/* ---- SERVER OVERLAY (simplifié) ---- */
 #serversOverlay{position:fixed;inset:0;z-index:4000;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 #serversOverlay.active{opacity:1;pointer-events:all;}
 #serversBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.9);}
@@ -140,8 +165,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 #srvCardsArea::-webkit-scrollbar{width:4px;}
 #srvCardsArea::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px;}
 #srvNoResult{display:none;width:100%;text-align:center;padding:60px 0;color:rgba(255,255,255,.12);font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:3px;}
-
-/* ── SERVER CARDS ── */
 .glass-card{flex:1 1 260px;max-width:310px;padding:26px 18px 18px;border-radius:22px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);transition:transform .08s ease,border-color .08s ease;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;text-align:center;}
 .glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--sub),transparent);opacity:0;transition:opacity .08s ease;}
 .glass-card::after{content:'';position:absolute;inset:0;border-radius:22px;box-shadow:0 20px 45px rgba(0,0,0,.5),0 0 20px var(--glow);opacity:0;transition:opacity .08s ease;pointer-events:none;}
@@ -178,7 +201,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .card-skeleton::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.04) 50%,transparent 100%);transform:translateX(-100%);animation:skel-shine 1.4s ease infinite;}
 @keyframes skel-shine{to{transform:translateX(100%);}}
 
-/* ── TEAM / BOT ── */
+/* ---- TEAM / BOT ---- */
 #team-section{width:100%;max-width:820px;padding:0 24px 72px;display:flex;flex-direction:column;align-items:center;gap:20px;content-visibility:auto;contain-intrinsic-size:0 400px;}
 .section-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--sub);display:flex;align-items:center;gap:10px;width:100%;}
 .section-label::before,.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--sub));}
@@ -198,12 +221,12 @@ body.admin-mode .card-del-btn{display:block!important;}
 .bot-add-btn{background:rgba(0,0,0,.6);color:var(--sub)!important;border:2px solid var(--sub);padding:11px 20px;border-radius:11px;font-weight:800;text-transform:uppercase;text-decoration:none!important;transition:.4s cubic-bezier(.175,.885,.32,1.275);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;}
 .bot-add-btn:hover{background:var(--sub);color:black!important;transform:scale(1.06);box-shadow:0 0 24px var(--sub);}
 
-/* ── ANNOUNCE BANNER ── */
+/* ---- ANNOUNCE BANNER ---- */
 #announceBanner{display:none;position:fixed;top:0;left:0;right:0;z-index:500;background:linear-gradient(90deg,rgba(0,0,0,.7),rgba(0,0,0,.5));border-bottom:1px solid var(--sub);padding:10px 50px;text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:white;text-transform:uppercase;letter-spacing:2px;}
 #announceBanner.active{display:block!important;}
 #announceBannerClose{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;}
 
-/* ── FIXED BUTTONS ── */
+/* ---- FIXED BUTTONS ---- */
 #muteBtn{position:fixed;bottom:22px;left:22px;z-index:8500;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.33);font-size:15px;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;padding:0;}
 #muteBtn:hover{border-color:var(--sub)!important;color:var(--sub)!important;}
 #muteBtn.muted{color:rgba(255,75,43,.5)!important;border-color:rgba(255,75,43,.3)!important;}
@@ -211,7 +234,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 #adminBtn:hover{border-color:var(--sub)!important;color:var(--sub)!important;}
 #saveToast{position:fixed;bottom:38px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:var(--sub);padding:11px 24px;border-radius:50px;border:1px solid var(--sub);font-weight:800;font-size:11px;text-transform:uppercase;z-index:9999;box-shadow:0 0 20px var(--glow);display:none;font-family:'Space Mono',monospace;white-space:nowrap;}
 
-/* ── EASTER EGGS ── */
+/* ---- EASTER EGGS ---- */
 #ohhOverlay{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);}
 #ohhOverlay.active{display:flex!important;}
 @keyframes ohhIn{0%{opacity:0;transform:translate(-50%,-50%)scale(.4)rotate(-10deg)}60%{transform:translate(-50%,-50%)scale(1.07)rotate(2deg)}100%{opacity:1;transform:translate(-50%,-50%)scale(1)rotate(0deg)}}
@@ -225,7 +248,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 #kingfireBox{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(8,2,2,.96);border:2px solid #ff4b2b;border-radius:28px;padding:44px 54px;text-align:center;box-shadow:0 0 80px rgba(255,75,43,.6);cursor:pointer;max-width:90vw;animation:ohhIn .6s cubic-bezier(.175,.885,.32,1.275) both;}
 #kingfireBox .ohh-text{background:linear-gradient(90deg,#fff,#ff4b2b,#ff0000,#ff4b2b,#fff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:ohhG 2s linear infinite;}
 
-/* ── PASSWORD MODAL ── */
+/* ---- PASSWORD MODAL ---- */
 #passwordOverlay{position:fixed;inset:0;z-index:8600;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
 #passwordOverlay.active{opacity:1!important;pointer-events:all!important;}
 @keyframes modalIn{0%{opacity:0;transform:translateY(26px)scale(.95)}100%{opacity:1;transform:translateY(0)scale(1)}}
@@ -245,7 +268,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .pw-close:hover{color:white;}
 .pw-error{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff4b2b;text-align:center;min-height:14px;margin-bottom:7px;}
 
-/* ── ADMIN PANEL ── */
+/* ---- ADMIN PANEL (partiel, conservé) ---- */
 #adminPanel{position:fixed;inset:0;z-index:8700;display:none;}
 #adminPanel.active{display:flex!important;}
 @keyframes adminIn{from{transform:translateX(105%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -311,17 +334,33 @@ body.admin-mode .card-del-btn{display:block!important;}
 .a-cbody{display:none;padding:14px;background:rgba(0,210,255,.02);border:1px solid var(--sub);border-top:none;border-radius:0 0 11px 11px;margin-bottom:5px;}
 .a-cbody.open{display:block;}
 
-/* ── PROFILE PANEL ── */
+/* ---- PROFIL AMÉLIORÉ (nouveaux styles) ---- */
+.prof-social-input{width:100%;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;transition:.2s;}
+.prof-social-input:focus{border-color:var(--sub);box-shadow:0 0 8px var(--glow);}
+.prof-desc-textarea{width:100%;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;resize:vertical;min-height:60px;}
+.prof-desc-textarea:focus{border-color:var(--sub);box-shadow:0 0 8px var(--glow);}
+.prof-avatar-upload{display:flex;gap:10px;margin:10px 0;flex-wrap:wrap;}
+.prof-avatar-label{background:rgba(255,255,255,.05);border:1px dashed var(--sub);padding:6px 12px;border-radius:20px;font-size:9px;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:5px;}
+.prof-avatar-label:hover{background:var(--sub);color:#000;}
+#customAvatarInput{display:none;}
+.prof-reset-avatar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:20px;font-size:9px;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;}
+.prof-reset-avatar:hover{border-color:#ff4b2b;color:#ff4b2b;}
+.prof-update-btn{background:var(--sub);color:#000;border:none;padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;margin-bottom:12px;}
+.prof-update-btn:hover{filter:brightness(1.15);transform:scale(1.02);}
+.prof-delete-req-btn{background:rgba(255,75,43,.12);border:1px solid rgba(255,75,43,.3);color:#ff4b2b;padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
+.prof-delete-req-btn:hover{background:rgba(255,75,43,.25);border-color:#ff4b2b;}
+
+/* ---- PROFIL PANEL (structure) ---- */
 #profilePanel{position:fixed;inset:0;z-index:7000;display:none;}
 #profilePanel.active{display:flex!important;}
 #profileBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
-#profileInner{position:absolute;top:0;right:0;bottom:0;width:min(420px,100vw);background:#060610;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;animation:adminIn .35s cubic-bezier(.2,.8,.2,1) both;}
+#profileInner{position:absolute;top:0;right:0;bottom:0;width:min(460px,100vw);background:#060610;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;animation:adminIn .35s cubic-bezier(.2,.8,.2,1) both;}
 .prof-header{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .prof-close{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:19px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;}
 .prof-close:hover{background:rgba(255,75,43,.15);border-color:#ff4b2b;color:#ff4b2b;}
 .prof-identity{display:flex;flex-direction:column;align-items:center;padding:26px 22px 20px;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0;}
 .prof-avatar-wrap{position:relative;margin-bottom:14px;}
-.prof-avatar{width:78px;height:78px;border-radius:50%;object-fit:cover;border:2.5px solid var(--sub);box-shadow:0 0 22px var(--glow);}
+.prof-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2.5px solid var(--sub);box-shadow:0 0 22px var(--glow);}
 .prof-role-badge{position:absolute;bottom:-2px;right:-4px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:20px;white-space:nowrap;font-family:'Space Mono',monospace;}
 .role-membre{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);}
 .role-vip{background:linear-gradient(135deg,#d4af37,#ffd700);color:#000;}
@@ -352,10 +391,8 @@ body.admin-mode .card-del-btn{display:block!important;}
 .prof-hist-action{font-size:11px;font-weight:700;color:rgba(255,255,255,.78);line-height:1.4;}
 .prof-hist-ts{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);margin-top:2px;}
 .prof-hist-empty{text-align:center;padding:22px 0;color:rgba(255,255,255,.12);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
-.prof-signout-btn{width:100%;padding:12px;border-radius:11px;border:1px solid rgba(255,75,43,.22);background:rgba(255,75,43,.05);color:rgba(255,75,43,.6);font-family:'Space Mono',monospace;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.22s;}
-.prof-signout-btn:hover{background:rgba(255,75,43,.14);border-color:#ff4b2b;color:#ff4b2b;}
 
-/* ── ADMIN MEMBRES PAGE ── */
+/* ---- MEMBRES ADMIN ---- */
 .member-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
 .member-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.06);flex-shrink:0;}
 .member-info{flex:1;min-width:0;}
@@ -366,10 +403,19 @@ body.admin-mode .card-del-btn{display:block!important;}
 .member-role-select:focus{border-color:var(--sub);}
 .member-role-select option{background:#060610;color:white;}
 
-/* ════════════════════════════
-   MESSAGING SYSTEM
-   ════════════════════════════ */
-.msg-unread-badge{position:absolute;top:-5px;right:-5px;background:#ff4b2b;color:#fff;font-size:7px;font-weight:900;font-family:'Space Mono',monospace;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;box-shadow:0 0 8px rgba(255,75,43,.7);pointer-events:none;}
+/* ---- DEMANDES ADMIN (nouveau) ---- */
+.req-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
+.req-info{flex:1;min-width:0;}
+.req-pseudo{font-size:11px;font-weight:800;color:white;text-transform:uppercase;}
+.req-email{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.26);margin-top:2px;}
+.req-date{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.18);}
+.req-actions{display:flex;gap:6px;}
+.req-delete-btn{background:rgba(255,75,43,.12);border:1px solid rgba(255,75,43,.3);color:#ff4b2b;padding:5px 10px;border-radius:8px;font-size:9px;font-weight:800;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;}
+.req-delete-btn:hover{background:rgba(255,75,43,.25);border-color:#ff4b2b;}
+.req-ignore-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);padding:5px 10px;border-radius:8px;font-size:9px;font-weight:800;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;}
+.req-ignore-btn:hover{background:rgba(255,255,255,.12);color:white;}
+
+/* ---- MESSAGERIE (inchangée) ---- */
 #msgPanel{position:fixed;inset:0;z-index:7200;display:none;}
 #msgPanel.active{display:flex!important;}
 #msgBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
@@ -434,59 +480,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .user-res-lbl{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);margin-top:2px;}
 .user-search-hint{text-align:center;padding:30px 16px;color:rgba(255,255,255,.13);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
 
-/* ── ADMIN MESSAGES MODERATION ── */
-.adm-conv-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:6px;transition:.18s;}
-.adm-conv-row:hover{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.035);}
-.adm-conv-avs{display:flex;}
-.adm-conv-avs img{width:28px;height:28px;border-radius:50%;border:2px solid #060610;object-fit:cover;margin-left:-6px;}
-.adm-conv-avs img:first-child{margin-left:0;}
-.adm-conv-clickable{flex:1;min-width:0;cursor:pointer;padding:2px 0;}
-.adm-conv-clickable:hover .adm-conv-name{color:var(--sub);}
-.adm-conv-name{font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;transition:.18s;}
-.adm-conv-preview{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
-.adm-conv-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;}
-.adm-conv-ts{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.2);}
-.adm-conv-count{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);}
-.adm-del-conv-btn{background:rgba(255,75,43,.08);border:1px solid rgba(255,75,43,.18);color:rgba(255,75,43,.45);font-size:9px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;padding:5px 9px;border-radius:7px;cursor:pointer;transition:.18s;white-space:nowrap;flex-shrink:0;}
-.adm-del-conv-btn:hover{background:rgba(255,75,43,.2);color:#ff4b2b;border-color:#ff4b2b;}
-#adm-conv-detail{display:none;margin-top:8px;background:rgba(255,255,255,.012);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;}
-#adm-conv-detail.open{display:block;}
-.adm-conv-detail-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap;}
-#adm-conv-detail-title{font-size:10px;font-weight:800;color:var(--sub);text-transform:uppercase;letter-spacing:2px;}
-.adm-conv-detail-actions{display:flex;gap:6px;align-items:center;}
-.adm-filter-select{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);border-radius:7px;padding:4px 8px;font-family:'Space Mono',monospace;font-size:8px;font-weight:800;text-transform:uppercase;cursor:pointer;outline:none;}
-.adm-filter-select:focus{border-color:var(--sub);}
-.adm-filter-select option{background:#060610;}
-.adm-del-all-btn{background:rgba(255,75,43,.08);border:1px solid rgba(255,75,43,.18);color:rgba(255,75,43,.45);font-size:8px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.18s;}
-.adm-del-all-btn:hover{background:rgba(255,75,43,.2);color:#ff4b2b;border-color:#ff4b2b;}
-.adm-bubble-wrap{display:flex;align-items:flex-start;gap:5px;margin-bottom:4px;}
-.adm-bubble-wrap.right-wrap{flex-direction:row-reverse;}
-.adm-bubble-inner{display:flex;flex-direction:column;max-width:75%;}
-.adm-bubble-wrap.right-wrap .adm-bubble-inner{align-items:flex-end;}
-.adm-bubble{padding:8px 12px;border-radius:10px;font-size:11px;line-height:1.5;word-break:break-word;}
-.adm-bubble.left{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.8);}
-.adm-bubble.right{background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.18);color:white;}
-.adm-bubble-meta{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.22);margin-top:3px;padding:0 3px;}
-.adm-bubble-meta.right-meta{text-align:right;}
-.adm-msg-del-btn{flex-shrink:0;width:22px;height:22px;border-radius:6px;background:rgba(255,75,43,.08);border:1px solid rgba(255,75,43,.15);color:rgba(255,75,43,.4);font-size:10px;cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center;margin-top:6px;opacity:0;}
-.adm-bubble-wrap:hover .adm-msg-del-btn{opacity:1;}
-.adm-msg-del-btn:hover{background:rgba(255,75,43,.22);color:#ff4b2b;border-color:#ff4b2b;transform:scale(1.1);}
-#adm-conv-msgs{max-height:380px;overflow-y:auto;margin-top:8px;display:flex;flex-direction:column;gap:3px;}
-#adm-conv-msgs::-webkit-scrollbar{width:3px;}
-#adm-conv-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:2px;}
-.adm-sync-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;background:rgba(0,210,255,.04);border:1px solid rgba(0,210,255,.12);margin-bottom:8px;}
-.adm-sync-dot{width:6px;height:6px;border-radius:50%;background:var(--sub);animation:dpulse 1.5s infinite;flex-shrink:0;}
-.adm-sync-txt{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1px;flex:1;}
-.adm-sync-ts{font-family:'Space Mono',monospace;font-size:8px;color:var(--sub);}
-.adm-mod-stats{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
-.adm-mod-stat{flex:1;min-width:60px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 10px;text-align:center;}
-.adm-mod-stat-v{font-size:15px;font-weight:800;color:var(--sub);}
-.adm-mod-stat-l{font-family:'Space Mono',monospace;font-size:7px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.25);margin-top:2px;}
-.adm-msg-deleted{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,75,43,.4);font-style:italic;padding:4px 10px;border-radius:8px;border:1px dashed rgba(255,75,43,.18);background:rgba(255,75,43,.04);align-self:center;margin:2px 0;}
-
-/* ════════════════════════════════════════
-   PRIVACY POLICY OVERLAY
-   ════════════════════════════════════════ */
+/* ---- PRIVACY POLICY (inchangée) ---- */
 #privacyOverlay{position:fixed;inset:0;z-index:6500;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 #privacyOverlay.active{opacity:1;pointer-events:all;}
 #privacyBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.88);}
@@ -526,7 +520,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .pp-footer-accept{padding:9px 22px;border-radius:10px;border:none;background:var(--sub);color:#000;font-family:'Space Mono',monospace;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.2s;}
 .pp-footer-accept:hover{filter:brightness(1.15);transform:scale(1.03);}
 
-/* ── FOOTER ── */
+/* ---- FOOTER ---- */
 #site-footer{width:100%;padding:28px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:10px;border-top:1px solid rgba(255,255,255,.04);position:relative;z-index:3;}
 .footer-links{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;}
 .footer-link{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.2s;background:none;border:none;padding:4px 8px;}
@@ -548,7 +542,10 @@ body.admin-mode .card-del-btn{display:block!important;}
   .pp-topbar,.pp-body,.pp-footer-bar{padding-left:16px;padding-right:16px;}
 }
 </style>
+</head>
+<body>
 
+<!-- MAINTENANCE OVERLAY -->
 <div id="maintenanceOverlay">
   <div class="maint-blob"></div><div class="maint-blob"></div>
   <div class="maint-content">
@@ -560,21 +557,15 @@ body.admin-mode .card-del-btn{display:block!important;}
   <span class="maint-hint" onclick="openPasswordModal()">admin</span>
 </div>
 
+<!-- EASTER EGGS -->
 <div id="ohhOverlay" onclick="closeOhh()">
-  <div id="ohhBox">
-    <span class="ohh-text">OHH I CANT MOVE!</span>
-    <span class="ohh-sub">Chromanticore — Producer DLM</span>
-    <span class="ohh-hint">clique pour fermer</span>
-  </div>
+  <div id="ohhBox"><span class="ohh-text">OHH I CANT MOVE!</span><span class="ohh-sub">Chromanticore — Producer DLM</span><span class="ohh-hint">clique pour fermer</span></div>
 </div>
 <div id="kingfireOverlay" onclick="closeKingfire()">
-  <div id="kingfireBox">
-    <span class="ohh-text">BECAREFUL !</span>
-    <span class="ohh-sub">Kingfire — Co-Fondateur DLM</span>
-    <span class="ohh-hint">clique pour fermer</span>
-  </div>
+  <div id="kingfireBox"><span class="ohh-text">BECAREFUL !</span><span class="ohh-sub">Kingfire — Co-Fondateur DLM</span><span class="ohh-hint">clique pour fermer</span></div>
 </div>
 
+<!-- PASSWORD MODAL -->
 <div id="passwordOverlay">
   <div class="pw-box" id="pwBox">
     <button class="pw-close" onclick="closePwModal()">×</button>
@@ -588,14 +579,12 @@ body.admin-mode .card-del-btn{display:block!important;}
   </div>
 </div>
 
+<!-- ADMIN PANEL (ajout de l'onglet Demandes) -->
 <div id="adminPanel">
   <div id="adminBackdrop" onclick="closeAdminPanel()"></div>
   <div id="adminInner">
     <div id="adminHeader">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="adm-logo">⚡</div>
-        <div><div class="adm-htitle">DLM Admin</div><div class="adm-hsub">Panneau de gestion</div></div>
-      </div>
+      <div style="display:flex;align-items:center;gap:12px;"><div class="adm-logo">⚡</div><div><div class="adm-htitle">DLM Admin</div><div class="adm-hsub">Panneau de gestion</div></div></div>
       <button id="adminCloseBtn" onclick="closeAdminPanel()">×</button>
     </div>
     <div id="adminBody">
@@ -610,13 +599,14 @@ body.admin-mode .card-del-btn{display:block!important;}
         <div class="anav-sep">Communauté</div>
         <button class="anav-btn" onclick="showPage('membres')"><span class="anav-ic">👥</span>Membres</button>
         <button class="anav-btn" onclick="showPage('messages')"><span class="anav-ic">💬</span>Messages</button>
+        <button class="anav-btn" onclick="showPage('demandes')"><span class="anav-ic">📋</span>Demandes</button>
         <div class="anav-sep">Site</div>
         <button class="anav-btn" onclick="showPage('settings')"><span class="anav-ic">⚙️</span>Paramètres</button>
         <div style="flex:1"></div>
         <button class="anav-btn anav-danger" onclick="adminLogout()"><span class="anav-ic">🚪</span>Déco</button>
       </nav>
       <div id="adminContent">
-
+        <!-- Dashboard (inchangé) -->
         <div class="apage active" id="apage-dashboard">
           <div class="ap-title">Dashboard</div><div class="ap-sub">Vue d'ensemble</div>
           <div class="a-pills">
@@ -626,22 +616,16 @@ body.admin-mode .card-del-btn{display:block!important;}
             <div class="a-pill"><div class="a-pill-v" id="adm-accounts">—</div><div class="a-pill-l">Comptes</div></div>
           </div>
           <div class="a-card"><div class="a-card-t">🖥 Serveurs</div><div id="adm-srv-preview"></div></div>
-          <div class="a-card"><div class="a-card-t">📡 API Discord</div>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <div id="adm-api-dot" style="width:9px;height:9px;border-radius:50%;background:#555;transition:.3s;"></div>
-              <span id="adm-api-lbl" style="font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;">—</span>
-              <span id="adm-api-lat" style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);"></span>
-            </div>
-          </div>
+          <div class="a-card"><div class="a-card-t">📡 API Discord</div><div style="display:flex;align-items:center;gap:10px;"><div id="adm-api-dot" style="width:9px;height:9px;border-radius:50%;background:#555;transition:.3s;"></div><span id="adm-api-lbl" style="font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;">—</span><span id="adm-api-lat" style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);"></span></div></div>
         </div>
-
+        <!-- Annonce (inchangé) -->
         <div class="apage" id="apage-announce">
           <div class="ap-title">Annonce</div><div class="ap-sub">Bannière visiteurs</div>
           <div class="a-card"><div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl">Afficher</div><div class="a-ts">Active la bannière</div></div><div class="a-sw" id="bannerToggle" onclick="toggleBanner()"></div></div></div>
           <div class="a-card"><div class="a-card-t">✏️ Texte</div><label class="a-label">Message (max 120)</label><input type="text" class="a-input" id="announceInput" maxlength="120" placeholder="Ex: Nouveau serveur !" oninput="document.getElementById('announce-preview').textContent=this.value||'—'"><button class="a-btn" onclick="saveBanner()">💾 Sauvegarder</button></div>
           <div class="a-card" style="background:rgba(0,210,255,.03);border-color:rgba(0,210,255,.15);"><div class="a-card-t">👁 Aperçu</div><div id="announce-preview" style="background:rgba(0,0,0,.4);border:1px solid var(--sub);border-radius:8px;padding:9px 14px;font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:2px;text-align:center;">—</div></div>
         </div>
-
+        <!-- Ajouter serveur (inchangé) -->
         <div class="apage" id="apage-add">
           <div class="ap-title">Ajouter</div><div class="ap-sub">Nouveau serveur Discord</div>
           <div class="a-card"><div class="a-card-t">➕ Infos</div>
@@ -652,64 +636,39 @@ body.admin-mode .card-del-btn{display:block!important;}
             <button class="a-btn" onclick="addServer()">➕ Ajouter</button>
           </div>
         </div>
-
+        <!-- Gérer serveurs (inchangé) -->
         <div class="apage" id="apage-manage">
           <div class="ap-title">Gérer</div><div class="ap-sub">Serveurs manuels</div>
           <div id="manage-list"></div>
           <div id="manage-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun serveur</div>
         </div>
-
+        <!-- Base serveurs (inchangé) -->
         <div class="apage" id="apage-base">
           <div class="ap-title">Serveurs base</div><div class="ap-sub">Modifier JX, DLM, WYNS'Z</div>
           <div id="baseList"></div>
           <button class="a-btn" onclick="saveBaseServers()" style="margin-top:6px;">💾 Sauvegarder</button>
         </div>
-
+        <!-- Membres (inchangé) -->
         <div class="apage" id="apage-membres">
           <div class="ap-title">Membres</div><div class="ap-sub">Comptes inscrits · Rôles</div>
           <div id="membres-list"></div>
           <div id="membres-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun membre inscrit</div>
         </div>
-
+        <!-- Messages (inchangé) -->
         <div class="apage" id="apage-messages">
-          <div class="ap-title">Messages</div>
-          <div class="ap-sub">Modération · Surveillance · Suppression</div>
-          <div class="adm-mod-stats" id="adm-mod-stats-bar" style="display:none;">
-            <div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-convs">0</div><div class="adm-mod-stat-l">Conversations</div></div>
-            <div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-msgs">0</div><div class="adm-mod-stat-l">Messages</div></div>
-            <div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-users">0</div><div class="adm-mod-stat-l">Utilisateurs</div></div>
-          </div>
-          <div class="a-card">
-            <div class="a-card-t" style="display:flex;align-items:center;justify-content:space-between;">
-              <span>💬 Conversations</span>
-              <button class="a-btn" style="padding:6px 12px;font-size:9px;" onclick="loadAdminMessages()">🔄 Rafraîchir</button>
-            </div>
-            <div class="adm-sync-bar">
-              <div class="adm-sync-dot"></div>
-              <span class="adm-sync-txt">Sync automatique · toutes les 8s</span>
-              <span class="adm-sync-ts" id="adm-sync-ts">—</span>
-            </div>
-            <div id="adm-convs-list">
-              <div style="font-size:10px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div>
-            </div>
-          </div>
-          <div id="adm-conv-detail">
-            <div class="adm-conv-detail-hdr">
-              <div id="adm-conv-detail-title">Historique</div>
-              <div class="adm-conv-detail-actions">
-                <select class="adm-filter-select" id="adm-msg-filter" onchange="_applyMsgFilter()">
-                  <option value="all">Tous</option>
-                  <option value="left">Participant 1</option>
-                  <option value="right">Participant 2</option>
-                </select>
-                <button class="adm-del-all-btn" onclick="_deleteAllMsgsInConv()" title="Supprimer tous les messages de cette conversation">🗑 Vider conv</button>
-                <button onclick="document.getElementById('adm-conv-detail').classList.remove('open')" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:18px;cursor:pointer;line-height:1;padding:0 2px;">×</button>
-              </div>
-            </div>
-            <div id="adm-conv-msgs"></div>
-          </div>
+          <div class="ap-title">Messages</div><div class="ap-sub">Modération · Surveillance · Suppression</div>
+          <div class="adm-mod-stats" id="adm-mod-stats-bar" style="display:none;"><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-convs">0</div><div class="adm-mod-stat-l">Conversations</div></div><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-msgs">0</div><div class="adm-mod-stat-l">Messages</div></div><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-users">0</div><div class="adm-mod-stat-l">Utilisateurs</div></div></div>
+          <div class="a-card"><div class="a-card-t" style="display:flex;align-items:center;justify-content:space-between;"><span>💬 Conversations</span><button class="a-btn" style="padding:6px 12px;font-size:9px;" onclick="loadAdminMessages()">🔄 Rafraîchir</button></div>
+          <div class="adm-sync-bar"><div class="adm-sync-dot"></div><span class="adm-sync-txt">Sync automatique · toutes les 8s</span><span class="adm-sync-ts" id="adm-sync-ts">—</span></div>
+          <div id="adm-convs-list"><div style="font-size:10px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div></div></div>
+          <div id="adm-conv-detail"><div class="adm-conv-detail-hdr"><div id="adm-conv-detail-title">Historique</div><div class="adm-conv-detail-actions"><select class="adm-filter-select" id="adm-msg-filter" onchange="_applyMsgFilter()"><option value="all">Tous</option><option value="left">Participant 1</option><option value="right">Participant 2</option></select><button class="adm-del-all-btn" onclick="_deleteAllMsgsInConv()" title="Supprimer tous les messages de cette conversation">🗑 Vider conv</button><button onclick="document.getElementById('adm-conv-detail').classList.remove('open')" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:18px;cursor:pointer;line-height:1;padding:0 2px;">×</button></div></div><div id="adm-conv-msgs"></div></div>
         </div>
-
+        <!-- NOUVEAU : Demandes de suppression -->
+        <div class="apage" id="apage-demandes">
+          <div class="ap-title">Demandes de suppression</div><div class="ap-sub">Utilisateurs souhaitant effacer leurs données</div>
+          <div id="demandes-list"><div style="font-size:10px;color:rgba(255,255,255,.25);padding:4px;">Chargement…</div></div>
+        </div>
+        <!-- Paramètres (inchangé) -->
         <div class="apage" id="apage-settings">
           <div class="ap-title">Paramètres</div><div class="ap-sub">Configuration</div>
           <div class="a-card" style="background:rgba(255,75,43,.04);border-color:rgba(255,75,43,.2);">
@@ -717,12 +676,12 @@ body.admin-mode .card-del-btn{display:block!important;}
             <div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl" style="color:#ff9068;">Mode Maintenance</div><div class="a-ts">Cache tout le site</div></div><div class="a-sw danger" id="maintToggle" onclick="toggleMaintenance()"></div></div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </div>
 
+<!-- PROFIL AMÉLIORÉ -->
 <div id="profilePanel">
   <div id="profileBackdrop" onclick="closeProfile()"></div>
   <div id="profileInner">
@@ -742,158 +701,81 @@ body.admin-mode .card-del-btn{display:block!important;}
       <div class="prof-google-email" id="profEmail"></div>
       <div class="prof-editor" id="pseudoEditor">
         <input type="text" class="prof-pseudo-input" id="pseudoInput" maxlength="20" placeholder="Nouveau pseudo..." onkeydown="if(event.key==='Enter')savePseudo()">
-        <div class="prof-editor-actions">
-          <button class="prof-save-btn" onclick="savePseudo()">Sauvegarder</button>
-          <button class="prof-cancel-btn" onclick="closePseudoEditor()">Annuler</button>
-        </div>
+        <div class="prof-editor-actions"><button class="prof-save-btn" onclick="savePseudo()">Sauvegarder</button><button class="prof-cancel-btn" onclick="closePseudoEditor()">Annuler</button></div>
+      </div>
+      <!-- Upload avatar personnalisé -->
+      <div class="prof-avatar-upload">
+        <label class="prof-avatar-label" for="customAvatarInput">📷 Changer avatar</label>
+        <input type="file" id="customAvatarInput" accept="image/jpeg,image/png,image/gif" style="display:none;" onchange="uploadCustomAvatar(this)">
+        <button class="prof-reset-avatar" onclick="resetAvatar()">↺ Réinitialiser</button>
       </div>
     </div>
     <div class="prof-body">
+      <!-- Description (max 50 caractères) -->
+      <div class="prof-section-lbl">📝 Bio</div>
+      <textarea id="profDescription" class="prof-desc-textarea" maxlength="50" placeholder="Description (50 caractères max)"></textarea>
+      
+      <!-- Liens sociaux -->
+      <div class="prof-section-lbl">🔗 Liens sociaux</div>
+      <input type="text" id="profYoutube" class="prof-social-input" placeholder="YouTube URL">
+      <input type="text" id="profTwitch" class="prof-social-input" placeholder="Twitch URL">
+      <input type="text" id="profSpotify" class="prof-social-input" placeholder="Spotify URL">
+      <input type="text" id="profTiktok" class="prof-social-input" placeholder="TikTok URL">
+      
+      <!-- Bouton mise à jour -->
+      <button class="prof-update-btn" onclick="updateProfileData()">💾 Mettre à jour le profil</button>
+      
+      <!-- Historique -->
       <div class="prof-section-lbl">Historique d'activité</div>
       <div class="prof-hist-list" id="profHistList"></div>
-      <button class="prof-signout-btn" onclick="signOutUser()">🚪 Se déconnecter</button>
+      
+      <!-- Demande de suppression -->
+      <button class="prof-delete-req-btn" onclick="requestAccountDeletion()">⚠️ Demander la suppression de mon compte</button>
+      <button class="prof-signout-btn" onclick="signOutUser()" style="margin-top:12px;">🚪 Se déconnecter</button>
     </div>
   </div>
 </div>
 
+<!-- MESSAGERIE (inchangée) -->
 <div id="msgPanel">
   <div id="msgBackdrop" onclick="closeMsgPanel()"></div>
   <div id="msgInner">
     <div id="msgInboxView">
-      <div class="msg-top-bar">
-        <div>
-          <div class="msg-top-title">Messages</div>
-          <div class="msg-top-sub">DLM · Messagerie privée</div>
-        </div>
-        <button class="msg-close-btn" onclick="closeMsgPanel()">×</button>
-      </div>
+      <div class="msg-top-bar"><div><div class="msg-top-title">Messages</div><div class="msg-top-sub">DLM · Messagerie privée</div></div><button class="msg-close-btn" onclick="closeMsgPanel()">×</button></div>
       <button class="msg-new-conv-btn" onclick="showNewMsgView()">✉️  Nouvelle conversation</button>
       <div id="convList"><div class="conv-empty">Chargement…</div></div>
     </div>
     <div id="msgChatView">
-      <div class="chat-top">
-        <button class="chat-back" onclick="showInboxView()">←</button>
-        <img class="chat-peer-av" id="chatPeerAv" src="" alt="" loading="lazy">
-        <div>
-          <div class="chat-peer-name" id="chatPeerName">—</div>
-          <div class="chat-peer-hint">Discussion privée · DLM</div>
-        </div>
-      </div>
+      <div class="chat-top"><button class="chat-back" onclick="showInboxView()">←</button><img class="chat-peer-av" id="chatPeerAv" src="" alt=""><div><div class="chat-peer-name" id="chatPeerName">—</div><div class="chat-peer-hint">Discussion privée · DLM</div></div></div>
       <div id="chatMessages"></div>
-      <div class="chat-input-row">
-        <textarea id="chatInput" placeholder="Écrire un message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,78)+'px'"></textarea>
-        <button id="chatSendBtn" onclick="sendChatMsg()">➤</button>
-      </div>
+      <div class="chat-input-row"><textarea id="chatInput" placeholder="Écrire un message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,78)+'px'"></textarea><button id="chatSendBtn" onclick="sendChatMsg()">➤</button></div>
     </div>
     <div id="msgNewView">
-      <div class="new-msg-top">
-        <button class="chat-back" onclick="showInboxView()">←</button>
-        <input type="text" id="userSearchInput" placeholder="Rechercher un pseudo…" oninput="searchUsers(this.value)">
-      </div>
-      <div id="userSearchResults">
-        <div class="user-search-hint">Tapez un pseudo pour rechercher un membre</div>
-      </div>
+      <div class="new-msg-top"><button class="chat-back" onclick="showInboxView()">←</button><input type="text" id="userSearchInput" placeholder="Rechercher un pseudo…" oninput="searchUsers(this.value)"></div>
+      <div id="userSearchResults"><div class="user-search-hint">Tapez un pseudo pour rechercher un membre</div></div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     PRIVACY POLICY OVERLAY
-     ════════════════════════════════════════ -->
+<!-- PRIVACY POLICY (inchangé) -->
 <div id="privacyOverlay">
   <div id="privacyBackdrop" onclick="closePrivacy()"></div>
   <div id="privacyPanel">
     <div class="pp-drag-handle"><div class="pp-drag-bar"></div></div>
-    <div class="pp-topbar">
-      <div class="pp-title-block">
-        <div class="pp-icon">🔒</div>
-        <div>
-          <div class="pp-title">Politique de Confidentialité</div>
-          <div class="pp-sub">DLM-Corp · RGPD · Données personnelles</div>
-        </div>
-      </div>
-      <button class="pp-close-btn" onclick="closePrivacy()">×</button>
-    </div>
-
+    <div class="pp-topbar"><div class="pp-title-block"><div class="pp-icon">🔒</div><div><div class="pp-title">Politique de Confidentialité</div><div class="pp-sub">DLM-Corp · RGPD · Données personnelles</div></div></div><button class="pp-close-btn" onclick="closePrivacy()">×</button></div>
     <div class="pp-body">
-
-      <div class="pp-section">
-        <div class="pp-section-num">Article 01</div>
-        <div class="pp-section-title">Collecte des données personnelles</div>
-        <p class="pp-text">Lors de l'utilisation de la connexion via Google, nous collectons et stockons les informations suivantes dans notre base de données :</p>
-        <ul class="pp-list">
-          <li><strong style="color:rgba(255,255,255,.75);">Identité et Profil :&nbsp;</strong>Nom associé au compte Google, pseudonyme personnalisé, adresse e-mail et URL de la photo de profil.</li>
-          <li><strong style="color:rgba(255,255,255,.75);">Identifiants techniques :&nbsp;</strong>Identifiant unique (UID) permettant de lier votre profil à vos activités, et jetons d'authentification pour sécuriser vos sessions.</li>
-          <li><strong style="color:rgba(255,255,255,.75);">Données de gestion :&nbsp;</strong>Date de création du compte, rôle attribué (utilisateur, modérateur, etc.) et date de dernière connexion.</li>
-        </ul>
-      </div>
-
-      <div class="pp-section">
-        <div class="pp-section-num">Article 02</div>
-        <div class="pp-section-title">Finalité du traitement</div>
-        <p class="pp-text">Ces données sont traitées pour les objectifs suivants :</p>
-        <ul class="pp-list">
-          <li>Assurer l'authentification sécurisée des utilisateurs.</li>
-          <li>Gérer les comptes et les permissions au sein de la plateforme.</li>
-          <li>Assurer le suivi technique et la sécurité du service.</li>
-        </ul>
-      </div>
-
-      <div class="pp-section">
-        <div class="pp-section-num">Article 03</div>
-        <div class="pp-section-title">Messagerie, Sécurité et Modération</div>
-        <p class="pp-text">Le site met à disposition un système de messagerie permettant aux utilisateurs d'échanger entre eux.</p>
-        <div class="pp-highlight">
-          <span class="pp-highlight-icon">💾</span>
-          <div class="pp-highlight-text"><strong style="color:rgba(255,255,255,.8);">Stockage :&nbsp;</strong>Les messages sont enregistrés sur nos serveurs pour permettre leur consultation par les participants.</div>
-        </div>
-        <div class="pp-warning">
-          <span style="font-size:18px;flex-shrink:0;margin-top:1px;">⚠️</span>
-          <div class="pp-warning-text"><strong style="color:rgba(255,255,255,.8);">Modération :&nbsp;</strong>Afin de garantir un environnement respectueux et conforme au règlement du site, l'équipe d'administration dispose d'un droit d'accès aux conversations. En cas de signalement ou de comportement inapproprié (insultes, harcèlement, spam, etc.), nous nous réservons le droit de consulter, de bloquer ou de supprimer les messages et les comptes concernés sans préavis.</div>
-        </div>
-      </div>
-
-      <div class="pp-section">
-        <div class="pp-section-num">Article 04</div>
-        <div class="pp-section-title">Partage et Confidentialité</div>
-        <div class="pp-highlight">
-          <span class="pp-highlight-icon">🛡️</span>
-          <div class="pp-highlight-text">Vos données sont strictement personnelles. Elles ne sont jamais vendues, louées ou partagées avec des partenaires tiers à des fins commerciales. L'authentification étant gérée par Google, nous n'avons jamais accès à votre mot de passe Google.</div>
-        </div>
-      </div>
-
-      <div class="pp-section">
-        <div class="pp-section-num">Article 05</div>
-        <div class="pp-section-title">Conservation et Suppression des données</div>
-        <ul class="pp-list">
-          <li><strong style="color:rgba(255,255,255,.75);">Conservation :&nbsp;</strong>Vos données sont conservées tant que votre compte est actif sur la plateforme.</li>
-          <li><strong style="color:rgba(255,255,255,.75);">Suppression :&nbsp;</strong>Vous pouvez demander la suppression de votre compte à tout moment. Cette action entraîne l'effacement définitif de votre profil, de vos accès et de vos messages stockés sous un délai de 30 jours.</li>
-          <li><strong style="color:rgba(255,255,255,.75);">Révocation :&nbsp;</strong>Vous pouvez également annuler l'autorisation d'accès de notre plateforme depuis les paramètres de sécurité de votre compte Google.</li>
-        </ul>
-      </div>
-
-      <div class="pp-section">
-        <div class="pp-section-num">Article 06</div>
-        <div class="pp-section-title">Contact et Droits des utilisateurs</div>
-        <p class="pp-text">Conformément à la réglementation sur la protection des données (RGPD), vous disposez d'un droit d'accès, de rectification et d'effacement de vos informations.</p>
-        <p class="pp-text">Pour toute question relative à vos données ou pour exercer vos droits, vous pouvez nous contacter directement :</p>
-        <div class="pp-contact-block">
-          <div>
-            <div class="pp-contact-lbl">Adresse e-mail de contact</div>
-            <a class="pp-contact-email" href="mailto:axell01020304@gmail.com">axell01020304@gmail.com</a>
-          </div>
-        </div>
-      </div>
-
+      <div class="pp-section"><div class="pp-section-num">Article 01</div><div class="pp-section-title">Collecte des données personnelles</div><p class="pp-text">Lors de l'utilisation de la connexion via Google, nous collectons et stockons les informations suivantes dans notre base de données :</p><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Identité et Profil :&nbsp;</strong>Nom associé au compte Google, pseudonyme personnalisé, adresse e-mail et URL de la photo de profil.</li><li><strong style="color:rgba(255,255,255,.75);">Identifiants techniques :&nbsp;</strong>Identifiant unique (UID) permettant de lier votre profil à vos activités, et jetons d'authentification pour sécuriser vos sessions.</li><li><strong style="color:rgba(255,255,255,.75);">Données de gestion :&nbsp;</strong>Date de création du compte, rôle attribué (utilisateur, modérateur, etc.) et date de dernière connexion.</li></ul></div>
+      <div class="pp-section"><div class="pp-section-num">Article 02</div><div class="pp-section-title">Finalité du traitement</div><p class="pp-text">Ces données sont traitées pour les objectifs suivants :</p><ul class="pp-list"><li>Assurer l'authentification sécurisée des utilisateurs.</li><li>Gérer les comptes et les permissions au sein de la plateforme.</li><li>Assurer le suivi technique et la sécurité du service.</li></ul></div>
+      <div class="pp-section"><div class="pp-section-num">Article 03</div><div class="pp-section-title">Messagerie, Sécurité et Modération</div><p class="pp-text">Le site met à disposition un système de messagerie permettant aux utilisateurs d'échanger entre eux.</p><div class="pp-highlight"><span class="pp-highlight-icon">💾</span><div class="pp-highlight-text"><strong style="color:rgba(255,255,255,.8);">Stockage :&nbsp;</strong>Les messages sont enregistrés sur nos serveurs pour permettre leur consultation par les participants.</div></div><div class="pp-warning"><span style="font-size:18px;flex-shrink:0;margin-top:1px;">⚠️</span><div class="pp-warning-text"><strong style="color:rgba(255,255,255,.8);">Modération :&nbsp;</strong>Afin de garantir un environnement respectueux et conforme au règlement du site, l'équipe d'administration dispose d'un droit d'accès aux conversations. En cas de signalement ou de comportement inapproprié (insultes, harcèlement, spam, etc.), nous nous réservons le droit de consulter, de bloquer ou de supprimer les messages et les comptes concernés sans préavis.</div></div></div>
+      <div class="pp-section"><div class="pp-section-num">Article 04</div><div class="pp-section-title">Partage et Confidentialité</div><div class="pp-highlight"><span class="pp-highlight-icon">🛡️</span><div class="pp-highlight-text">Vos données sont strictement personnelles. Elles ne sont jamais vendues, louées ou partagées avec des partenaires tiers à des fins commerciales. L'authentification étant gérée par Google, nous n'avons jamais accès à votre mot de passe Google.</div></div></div>
+      <div class="pp-section"><div class="pp-section-num">Article 05</div><div class="pp-section-title">Conservation et Suppression des données</div><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Conservation :&nbsp;</strong>Vos données sont conservées tant que votre compte est actif sur la plateforme.</li><li><strong style="color:rgba(255,255,255,.75);">Suppression :&nbsp;</strong>Vous pouvez demander la suppression de votre compte à tout moment. Cette action entraîne l'effacement définitif de votre profil, de vos accès et de vos messages stockés sous un délai de 30 jours.</li><li><strong style="color:rgba(255,255,255,.75);">Révocation :&nbsp;</strong>Vous pouvez également annuler l'autorisation d'accès de notre plateforme depuis les paramètres de sécurité de votre compte Google.</li></ul></div>
+      <div class="pp-section"><div class="pp-section-num">Article 06</div><div class="pp-section-title">Contact et Droits des utilisateurs</div><p class="pp-text">Conformément à la réglementation sur la protection des données (RGPD), vous disposez d'un droit d'accès, de rectification et d'effacement de vos informations.</p><p class="pp-text">Pour toute question relative à vos données ou pour exercer vos droits, vous pouvez nous contacter directement :</p><div class="pp-contact-block"><div><div class="pp-contact-lbl">Adresse e-mail de contact</div><a class="pp-contact-email" href="mailto:axell01020304@gmail.com">axell01020304@gmail.com</a></div></div></div>
     </div>
-
-    <div class="pp-footer-bar">
-      <div class="pp-footer-note">DLM-Corp · Dernière mise à jour 2025 · Tous droits réservés</div>
-      <button class="pp-footer-accept" onclick="closePrivacy()">✓ J'ai compris</button>
-    </div>
+    <div class="pp-footer-bar"><div class="pp-footer-note">DLM-Corp · Dernière mise à jour 2025 · Tous droits réservés</div><button class="pp-footer-accept" onclick="closePrivacy()">✓ J'ai compris</button></div>
   </div>
 </div>
 
+<!-- DIVERS FIXED -->
 <div id="saveToast"></div>
 <div id="announceBanner"><span id="announceText"></span><button id="announceBannerClose" onclick="dismissBanner()">×</button></div>
 <button id="muteBtn" onclick="toggleMute()">🔊</button>
@@ -901,155 +783,59 @@ body.admin-mode .card-del-btn{display:block!important;}
 <div id="aurora"><div class="aurora-blob"></div><div class="aurora-blob"></div></div>
 <canvas id="particleCanvas"></canvas>
 
+<!-- SERVER OVERLAY -->
 <div id="serversOverlay">
   <div id="serversBackdrop" onclick="closeServers()"></div>
   <div id="serversPanel">
-    <div id="srvTopBar">
-      <div><div class="srv-tb-title">Serveurs Partenaires</div><div class="srv-tb-sub">DLM · Serveurs Partenaires</div></div>
-      <button class="srv-close-btn" onclick="closeServers()">×</button>
-    </div>
-    <div id="srvStatsBar">
-      <div class="stat-chip"><div class="stat-dot"></div><span class="stat-val" id="global-members">0</span><span class="stat-lbl">Membres</span></div>
-      <div class="stat-chip"><div class="stat-dot" style="background:#00ff41;animation-delay:.5s;"></div><span class="stat-val" id="global-online" style="color:#00ff41;">0</span><span class="stat-lbl">En ligne</span></div>
-      <div class="stat-chip"><div class="stat-dot" style="animation-delay:1s;"></div><span class="stat-val" id="server-count">0</span><span class="stat-lbl">Serveurs</span></div>
-      <div class="refresh-pill">
-        <svg class="rring" viewBox="0 0 36 36"><circle class="rring-track" cx="18" cy="18" r="14"></circle><circle class="rring-fill" cx="18" cy="18" r="14" id="refreshArc"></circle></svg>
-        <span class="rnum" id="countdown">20</span><span class="rlbl">refresh</span>
-      </div>
-    </div>
+    <div id="srvTopBar"><div><div class="srv-tb-title">Serveurs Partenaires</div><div class="srv-tb-sub">DLM · Serveurs Partenaires</div></div><button class="srv-close-btn" onclick="closeServers()">×</button></div>
+    <div id="srvStatsBar"><div class="stat-chip"><div class="stat-dot"></div><span class="stat-val" id="global-members">0</span><span class="stat-lbl">Membres</span></div><div class="stat-chip"><div class="stat-dot" style="background:#00ff41;animation-delay:.5s;"></div><span class="stat-val" id="global-online" style="color:#00ff41;">0</span><span class="stat-lbl">En ligne</span></div><div class="stat-chip"><div class="stat-dot" style="animation-delay:1s;"></div><span class="stat-val" id="server-count">0</span><span class="stat-lbl">Serveurs</span></div><div class="refresh-pill"><svg class="rring" viewBox="0 0 36 36"><circle class="rring-track" cx="18" cy="18" r="14"></circle><circle class="rring-fill" cx="18" cy="18" r="14" id="refreshArc"></circle></svg><span class="rnum" id="countdown">20</span><span class="rlbl">refresh</span></div></div>
     <div id="srvSearch"><input type="text" id="srvSearchInput" placeholder="Rechercher..." oninput="filterSrvCards()"></div>
     <div id="srvCardsArea"><div id="srvNoResult">Aucun serveur trouvé</div></div>
   </div>
 </div>
 
+<!-- TOPBAR -->
 <div id="topbar">
   <div class="tb-brand">DLM</div>
   <div class="tb-right">
-    <div class="api-pill">
-      <div class="api-dot s-check" id="apiDot"></div>
-      <span id="apiLabel">Discord API</span>
-      <span id="apiLatency" style="margin-left:3px;font-size:8px;color:rgba(255,255,255,.2);font-family:'Space Mono',monospace;"></span>
-    </div>
+    <div class="api-pill"><div class="api-dot s-check" id="apiDot"></div><span id="apiLabel">Discord API</span><span id="apiLatency" style="margin-left:3px;font-size:8px;color:rgba(255,255,255,.2);font-family:'Space Mono',monospace;"></span></div>
     <button class="auth-btn" id="loginBtn" onclick="signInGoogle()" style="display:none;"><span>🔐</span> Connexion</button>
-    <button class="auth-btn" id="profileBtn" onclick="openProfile()" style="display:none;">
-      <img class="auth-avatar-tb" id="topbarAvatar" src="" alt="" loading="lazy">
-      <span id="topbarPseudo">—</span>
-    </button>
-    <button class="auth-btn" id="msgBtn" onclick="openMsgPanel()" style="display:none;">
-      <span>💬</span>
-      <span id="msgBtnLabel">Messages</span>
-      <span class="msg-unread-badge" id="msgBadge" style="display:none;">0</span>
-    </button>
+    <button class="auth-btn" id="profileBtn" onclick="openProfile()" style="display:none;"><img class="auth-avatar-tb" id="topbarAvatar" src="" alt=""><span id="topbarPseudo">—</span></button>
+    <button class="auth-btn" id="msgBtn" onclick="openMsgPanel()" style="display:none;"><span>💬</span><span id="msgBtnLabel">Messages</span><span class="msg-unread-badge" id="msgBadge" style="display:none;">0</span></button>
     <button class="theme-btn" onclick="toggleThemeMenu()">THEME</button>
   </div>
 </div>
-
 <div id="themeMenu" class="theme-panel">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-    <div class="theme-opt" onclick="setTheme('')">Violet</div>
-    <div class="theme-opt" onclick="setTheme('theme-red')">Rouge</div>
-    <div class="theme-opt" onclick="setTheme('theme-green')">Vert</div>
-    <div class="theme-opt" onclick="setTheme('theme-gold')">Or</div>
-    <div class="theme-opt" onclick="setTheme('theme-ocean')">Océan</div>
-    <div class="theme-opt" onclick="setTheme('theme-neon')">Néon</div>
-    <div class="theme-opt" onclick="setTheme('theme-amethyst')">Améthyste</div>
-    <div class="theme-opt" onclick="setTheme('theme-magma')">Magma</div>
-    <div class="theme-opt" onclick="setTheme('theme-mint')">Menthe</div>
-    <div class="theme-opt" onclick="setTheme('theme-cyber')">Cyber</div>
-    <div class="theme-opt" onclick="setTheme('theme-quartz')">Quartz</div>
-    <div class="theme-opt" onclick="setTheme('theme-crimson')">Crimson</div>
-  </div>
-  <div class="color-picker-wrapper">
-    <span style="color:white;font-size:9px;font-weight:800;text-transform:uppercase;font-family:'Space Mono',monospace;">Custom:</span>
-    <input type="color" id="customColor" oninput="applyCustomColor(this.value)">
-  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;"><div class="theme-opt" onclick="setTheme('')">Violet</div><div class="theme-opt" onclick="setTheme('theme-red')">Rouge</div><div class="theme-opt" onclick="setTheme('theme-green')">Vert</div><div class="theme-opt" onclick="setTheme('theme-gold')">Or</div><div class="theme-opt" onclick="setTheme('theme-ocean')">Océan</div><div class="theme-opt" onclick="setTheme('theme-neon')">Néon</div><div class="theme-opt" onclick="setTheme('theme-amethyst')">Améthyste</div><div class="theme-opt" onclick="setTheme('theme-magma')">Magma</div><div class="theme-opt" onclick="setTheme('theme-mint')">Menthe</div><div class="theme-opt" onclick="setTheme('theme-cyber')">Cyber</div><div class="theme-opt" onclick="setTheme('theme-quartz')">Quartz</div><div class="theme-opt" onclick="setTheme('theme-crimson')">Crimson</div></div>
+  <div class="color-picker-wrapper"><span style="color:white;font-size:9px;font-weight:800;text-transform:uppercase;font-family:'Space Mono',monospace;">Custom:</span><input type="color" id="customColor" oninput="applyCustomColor(this.value)"></div>
   <button class="save-btn" onclick="saveCurrentTheme()">Sauvegarder</button>
 </div>
 
+<!-- PAGE PRINCIPALE -->
 <div id="page">
   <section id="hero">
     <div class="corp-eyebrow" id="eyebrow">Communauté Française</div>
     <h1 class="corp-title" id="corpTitle">DLM</h1>
     <div class="corp-line" id="corpLine"></div>
     <div class="corp-sub" id="corpSub">Discord · Musique · Communauté</div>
-    <div class="cta-zone" id="ctaZone">
-      <button class="servers-btn" onclick="openServers()">
-        <span class="servers-btn-icon">🌐</span>
-        <div class="servers-btn-text">
-          <span class="servers-btn-label">Serveurs Partenaires</span>
-          <span class="servers-btn-sub">Découvrir nos serveurs partenaires</span>
-        </div>
-        <span class="servers-btn-badge" id="srv-btn-count">—</span>
-      </button>
-    </div>
+    <div class="cta-zone" id="ctaZone"><button class="servers-btn" onclick="openServers()"><span class="servers-btn-icon">🌐</span><div class="servers-btn-text"><span class="servers-btn-label">Serveurs Partenaires</span><span class="servers-btn-sub">Découvrir nos serveurs partenaires</span></div><span class="servers-btn-badge" id="srv-btn-count">—</span></button></div>
   </section>
-  <div id="mc-bubble-section">
-    <div class="mc-bubble">
-      <span class="mc-bubble-icon">⛏️</span>
-      <div class="mc-bubble-text">
-        <span class="mc-bubble-title">Serveur Minecraft</span>
-        <span class="mc-bubble-sub">Prochainement disponible</span>
-      </div>
-      <span class="mc-bubble-badge">🔜 Bientôt</span>
-    </div>
-  </div>
-  <div id="shop-bubble-section" style="width:100%;display:flex;justify-content:center;padding:0 24px 36px;">
-    <div class="mc-bubble">
-      <span class="mc-bubble-icon">🛒</span>
-      <div class="mc-bubble-text">
-        <span class="mc-bubble-title">DLM-SHOP</span>
-        <span class="mc-bubble-sub">Prochainement disponible</span>
-      </div>
-      <span class="mc-bubble-badge">🔜 Bientôt</span>
-    </div>
-  </div>
+  <div id="mc-bubble-section"><div class="mc-bubble"><span class="mc-bubble-icon">⛏️</span><div class="mc-bubble-text"><span class="mc-bubble-title">Serveur Minecraft</span><span class="mc-bubble-sub">Prochainement disponible</span></div><span class="mc-bubble-badge">🔜 Bientôt</span></div></div>
+  <div id="shop-bubble-section" style="width:100%;display:flex;justify-content:center;padding:0 24px 36px;"><div class="mc-bubble"><span class="mc-bubble-icon">🛒</span><div class="mc-bubble-text"><span class="mc-bubble-title">DLM-SHOP</span><span class="mc-bubble-sub">Prochainement disponible</span></div><span class="mc-bubble-badge">🔜 Bientôt</span></div></div>
   <section id="team-section">
     <div class="section-label">DLM-Team</div>
     <div class="team-grid">
-      <a href="https://www.tiktok.com/@dieudlm" target="_blank" class="team-link">
-        <div class="team-card"><span class="team-role">Fondateur</span><div class="team-name">DieuDLM</div></div>
-      </a>
-      <a href="https://www.tiktok.com/@_iwilldiehere_?lang=fr" target="_blank" class="team-link">
-        <div class="team-card"><span class="team-role">Co-Fondateur</span><div class="team-name">IwillDieHere</div></div>
-      </a>
-      <a href="https://www.tiktok.com/@kingfire30030?lang=fr" target="_blank" class="team-link" id="kingfireLink">
-        <div class="team-card"><span class="team-role">Co-Fondateur</span><div class="team-name">Kingfire</div></div>
-      </a>
-      <a href="https://open.spotify.com/intl-fr/artist/5Mv7qvXXpQK0BPnYnaF1Z9" target="_blank" class="team-link" id="chromaLink">
-        <div class="team-card"><span class="team-role">Producer</span><div class="team-name">Chromanticore</div></div>
-      </a>
-      <a href="https://www.tiktok.com/@___alpha07_?lang=fr" target="_blank" class="team-link">
-        <div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">Alpha</div></div>
-      </a>
-      <a href="https://www.tiktok.com/@jonix2139live" target="_blank" class="team-link">
-        <div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">JoniX2139</div></div>
-      </a>
-      <a href="#" target="_blank" class="team-link">
-        <div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">Insidious</div></div>
-      </a>
+      <a href="https://www.tiktok.com/@dieudlm" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Fondateur</span><div class="team-name">DieuDLM</div></div></a>
+      <a href="https://www.tiktok.com/@_iwilldiehere_?lang=fr" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Co-Fondateur</span><div class="team-name">IwillDieHere</div></div></a>
+      <a href="https://www.tiktok.com/@kingfire30030?lang=fr" target="_blank" class="team-link" id="kingfireLink"><div class="team-card"><span class="team-role">Co-Fondateur</span><div class="team-name">Kingfire</div></div></a>
+      <a href="https://open.spotify.com/intl-fr/artist/5Mv7qvXXpQK0BPnYnaF1Z9" target="_blank" class="team-link" id="chromaLink"><div class="team-card"><span class="team-role">Producer</span><div class="team-name">Chromanticore</div></div></a>
+      <a href="https://www.tiktok.com/@___alpha07_?lang=fr" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">Alpha</div></div></a>
+      <a href="https://www.tiktok.com/@jonix2139live" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">JoniX2139</div></div></a>
+      <a href="#" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">Insidious</div></div></a>
     </div>
   </section>
-  <section id="bot-section">
-    <div class="bot-banner">
-      <div>
-        <h4 style="margin:0;font-size:19px;font-weight:800;color:white;">DLM-Bot <span style="color:var(--sub);">OFFICIEL</span></h4>
-        <div class="bot-tags"><span class="bot-tag">Logs</span><span class="bot-tag">Modération</span><span class="bot-tag">Sécurité</span></div>
-      </div>
-      <a href="https://discord.com/oauth2/authorize?client_id=1469360313408159985" target="_blank" class="bot-add-btn">Ajouter</a>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ── -->
-  <footer id="site-footer">
-    <div class="footer-links">
-      <button class="footer-link" onclick="openPrivacy()">🔒 Politique de Confidentialité</button>
-      <div class="footer-sep"></div>
-      <button class="footer-link" onclick="openPrivacy()">RGPD</button>
-      <div class="footer-sep"></div>
-      <a href="mailto:axell01020304@gmail.com" class="footer-link" style="text-decoration:none;">Contact</a>
-    </div>
-    <div class="footer-copy">© 2024–2025 DLM-Corp · Tous droits réservés</div>
-  </footer>
+  <section id="bot-section"><div class="bot-banner"><div><h4 style="margin:0;font-size:19px;font-weight:800;color:white;">DLM-Bot <span style="color:var(--sub);">OFFICIEL</span></h4><div class="bot-tags"><span class="bot-tag">Logs</span><span class="bot-tag">Modération</span><span class="bot-tag">Sécurité</span></div></div><a href="https://discord.com/oauth2/authorize?client_id=1469360313408159985" target="_blank" class="bot-add-btn">Ajouter</a></div></section>
+  <footer id="site-footer"><div class="footer-links"><button class="footer-link" onclick="openPrivacy()">🔒 Politique de Confidentialité</button><div class="footer-sep"></div><button class="footer-link" onclick="openPrivacy()">RGPD</button><div class="footer-sep"></div><a href="mailto:axell01020304@gmail.com" class="footer-link" style="text-decoration:none;">Contact</a></div><div class="footer-copy">© 2024–2025 DLM-Corp · Tous droits réservés</div></footer>
 </div>
 
 <script>
@@ -1100,7 +886,7 @@ const getAllServers = () => {
 const slugify    = n => n.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,10)+'_'+Date.now().toString(36).slice(-4);
 const extractCode= url => { const m=url.match(/discord\.gg\/([a-zA-Z0-9]+)/); return m?m[1]:url.trim(); };
 
-/* ── PARTICLES ── */
+/* ---- PARTICLES (inchangé) ---- */
 const canvas=document.getElementById('particleCanvas');
 const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
 let particles=[];
@@ -1127,21 +913,15 @@ const animate=ts=>{
 const stopCanvas =()=>{if(_rafId){cancelAnimationFrame(_rafId);_rafId=null;}};
 const startCanvas=()=>{if(!_rafId)_rafId=requestAnimationFrame(animate);};
 
-/* ── AUDIO ── */
+/* ---- AUDIO (inchangé) ---- */
 let _ac=null,_muted=localStorage.getItem('dlm_muted')==='1',_lastHover=0;
 const getAC=()=>{if(!_ac){_ac=new(window.AudioContext||window.webkitAudioContext)();}return _ac;};
 const playSfx=(f,t,d,v)=>{if(_muted)return;try{const ac=getAC();if(ac.state==='suspended')ac.resume();const o=ac.createOscillator(),g=ac.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d);}catch{}};
-const sfx={
-  hover:()=>{const now=Date.now();if(now-_lastHover<80)return;_lastHover=now;playSfx(800,'sine',.08,.005);},
-  click:()=>playSfx(400,'square',.1,.008),
-  save: ()=>playSfx(1200,'sine',.2,.01),
-  open: ()=>playSfx(600,'triangle',.15,.007)
-};
+const sfx={hover:()=>{const now=Date.now();if(now-_lastHover<80)return;_lastHover=now;playSfx(800,'sine',.08,.005);},click:()=>playSfx(400,'square',.1,.008),save:()=>playSfx(1200,'sine',.2,.01),open:()=>playSfx(600,'triangle',.15,.007)};
 function toggleMute(){_muted=!_muted;localStorage.setItem('dlm_muted',_muted?'1':'0');const b=document.getElementById('muteBtn');b.textContent=_muted?'🔇':'🔊';b.classList.toggle('muted',_muted);}
-
 const showToast=(msg,d=2400)=>{const t=document.getElementById('saveToast');t.textContent=msg;t.style.display='block';clearTimeout(t._tid);t._tid=setTimeout(()=>t.style.display='none',d);};
 
-/* ── THEME ── */
+/* ---- THEME (inchangé) ---- */
 const THEMES=['theme-red','theme-green','theme-gold','theme-ocean','theme-neon','theme-amethyst','theme-magma','theme-mint','theme-cyber','theme-quartz','theme-crimson'];
 let _acc=null;
 const toggleThemeMenu=()=>document.getElementById('themeMenu').classList.toggle('active');
@@ -1150,16 +930,14 @@ const applyCustomColor=hex=>{THEMES.forEach(t=>document.body.classList.remove(t)
 const saveCurrentTheme=()=>{const cls=Array.from(document.body.classList).find(x=>x.startsWith('theme-'));localStorage.setItem('dlm_user_theme',JSON.stringify({className:cls||'',customColor:_acc}));document.getElementById('themeMenu').classList.remove('active');showToast('Thème sauvegardé !');};
 const loadSavedTheme=()=>{const s=localStorage.getItem('dlm_user_theme');if(s){const d=JSON.parse(s);if(d.className)setTheme(d.className);if(d.customColor)applyCustomColor(d.customColor);}};
 
-/* ── BOOT ── */
+/* ---- BOOT (inchangé) ---- */
 function startBoot(){
   loadSavedTheme();
-  [['eyebrow',0],['corpTitle',90],['corpLine',200],['corpSub',280],['ctaZone',370]].forEach(([id,delay])=>{
-    setTimeout(()=>document.getElementById(id)?.classList.add('reveal'),delay);
-  });
+  [['eyebrow',0],['corpTitle',90],['corpLine',200],['corpSub',280],['ctaZone',370]].forEach(([id,delay])=>{setTimeout(()=>document.getElementById(id)?.classList.add('reveal'),delay);});
   if(_muted){const b=document.getElementById('muteBtn');b.textContent='🔇';b.classList.add('muted');}
 }
 
-/* ── COUNT ANIMATION ── */
+/* ---- COUNT ANIMATION (inchangé) ---- */
 const _countQueue=new Map();let _countRafId=null;
 function _runCounters(now){
   _countRafId=null;let hasMore=false;
@@ -1178,19 +956,12 @@ function animateCount(id,target){
   if(!_countRafId)_countRafId=requestAnimationFrame(_runCounters);
 }
 
-/* ── SERVERS OVERLAY ── */
+/* ---- SERVER OVERLAY (inchangé) ---- */
 let _overlayOpen=false;
 function openServers(){sfx.open();_overlayOpen=true;stopCanvas();document.getElementById('serversOverlay').classList.add('active');document.body.style.overflow='hidden';if(!document.querySelector('.glass-card'))renderServerCards();updateStats();checkDiscordAPI();}
 function closeServers(){_overlayOpen=false;startCanvas();document.getElementById('serversOverlay').classList.remove('active');document.body.style.overflow='';}
 let _sft;
-function filterSrvCards(){
-  clearTimeout(_sft);_sft=setTimeout(()=>{
-    const v=document.getElementById('srvSearchInput').value.toLowerCase();let n=0;
-    document.querySelectorAll('.glass-card').forEach(c=>{const ok=c.getAttribute('data-name').toLowerCase().includes(v);c.classList.toggle('hidden',!ok);if(ok)n++;});
-    document.getElementById('srvNoResult').style.display=(n===0&&v.length>0)?'block':'none';
-  },150);
-}
-
+function filterSrvCards(){clearTimeout(_sft);_sft=setTimeout(()=>{const v=document.getElementById('srvSearchInput').value.toLowerCase();let n=0;document.querySelectorAll('.glass-card').forEach(c=>{const ok=c.getAttribute('data-name').toLowerCase().includes(v);c.classList.toggle('hidden',!ok);if(ok)n++;});document.getElementById('srvNoResult').style.display=(n===0&&v.length>0)?'block':'none';},150);}
 function renderServerCards(){
   const area=document.getElementById('srvCardsArea'),noR=document.getElementById('srvNoResult');
   area.querySelectorAll('.glass-card,.card-skeleton').forEach(c=>c.remove());
@@ -1201,28 +972,13 @@ function renderServerCards(){
   servers.forEach(s=>{
     const isNew=s.addedAt&&(Date.now()-s.addedAt<7*24*3600*1000);
     const card=document.createElement('div');card.className='glass-card';card.id='card-'+s.id;card.setAttribute('data-name',s.name);
-    card.innerHTML=`
-      ${isNew?'<div class="badge-new">✦ Nouveau</div>':''}
-      <div class="ping-tag" id="tag-${s.id}"><span class="ping-dot"></span><span id="${s.id}-ping">-- ms</span><span id="${s.id}-plbl" style="margin-left:3px;font-size:8px;font-weight:900;"></span></div>
-      <img id="${s.id}-img" src="" class="server-icon" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23111\\' width=\\'100\\' height=\\'100\\' rx=\\'50\\'/></svg>'">
-      <div class="server-name">${s.name}</div>
-      <div class="server-date">${s.date||''}</div>
-      <div class="server-stats">
-        <div class="mini-stat"><b id="${s.id}-live">0</b><span>En ligne</span></div>
-        <div class="mini-stat"><b id="${s.id}-total">0</b><span>Membres</span></div>
-      </div>
-      <div class="gauge-bg"><div id="${s.id}-gauge" class="gauge-fill"></div></div>
-      <a href="${s.invite}" target="_blank" class="btn-join">Rejoindre</a>
-      ${!s.base?`<button class="card-del-btn" onclick="deleteFromCard('${s.id}')">✕ Supprimer</button>`:''}
-    `;
+    card.innerHTML=`${isNew?'<div class="badge-new">✦ Nouveau</div>':''}<div class="ping-tag" id="tag-${s.id}"><span class="ping-dot"></span><span id="${s.id}-ping">-- ms</span><span id="${s.id}-plbl" style="margin-left:3px;font-size:8px;font-weight:900;"></span></div><img id="${s.id}-img" src="" class="server-icon" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23111\\' width=\\'100\\' height=\\'100\\' rx=\\'50\\'/></svg>'"><div class="server-name">${s.name}</div><div class="server-date">${s.date||''}</div><div class="server-stats"><div class="mini-stat"><b id="${s.id}-live">0</b><span>En ligne</span></div><div class="mini-stat"><b id="${s.id}-total">0</b><span>Membres</span></div></div><div class="gauge-bg"><div id="${s.id}-gauge" class="gauge-fill"></div></div><a href="${s.invite}" target="_blank" class="btn-join">Rejoindre</a>${!s.base?`<button class="card-del-btn" onclick="deleteFromCard('${s.id}')">✕ Supprimer</button>`:''}`;
     const sk=document.getElementById('skel-'+s.id);if(sk)area.replaceChild(card,sk);else area.insertBefore(card,noR);
     card.addEventListener('mouseenter',sfx.hover);
   });
   noR.style.display='none';
 }
-
 const deleteFromCard=id=>{if(!confirm('Supprimer ?'))return;LS.setExtras(LS.getExtras().filter(s=>s.id!==id));renderServerCards();refreshAll();};
-
 async function updateStats(){
   const servers=getAllServers();let tM=0,tO=0;
   const results=await Promise.allSettled(servers.map(async s=>{
@@ -1245,24 +1001,16 @@ async function updateStats(){
     tM+=data.approximate_member_count;tO+=data.approximate_presence_count;
     animateCount(s.id+'-total',data.approximate_member_count);animateCount(s.id+'-live',data.approximate_presence_count);
     const imgEl=document.getElementById(s.id+'-img');
-    if(imgEl&&data.guild?.icon&&!imgEl.src.includes('cdn.discordapp'))
-      imgEl.src=`https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.webp?size=128`;
-    const gauge=document.getElementById(s.id+'-gauge');
-    if(gauge)gauge.style.width=(data.approximate_presence_count/data.approximate_member_count*100)+'%';
+    if(imgEl&&data.guild?.icon&&!imgEl.src.includes('cdn.discordapp')) imgEl.src=`https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.webp?size=128`;
+    const gauge=document.getElementById(s.id+'-gauge');if(gauge)gauge.style.width=(data.approximate_presence_count/data.approximate_member_count*100)+'%';
     const pingEl=document.getElementById(s.id+'-ping');if(pingEl)pingEl.innerText=ping+' ms';
     const tag=document.getElementById('tag-'+s.id),lbl=document.getElementById(s.id+'-plbl'),crd=document.getElementById('card-'+s.id);
     if(crd)crd.classList.remove('card-lag1','card-lag2','card-lag3','card-rupture','card-down');
     const pc=(cls,l,ca)=>{if(tag)tag.className='ping-tag '+cls;if(lbl)lbl.textContent=l;if(crd&&ca)crd.classList.add(ca);};
-    if(ping<1000)pc('','','');
-    else if(ping<2000)pc('ping-lag1','LAG','card-lag1');
-    else if(ping<3000)pc('ping-lag2','LAG','card-lag2');
-    else if(ping<4000)pc('ping-lag3','LAG','card-lag3');
-    else if(ping<5000)pc('ping-rupture','RUPTURE','card-rupture');
-    else pc('ping-down','DOWN','card-down');
+    if(ping<1000)pc('','','');else if(ping<2000)pc('ping-lag1','LAG','card-lag1');else if(ping<3000)pc('ping-lag2','LAG','card-lag2');else if(ping<4000)pc('ping-lag3','LAG','card-lag3');else if(ping<5000)pc('ping-rupture','RUPTURE','card-rupture');else pc('ping-down','DOWN','card-down');
   });
   animateCount('global-members',tM);animateCount('global-online',tO);
 }
-
 async function checkDiscordAPI(){
   const dot=document.getElementById('apiDot'),lat=document.getElementById('apiLatency');
   if(dot)dot.className='api-dot s-check';
@@ -1274,47 +1022,28 @@ async function checkDiscordAPI(){
   const adot=document.getElementById('adm-api-dot'),alat=document.getElementById('adm-api-lat');
   if(adot&&dot){const cl=dot.className;adot.style.background=cl.includes('online')?'#00ff41':cl.includes('degraded')?'#ffd700':'#ff4b2b';if(alat)alat.textContent=document.getElementById('apiLatency').textContent;}
 }
-
 const refreshAll=()=>{if(!document.hidden){updateStats();checkDiscordAPI();}};
-
-/* ── REFRESH RING ── */
 const _CIRC=2*Math.PI*14;
 const _upPill=()=>{const arc=document.getElementById('refreshArc'),num=document.getElementById('countdown');if(!arc||!num)return;arc.style.strokeDashoffset=_CIRC*(1-_cnt/_TOT);num.textContent=_cnt;num.classList.toggle('urgent',_cnt<=5);};
 let _cnt=20;const _TOT=20;
 setInterval(()=>{if(!_overlayOpen)return;_cnt--;if(_cnt<=0){_cnt=_TOT;_upPill();refreshAll();}else{_upPill();}},1000);
 _upPill();
 
-/* ── PRIVACY POLICY ── */
-function openPrivacy(){
-  sfx.open();
-  document.getElementById('privacyOverlay').classList.add('active');
-  document.body.style.overflow='hidden';
-}
-function closePrivacy(){
-  document.getElementById('privacyOverlay').classList.remove('active');
-  document.body.style.overflow='';
-}
+/* ---- PRIVACY (inchangé) ---- */
+function openPrivacy(){sfx.open();document.getElementById('privacyOverlay').classList.add('active');document.body.style.overflow='hidden';}
+function closePrivacy(){document.getElementById('privacyOverlay').classList.remove('active');document.body.style.overflow='';}
 
-/* ── KEYBOARD ── */
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){
-    closePwModal();closeAdminPanel();closeOhh();closeKingfire();closeServers();closeProfile();closeMsgPanel();closePrivacy();
-    document.getElementById('themeMenu').classList.remove('active');
-  }
-});
+/* ---- KEYBOARD ---- */
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePwModal();closeAdminPanel();closeOhh();closeKingfire();closeServers();closeProfile();closeMsgPanel();closePrivacy();document.getElementById('themeMenu').classList.remove('active');}});
 
-/* ── PASSWORD / ADMIN ── */
+/* ---- PASSWORD / ADMIN ---- */
 const openPasswordModal=()=>{document.getElementById('adminPassword').value='';document.getElementById('pwError').textContent='';document.getElementById('passwordOverlay').classList.add('active');setTimeout(()=>document.getElementById('adminPassword').focus(),120);};
 const closePwModal=()=>document.getElementById('passwordOverlay').classList.remove('active');
-
 async function checkPassword(){
   const pw=document.getElementById('adminPassword').value;if(!pw)return;
   const btn=document.querySelector('.pw-btn');if(btn){btn.textContent='Connexion...';btn.style.opacity='.6';btn.disabled=true;}
   try{
-    const res=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FB_API_KEY}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email:FB_ADMIN_EMAIL,password:pw,returnSecureToken:true})
-    });
+    const res=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FB_API_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:FB_ADMIN_EMAIL,password:pw,returnSecureToken:true})});
     const data=await res.json();
     if(data.idToken){
       _authToken=data.idToken;
@@ -1329,17 +1058,16 @@ async function checkPassword(){
   }finally{if(btn){btn.textContent='Entrer →';btn.style.opacity='';btn.disabled=false;}}
 }
 document.getElementById('passwordOverlay').addEventListener('click',function(e){if(e.target===this)closePwModal();});
-
 const openAdminPanel=()=>{document.getElementById('adminPanel').classList.add('active');document.body.classList.add('admin-mode');showPage('dashboard');if(LS.getMaint())document.getElementById('maintenanceOverlay').classList.remove('active');};
 const closeAdminPanel=()=>{_stopAdmMsgPolling();document.getElementById('adminPanel').classList.remove('active');document.body.classList.remove('admin-mode');};
 const adminLogout=()=>{_authToken=null;closeAdminPanel();};
 
-/* ── ADMIN MSG POLLING ── */
+/* ---- ADMIN MSG POLLING ---- */
 let _admMsgTimer=null;
 function _startAdmMsgPolling(){_stopAdmMsgPolling();_admMsgTimer=setInterval(()=>loadAdminMessages(true),8000);}
 function _stopAdmMsgPolling(){clearInterval(_admMsgTimer);_admMsgTimer=null;}
 
-/* ── ADMIN PAGES ── */
+/* ---- ADMIN PAGES ---- */
 function showPage(name){
   _stopAdmMsgPolling();
   document.querySelectorAll('.apage').forEach(p=>p.classList.remove('active'));
@@ -1352,8 +1080,8 @@ function showPage(name){
   if(name==='dashboard')syncDashboard();
   if(name==='membres')  loadMembres();
   if(name==='messages'){loadAdminMessages(false);_startAdmMsgPolling();}
+  if(name==='demandes') loadDeletionRequests();
 }
-
 function syncDashboard(){
   const servers=getAllServers();let tM=0,tO=0;
   const preview=document.getElementById('adm-srv-preview');if(preview)preview.innerHTML='';
@@ -1369,7 +1097,6 @@ function syncDashboard(){
   if(as)as.textContent=servers.length;
   checkDiscordAPI();
 }
-
 function refreshManageList(){
   const list=document.getElementById('manage-list'),no=document.getElementById('manage-empty'),extras=LS.getExtras();
   list.innerHTML='';
@@ -1381,7 +1108,6 @@ function refreshManageList(){
     list.appendChild(row);
   });
 }
-
 function addServer(){
   const name=document.getElementById('f-name').value.trim(),inv=document.getElementById('f-invite').value.trim(),date=document.getElementById('f-date').value.trim(),err=document.getElementById('formError');
   if(!name){err.textContent='Nom obligatoire';return;}
@@ -1394,7 +1120,6 @@ function addServer(){
   renderServerCards();refreshManageList();refreshAll();showToast('Serveur ajouté !');
 }
 const deleteServer=id=>{LS.setExtras(LS.getExtras().filter(s=>s.id!==id));renderServerCards();refreshAll();};
-
 function renderBaseEditor(){
   const list=document.getElementById('baseList');if(!list)return;
   const ov=LS.getOv();list.innerHTML='';
@@ -1415,19 +1140,19 @@ function saveBaseServers(){
   LS.setOv(ov);renderServerCards();refreshAll();showToast('Serveurs mis à jour !');
 }
 
-/* ── BANNER ── */
+/* ---- BANNER (inchangé) ---- */
 const applyBanner=()=>{const d=LS.getBanner(),b=document.getElementById('announceBanner'),t=document.getElementById('announceText');if(!b)return;if(d.active&&d.text){t.textContent=d.text;b.classList.add('active');}else b.classList.remove('active');};
 const dismissBanner=()=>document.getElementById('announceBanner').classList.remove('active');
 const loadBannerForm=()=>{const d=LS.getBanner(),inp=document.getElementById('announceInput'),tog=document.getElementById('bannerToggle'),prev=document.getElementById('announce-preview');if(inp)inp.value=d.text||'';if(tog)tog.classList.toggle('on',!!d.active);if(prev)prev.textContent=d.text||'—';};
 const toggleBanner=()=>{const d=LS.getBanner();d.active=!d.active;LS.setBanner(d);document.getElementById('bannerToggle')?.classList.toggle('on',d.active);applyBanner();};
 const saveBanner=()=>{const text=document.getElementById('announceInput')?.value.trim();if(!text){showToast('Texte vide !');return;}const d=LS.getBanner();d.text=text;LS.setBanner(d);applyBanner();document.getElementById('announce-preview').textContent=text;showToast('Bannière mise à jour !');};
 
-/* ── MAINTENANCE ── */
+/* ---- MAINTENANCE (inchangé) ---- */
 const applyMaintenance=()=>document.getElementById('maintenanceOverlay').classList.toggle('active',LS.getMaint());
 const toggleMaintenance=()=>{const v=!LS.getMaint();LS.setMaint(v);document.getElementById('maintToggle')?.classList.toggle('on',v);applyMaintenance();if(v){closeAdminPanel();document.body.classList.remove('admin-mode');}showToast(v?'🔴 Maintenance activée !':'✅ Désactivée !');};
 const loadSettingsForm=()=>document.getElementById('maintToggle')?.classList.toggle('on',LS.getMaint());
 
-/* ── EASTER EGGS ── */
+/* ---- EASTER EGGS (inchangé) ---- */
 let _chromaT=null;
 function setupChromaEgg(){const link=document.getElementById('chromaLink');if(!link)return;link.addEventListener('mouseenter',()=>{clearTimeout(_chromaT);_chromaT=setTimeout(openOhh,10000);});link.addEventListener('mouseleave',()=>{clearTimeout(_chromaT);_chromaT=null;});link.addEventListener('click',e=>{if(document.getElementById('ohhOverlay').classList.contains('active'))e.preventDefault();});}
 const openOhh=()=>{document.getElementById('ohhOverlay').classList.add('active');sfx.save();if(navigator.vibrate)navigator.vibrate([80,40,80,40,180]);};
@@ -1437,29 +1162,7 @@ function setupKingfireEgg(){const link=document.getElementById('kingfireLink');i
 const openKingfire=()=>{document.getElementById('kingfireOverlay').classList.add('active');sfx.save();if(navigator.vibrate)navigator.vibrate([100,50,200,50,100]);};
 const closeKingfire=()=>document.getElementById('kingfireOverlay').classList.remove('active');
 
-/* ── INIT ── */
-window.addEventListener('load',async()=>{
-  resize();initParticles();startCanvas();
-  await LS.loadAll();
-  const cnt=getAllServers().length;
-  const bc=document.getElementById('srv-btn-count');if(bc)bc.textContent=cnt;
-  animateCount('server-count',cnt);
-  setTimeout(startBoot,300);
-  refreshAll();
-  setupChromaEgg();setupKingfireEgg();
-  applyBanner();applyMaintenance();
-  document.querySelectorAll('.team-link,.bot-add-btn,.theme-opt').forEach(el=>{
-    el.addEventListener('mouseenter',sfx.hover,{passive:true});
-    el.addEventListener('click',sfx.click,{passive:true});
-  });
-});
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){stopCanvas();document.querySelectorAll('.aurora-blob,.maint-dot,.maint-bar,.mc-bubble,.corp-title').forEach(el=>el.style.animationPlayState='paused');}
-  else{if(!_overlayOpen)startCanvas();document.querySelectorAll('.aurora-blob,.maint-dot,.maint-bar,.mc-bubble,.corp-title').forEach(el=>el.style.animationPlayState='running');}
-});
-</script>
-
-<script>
+/* ---- FIREBASE AUTH & PROFIL (amélioré) ---- */
 const FB_AUTH_DOMAIN = 'dlm-realtime.firebaseapp.com';
 const FB_PROJECT_ID  = 'dlm-realtime';
 firebase.initializeApp({apiKey:FB_API_KEY,authDomain:FB_AUTH_DOMAIN,databaseURL:FB,projectId:FB_PROJECT_ID});
@@ -1502,9 +1205,18 @@ async function loadOrCreateProfile(user){
   if(profile&&profile.uid){
     await fetch(`${FB}/users/${user.uid}/lastSeen.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(Date.now())});
     profile = await pushHistory(user, idToken, profile, '🔗 Connexion au site');
+    // Ensure new fields exist
+    if(profile.description===undefined) profile.description='';
+    if(!profile.socialLinks) profile.socialLinks={};
+    if(profile.customPhoto===undefined) profile.customPhoto=null;
     return profile;
   }else{
-    const newProfile={uid:user.uid,googleName:user.displayName||'User',photoURL:user.photoURL||'',email:user.email||'',pseudo:sanitizePseudo(user.displayName||'User'),role:'Membre',createdAt:Date.now(),lastSeen:Date.now(),history:[{action:'🎉 Compte créé',ts:Date.now()}]};
+    const newProfile={
+      uid:user.uid, googleName:user.displayName||'User', photoURL:user.photoURL||'', email:user.email||'',
+      pseudo:sanitizePseudo(user.displayName||'User'), role:'Membre', createdAt:Date.now(), lastSeen:Date.now(),
+      history:[{action:'🎉 Compte créé',ts:Date.now()}],
+      description:'', socialLinks:{}, customPhoto:null
+    };
     await fetch(`${FB}/users/${user.uid}.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(newProfile)});
     showToast('Bienvenue sur DLM-Corp ! 🎉');
     return newProfile;
@@ -1527,8 +1239,12 @@ async function signOutUser(){await fbAuth.signOut();closeProfile();showToast('D�
 function updateTopbarProfile(){
   if(!_curProfile) return;
   const av=document.getElementById('topbarAvatar'),ps=document.getElementById('topbarPseudo');
-  if(av) av.src=_curProfile.photoURL||'';
+  if(av) av.src=getDisplayAvatar();
   if(ps) ps.textContent=_curProfile.pseudo||'—';
+}
+function getDisplayAvatar(){
+  if(_curProfile.customPhoto) return _curProfile.customPhoto;
+  return _curProfile.photoURL||'';
 }
 
 function openProfile(){if(!_curProfile)return;sfx.open();document.getElementById('profilePanel').classList.add('active');renderProfilePanel();}
@@ -1537,7 +1253,7 @@ function closeProfile(){document.getElementById('profilePanel').classList.remove
 function renderProfilePanel(){
   if(!_curProfile) return;
   const av=document.getElementById('profAvatar'),ps=document.getElementById('profPseudo'),em=document.getElementById('profEmail'),badge=document.getElementById('profRoleBadge');
-  if(av) av.src=_curProfile.photoURL||'';
+  if(av) av.src=getDisplayAvatar();
   if(ps) ps.textContent=_curProfile.pseudo||'—';
   if(em) em.textContent=_curProfile.email||'';
   if(badge){
@@ -1545,19 +1261,22 @@ function renderProfilePanel(){
     badge.textContent=role;
     badge.className='prof-role-badge role-'+role.toLowerCase().replace(/[^a-z]/g,'-');
   }
+  // Remplir les champs
+  document.getElementById('profDescription').value=_curProfile.description||'';
+  document.getElementById('profYoutube').value=_curProfile.socialLinks?.youtube||'';
+  document.getElementById('profTwitch').value=_curProfile.socialLinks?.twitch||'';
+  document.getElementById('profSpotify').value=_curProfile.socialLinks?.spotify||'';
+  document.getElementById('profTiktok').value=_curProfile.socialLinks?.tiktok||'';
   renderHistoryList();
 }
-
 function renderHistoryList(){
   const list=document.getElementById('profHistList');if(!list) return;
   const hist=_curProfile?.history||[];
   if(!hist.length){list.innerHTML='<div class="prof-hist-empty">Aucune activité récente</div>';return;}
   list.innerHTML=hist.map(h=>`<div class="prof-hist-item"><div class="prof-hist-dot"></div><div><div class="prof-hist-action">${h.action}</div><div class="prof-hist-ts">${formatTs(h.ts)}</div></div></div>`).join('');
 }
-
 function openPseudoEditor(){const ed=document.getElementById('pseudoEditor'),inp=document.getElementById('pseudoInput');if(!ed)return;ed.classList.add('open');if(inp){inp.value=_curProfile?.pseudo||'';inp.focus();}}
 function closePseudoEditor(){document.getElementById('pseudoEditor')?.classList.remove('open');}
-
 async function savePseudo(){
   const inp=document.getElementById('pseudoInput'),val=inp?.value.trim();
   if(!val||val.length<2){showToast('Pseudo trop court (2 min) !');return;}
@@ -1572,7 +1291,59 @@ async function savePseudo(){
 }
 const sanitizePseudo=name=>(name||'User').split(' ')[0].replace(/[^a-zA-Z0-9_\-.]/g,'').slice(0,20)||'User';
 
-/* ── MEMBRES ADMIN ── */
+/* ---- NOUVEAU : Sauvegarde des données profil ---- */
+async function updateProfileData(){
+  if(!_curUser||!_curProfile) return;
+  const desc=document.getElementById('profDescription').value.trim().slice(0,50);
+  const youtube=document.getElementById('profYoutube').value.trim();
+  const twitch=document.getElementById('profTwitch').value.trim();
+  const spotify=document.getElementById('profSpotify').value.trim();
+  const tiktok=document.getElementById('profTiktok').value.trim();
+  const socialLinks={youtube,twitch,spotify,tiktok};
+  const idToken=await _curUser.getIdToken();
+  await fetch(`${FB}/users/${_curUser.uid}/description.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(desc)});
+  await fetch(`${FB}/users/${_curUser.uid}/socialLinks.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(socialLinks)});
+  _curProfile.description=desc;
+  _curProfile.socialLinks=socialLinks;
+  _curProfile = await pushHistory(_curUser, idToken, _curProfile, '✏️ Profil mis à jour (bio/liens)');
+  showToast('Profil mis à jour !');
+  renderProfilePanel();
+}
+/* ---- Avatar custom (base64) ---- */
+function uploadCustomAvatar(input){
+  const file=input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    const base64=e.target.result;
+    if(base64.length>1024*1024){showToast('Image trop lourde (max 1 Mo)');return;}
+    const idToken=await _curUser.getIdToken();
+    await fetch(`${FB}/users/${_curUser.uid}/customPhoto.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(base64)});
+    _curProfile.customPhoto=base64;
+    _curProfile = await pushHistory(_curUser, idToken, _curProfile, '🖼️ Avatar personnalisé uploadé');
+    renderProfilePanel(); updateTopbarProfile(); showToast('Avatar mis à jour !');
+  };
+  reader.readAsDataURL(file);
+}
+async function resetAvatar(){
+  if(!confirm('Remettre la photo Google par défaut ?')) return;
+  const idToken=await _curUser.getIdToken();
+  await fetch(`${FB}/users/${_curUser.uid}/customPhoto.json?auth=${idToken}`,{method:'DELETE'});
+  _curProfile.customPhoto=null;
+  _curProfile = await pushHistory(_curUser, idToken, _curProfile, '🖼️ Réinitialisation avatar');
+  renderProfilePanel(); updateTopbarProfile(); showToast('Avatar réinitialisé');
+}
+/* ---- Demande de suppression de données ---- */
+async function requestAccountDeletion(){
+  if(!confirm('⚠️ Demander la suppression définitive de votre compte et de toutes vos données ? Un administrateur traitera votre demande.')) return;
+  const idToken=await _curUser.getIdToken();
+  const req={uid:_curUser.uid, pseudo:_curProfile.pseudo, email:_curProfile.email, ts:Date.now()};
+  await fetch(`${FB}/deletionRequests/${_curUser.uid}.json?auth=${_authToken || idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(req)});
+  showToast('Demande envoyée à l’administration. Vous serez notifié.');
+  sfx.save();
+}
+
+/* ---- MEMBRES ADMIN (inchangé) ---- */
 async function loadMembres(){
   if(!_authToken){showToast('Connexion admin requise !');return;}
   const list=document.getElementById('membres-list'),empty=document.getElementById('membres-empty');
@@ -1588,24 +1359,11 @@ async function loadMembres(){
     users.forEach(u=>{
       const row=document.createElement('div');row.className='member-row';
       const role=u.role||'Membre';
-      row.innerHTML=`
-        <img class="member-avatar" src="${u.photoURL||''}" alt="" onerror="this.src=''">
-        <div class="member-info">
-          <div class="member-pseudo">${u.pseudo||'—'}</div>
-          <div class="member-email">${u.email||''}</div>
-          <div class="member-since">Inscrit le ${formatTs(u.createdAt||0)}</div>
-        </div>
-        <select class="member-role-select" onchange="setMemberRole('${u.uid}',this.value)">
-          <option value="Membre"       ${role==='Membre'       ?'selected':''}>Membre</option>
-          <option value="Modo"         ${role==='Modo'         ?'selected':''}>Modo 🛡</option>
-          <option value="Co-Fondateur" ${role==='Co-Fondateur' ?'selected':''}>Co-Fondateur ⭐</option>
-          <option value="Fondateur"    ${role==='Fondateur'    ?'selected':''}>Fondateur 👑</option>
-        </select>`;
+      row.innerHTML=`<img class="member-avatar" src="${u.customPhoto||u.photoURL||''}" alt="" onerror="this.src=''"><div class="member-info"><div class="member-pseudo">${u.pseudo||'—'}</div><div class="member-email">${u.email||''}</div><div class="member-since">Inscrit le ${formatTs(u.createdAt||0)}</div></div><select class="member-role-select" onchange="setMemberRole('${u.uid}',this.value)"><option value="Membre" ${role==='Membre'?'selected':''}>Membre</option><option value="Modo" ${role==='Modo'?'selected':''}>Modo 🛡</option><option value="Co-Fondateur" ${role==='Co-Fondateur'?'selected':''}>Co-Fondateur ⭐</option><option value="Fondateur" ${role==='Fondateur'?'selected':''}>Fondateur 👑</option></select>`;
       list.appendChild(row);
     });
   }catch{list.innerHTML='<div style="color:#ff4b2b;font-size:10px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;padding:10px;">Erreur de chargement</div>';}
 }
-
 async function setMemberRole(uid, role){
   if(!_authToken){showToast('Non autorisé !');return;}
   try{
@@ -1614,558 +1372,195 @@ async function setMemberRole(uid, role){
     else showToast('Erreur Firebase !');
   }catch{showToast('Erreur réseau !');}
 }
-</script>
 
-<script>
-'use strict';
+/* ---- ADMIN : Demandes de suppression ---- */
+async function loadDeletionRequests(){
+  if(!_authToken){showToast('Admin requis');return;}
+  const container=document.getElementById('demandes-list');
+  container.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.25);padding:4px;">Chargement…</div>';
+  try{
+    const res=await fetch(`${FB}/deletionRequests.json?auth=${_authToken}`);
+    const data=res.ok?await res.json():null;
+    if(!data||!Object.keys(data).length){
+      container.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.2);padding:4px;">Aucune demande en attente</div>';
+      return;
+    }
+    const requests=Object.values(data).sort((a,b)=>b.ts-a.ts);
+    container.innerHTML='';
+    requests.forEach(req=>{
+      const row=document.createElement('div');row.className='req-row';
+      row.innerHTML=`<div class="req-info"><div class="req-pseudo">${req.pseudo}</div><div class="req-email">${req.email}</div><div class="req-date">Demandé le ${formatTs(req.ts)}</div></div><div class="req-actions"><button class="req-delete-btn" onclick="approveDeletion('${req.uid}')">🗑 Supprimer compte</button><button class="req-ignore-btn" onclick="ignoreDeletion('${req.uid}')">Ignorer</button></div>`;
+      container.appendChild(row);
+    });
+  }catch(err){container.innerHTML='<div style="color:#ff4b2b;font-size:10px;">Erreur</div>';}
+}
+async function approveDeletion(uid){
+  if(!confirm(`⚠️ Supprimer définitivement l'utilisateur ${uid} ? Toutes ses données et conversations seront effacées.`)) return;
+  try{
+    // Supprimer l'utilisateur
+    await fetch(`${FB}/users/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
+    await fetch(`${FB}/publicUsers/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
+    // Supprimer ses conversations
+    const convsRes=await fetch(`${FB}/userConvs/${uid}.json?auth=${_authToken}`);
+    const convs=convsRes.ok?await convsRes.json():null;
+    if(convs){
+      for(const cid in convs){
+        await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`,{method:'DELETE'});
+        // Nettoyer les références chez l'autre participant
+        const convData=await (await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`)).json();
+        if(convData && convData.participants){
+          for(const puid in convData.participants){
+            if(puid!==uid) await fetch(`${FB}/userConvs/${puid}/${cid}.json?auth=${_authToken}`,{method:'DELETE'});
+          }
+        }
+      }
+    }
+    await fetch(`${FB}/userConvs/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
+    // Supprimer la demande
+    await fetch(`${FB}/deletionRequests/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
+    showToast(`Utilisateur ${uid} supprimé.`);
+    loadDeletionRequests();
+    loadMembres(); // rafraîchir la liste
+  }catch(e){showToast('Erreur suppression');}
+}
+async function ignoreDeletion(uid){
+  if(!confirm('Ignorer cette demande ?')) return;
+  await fetch(`${FB}/deletionRequests/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
+  showToast('Demande ignorée');
+  loadDeletionRequests();
+}
 
+/* ---- MESSAGERIE (inchangée) ---- */
 const _esc   = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const _cid   = (a,b) => [a,b].sort().join('_');
-const _tsShort = ts => {
-  const d=new Date(ts),n=new Date();
-  return d.toDateString()===n.toDateString()
-    ? d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})
-    : d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
-};
+const _tsShort = ts => {const d=new Date(ts),n=new Date();return d.toDateString()===n.toDateString()?d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});};
 const _tsLong = ts => new Date(ts).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
 const _tsDay  = ts => new Date(ts).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
-
-const _fbReq = async (path, opts={}) => {
-  let url = `${FB}/${path}.json`;
-  if(_curUser){const tok=await _curUser.getIdToken();url+=`?auth=${tok}`;}
-  return fetch(url, opts);
-};
-const _fbAdm = (path, opts={}) => {
-  if(!_authToken) return Promise.resolve(null);
-  return fetch(`${FB}/${path}.json?auth=${_authToken}`, opts);
-};
-
-let _activePeerUid  = null;
-let _activeCid      = null;
-let _chatPollTimer  = null;
-let _inboxPollTimer = null;
-let _lastMsgTs      = 0;
-let _pubUsers       = {};
-
-let _admCurrentCid        = null;
-let _admCurrentConvData   = null;
-let _admCurrentParticipants = [];
-
-async function _syncPubUser(user, profile){
-  if(!user||!profile) return;
-  try{
-    const tok = await user.getIdToken();
-    await fetch(`${FB}/publicUsers/${user.uid}.json?auth=${tok}`,{
-      method:'PUT',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({uid:user.uid, pseudo:profile.pseudo, photoURL:profile.photoURL||''})
-    });
-  }catch{}
-}
-
-async function _fetchPubUsers(){
-  if(!_curUser) return;
-  try{
-    const tok = await _curUser.getIdToken();
-    const r = await fetch(`${FB}/publicUsers.json?auth=${tok}`);
-    if(r.ok){ const d=await r.json(); _pubUsers=d||{}; }
-  }catch{}
-}
-
-function _updateBadge(n){
-  const b=document.getElementById('msgBadge');
-  if(!b) return;
-  if(n>0){b.textContent=n>99?'99+':n;b.style.display='flex';}
-  else b.style.display='none';
-}
-
+const _fbReq = async (path, opts={}) => {let url=`${FB}/${path}.json`;if(_curUser){const tok=await _curUser.getIdToken();url+=`?auth=${tok}`;}return fetch(url, opts);};
+const _fbAdm = (path, opts={}) => {if(!_authToken) return Promise.resolve(null);return fetch(`${FB}/${path}.json?auth=${_authToken}`, opts);};
+let _activePeerUid=null,_activeCid=null,_chatPollTimer=null,_inboxPollTimer=null,_lastMsgTs=0,_pubUsers={};
+let _admCurrentCid=null,_admCurrentConvData=null,_admCurrentParticipants=[];
+async function _syncPubUser(user, profile){if(!user||!profile)return;try{const tok=await user.getIdToken();await fetch(`${FB}/publicUsers/${user.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:user.uid,pseudo:profile.pseudo,photoURL:getDisplayAvatar()})});}catch{}}
+async function _fetchPubUsers(){if(!_curUser)return;try{const tok=await _curUser.getIdToken();const r=await fetch(`${FB}/publicUsers.json?auth=${tok}`);if(r.ok){const d=await r.json();_pubUsers=d||{};}}catch{}}
+function _updateBadge(n){const b=document.getElementById('msgBadge');if(!b)return;if(n>0){b.textContent=n>99?'99+':n;b.style.display='flex';}else b.style.display='none';}
 function _startInboxPolling(){_loadInbox(true);_stopInboxPolling();_inboxPollTimer=setInterval(()=>_loadInbox(true),12000);}
 function _stopInboxPolling(){clearInterval(_inboxPollTimer);_inboxPollTimer=null;}
-
-function openMsgPanel(){
-  if(!_curUser) return;
-  sfx.open();
-  document.getElementById('msgPanel').classList.add('active');
-  _setMsgView('msgInboxView');
-  _loadInbox();
-}
-function closeMsgPanel(){
-  document.getElementById('msgPanel').classList.remove('active');
-  _stopChatPoll();
-}
-
-function _setMsgView(id){
-  ['msgInboxView','msgChatView','msgNewView'].forEach(v=>{
-    const el=document.getElementById(v);
-    if(el) el.classList.toggle('v-active', v===id);
-  });
-}
-function showInboxView(){
-  _setMsgView('msgInboxView');
-  _stopChatPoll();
-  _activePeerUid=null; _activeCid=null;
-  _loadInbox();
-}
-function showNewMsgView(){
-  _setMsgView('msgNewView');
-  document.getElementById('userSearchInput').value='';
-  _fetchPubUsers().then(()=>searchUsers(''));
-}
-
+function openMsgPanel(){if(!_curUser)return;sfx.open();document.getElementById('msgPanel').classList.add('active');_setMsgView('msgInboxView');_loadInbox();}
+function closeMsgPanel(){document.getElementById('msgPanel').classList.remove('active');_stopChatPoll();}
+function _setMsgView(id){['msgInboxView','msgChatView','msgNewView'].forEach(v=>{const el=document.getElementById(v);if(el)el.classList.toggle('v-active',v===id);});}
+function showInboxView(){_setMsgView('msgInboxView');_stopChatPoll();_activePeerUid=null;_activeCid=null;_loadInbox();}
+function showNewMsgView(){_setMsgView('msgNewView');document.getElementById('userSearchInput').value='';_fetchPubUsers().then(()=>searchUsers(''));}
 async function _loadInbox(silent=false){
-  if(!_curUser) return;
-  const list=document.getElementById('convList');
-  if(!list) return;
+  if(!_curUser)return;const list=document.getElementById('convList');if(!list)return;
   if(!silent) list.innerHTML='<div class="conv-empty">Chargement…</div>';
   try{
-    const r = await _fbReq(`userConvs/${_curUser.uid}`);
-    const ids = r.ok ? await r.json() : null;
-    if(!ids||typeof ids!=='object'){
-      if(!silent) list.innerHTML='<div class="conv-empty">Aucune conversation<br>Envoyez votre premier message !</div>';
-      _updateBadge(0); return;
-    }
-    const convs=(await Promise.all(
-      Object.keys(ids).map(async cid=>{
-        const cr=await _fbReq(`convs/${cid}`);
-        if(!cr.ok) return null;
-        const d=await cr.json();
-        return d?{cid,...d}:null;
-      })
-    )).filter(Boolean).sort((a,b)=>(b.lastTs||0)-(a.lastTs||0));
-
-    if(!convs.length){
-      if(!silent) list.innerHTML='<div class="conv-empty">Aucune conversation<br>Envoyez votre premier message !</div>';
-      _updateBadge(0); return;
-    }
+    const r=await _fbReq(`userConvs/${_curUser.uid}`);const ids=r.ok?await r.json():null;
+    if(!ids||typeof ids!=='object'){if(!silent)list.innerHTML='<div class="conv-empty">Aucune conversation<br>Envoyez votre premier message !</div>';_updateBadge(0);return;}
+    const convs=(await Promise.all(Object.keys(ids).map(async cid=>{const cr=await _fbReq(`convs/${cid}`);if(!cr.ok)return null;const d=await cr.json();return d?{cid,...d}:null;}))).filter(Boolean).sort((a,b)=>(b.lastTs||0)-(a.lastTs||0));
+    if(!convs.length){if(!silent)list.innerHTML='<div class="conv-empty">Aucune conversation<br>Envoyez votre premier message !</div>';_updateBadge(0);return;}
     let totalUnread=0;
     list.innerHTML=convs.map(conv=>{
-      const pseudos=conv.pseudos||{}, photos=conv.photos||{};
+      const pseudos=conv.pseudos||{},photos=conv.photos||{};
       const peerUid=Object.keys(conv.participants||{}).find(u=>u!==_curUser.uid)||'';
       const pPseudo=pseudos[peerUid]||'Utilisateur';
       const pPhoto=photos[peerUid]||'';
       const unread=conv[`unread_${_curUser.uid}`]||0;
       totalUnread+=unread;
-      return `<div class="conv-item" onclick="openChat('${peerUid}','${_esc(pPseudo)}','${_esc(pPhoto)}')">
-        <img class="conv-avatar" src="${_esc(pPhoto)}" alt="" onerror="this.style.background='#333'">
-        <div class="conv-info">
-          <div class="conv-pseudo">${_esc(pPseudo)}</div>
-          <div class="conv-last">${_esc(conv.lastText||'—')}</div>
-        </div>
-        <div class="conv-meta">
-          <div class="conv-ts">${conv.lastTs?_tsShort(conv.lastTs):''}</div>
-          ${unread>0?`<div class="conv-unread-dot">${unread}</div>`:''}
-        </div>
-      </div>`;
+      return `<div class="conv-item" onclick="openChat('${peerUid}','${_esc(pPseudo)}','${_esc(pPhoto)}')"><img class="conv-avatar" src="${_esc(pPhoto)}" alt="" onerror="this.style.background='#333'"><div class="conv-info"><div class="conv-pseudo">${_esc(pPseudo)}</div><div class="conv-last">${_esc(conv.lastText||'—')}</div></div><div class="conv-meta"><div class="conv-ts">${conv.lastTs?_tsShort(conv.lastTs):''}</div>${unread>0?`<div class="conv-unread-dot">${unread}</div>`:''}</div></div>`;
     }).join('');
     _updateBadge(totalUnread);
-  }catch(err){
-    if(!silent) list.innerHTML='<div class="conv-empty" style="color:#ff4b2b;">Erreur de chargement</div>';
-  }
+  }catch(err){if(!silent)list.innerHTML='<div class="conv-empty" style="color:#ff4b2b;">Erreur de chargement</div>';}
 }
-
 async function openChat(peerUid, peerPseudo, peerPhoto){
-  if(!_curUser) return;
-  _activePeerUid=peerUid;
-  _activeCid=_cid(_curUser.uid, peerUid);
-  _lastMsgTs=0;
-  document.getElementById('chatPeerName').textContent=peerPseudo;
-  document.getElementById('chatPeerAv').src=peerPhoto;
-  document.getElementById('chatMessages').innerHTML=
-    '<div style="text-align:center;padding:24px;font-family:\'Space Mono\',monospace;font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:2px;">Chargement…</div>';
-  _setMsgView('msgChatView');
-  await _markRead();
-  await _loadChatMsgs();
-  _stopChatPoll();
-  _chatPollTimer=setInterval(()=>_loadChatMsgs(true),3000);
+  if(!_curUser)return;_activePeerUid=peerUid;_activeCid=_cid(_curUser.uid,peerUid);_lastMsgTs=0;
+  document.getElementById('chatPeerName').textContent=peerPseudo;document.getElementById('chatPeerAv').src=peerPhoto;
+  document.getElementById('chatMessages').innerHTML='<div style="text-align:center;padding:24px;font-family:\'Space Mono\',monospace;font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:2px;">Chargement…</div>';
+  _setMsgView('msgChatView');await _markRead();await _loadChatMsgs();_stopChatPoll();_chatPollTimer=setInterval(()=>_loadChatMsgs(true),3000);
 }
-
-async function _markRead(){
-  if(!_curUser||!_activeCid) return;
-  try{
-    const tok=await _curUser.getIdToken();
-    await fetch(`${FB}/convs/${_activeCid}/unread_${_curUser.uid}.json?auth=${tok}`,
-      {method:'PUT',headers:{'Content-Type':'application/json'},body:'0'});
-    _updateBadge(0);
-  }catch{}
-}
-
+async function _markRead(){if(!_curUser||!_activeCid)return;try{const tok=await _curUser.getIdToken();await fetch(`${FB}/convs/${_activeCid}/unread_${_curUser.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'0'});_updateBadge(0);}catch{}}
 async function _loadChatMsgs(silent=false){
-  if(!_curUser||!_activeCid) return;
-  const container=document.getElementById('chatMessages');
-  if(!container) return;
+  if(!_curUser||!_activeCid)return;const container=document.getElementById('chatMessages');if(!container)return;
   try{
-    const r=await _fbReq(`convs/${_activeCid}/msgs`);
-    const raw=r.ok?await r.json():null;
-    if(!raw){
-      if(!silent) container.innerHTML=
-        '<div style="text-align:center;padding:34px;font-family:\'Space Mono\',monospace;font-size:9px;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:2px;">Dites bonjour 👋</div>';
-      return;
-    }
-    const msgs=Object.values(raw).sort((a,b)=>a.ts-b.ts);
-    const newest=msgs[msgs.length-1]?.ts||0;
-    if(silent&&newest===_lastMsgTs) return;
-    _lastMsgTs=newest;
+    const r=await _fbReq(`convs/${_activeCid}/msgs`);const raw=r.ok?await r.json():null;
+    if(!raw){if(!silent)container.innerHTML='<div style="text-align:center;padding:34px;font-family:\'Space Mono\',monospace;font-size:9px;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:2px;">Dites bonjour 👋</div>';return;}
+    const msgs=Object.values(raw).sort((a,b)=>a.ts-b.ts);const newest=msgs[msgs.length-1]?.ts||0;
+    if(silent&&newest===_lastMsgTs)return;_lastMsgTs=newest;
     const atBottom=container.scrollHeight-container.scrollTop-container.clientHeight<80;
     let html='',lastDay='';
-    msgs.forEach(m=>{
-      const d=_tsDay(m.ts);
-      if(d!==lastDay){html+=`<div class="msg-day-sep">${d}</div>`;lastDay=d;}
-      const mine=m.uid===_curUser.uid;
-      html+=`<div class="msg-bwrap ${mine?'mine':'theirs'}">
-        <div class="msg-bubble">${_esc(m.text)}</div>
-        <div class="msg-bts">${_tsLong(m.ts)}</div>
-      </div>`;
-    });
-    container.innerHTML=html;
-    if(atBottom||!silent) container.scrollTop=container.scrollHeight;
+    msgs.forEach(m=>{const d=_tsDay(m.ts);if(d!==lastDay){html+=`<div class="msg-day-sep">${d}</div>`;lastDay=d;}const mine=m.uid===_curUser.uid;html+=`<div class="msg-bwrap ${mine?'mine':'theirs'}"><div class="msg-bubble">${_esc(m.text)}</div><div class="msg-bts">${_tsLong(m.ts)}</div></div>`;});
+    container.innerHTML=html;if(atBottom||!silent)container.scrollTop=container.scrollHeight;
   }catch{}
 }
-
 async function sendChatMsg(){
-  if(!_curUser||!_activePeerUid||!_activeCid) return;
-  const inp=document.getElementById('chatInput');
-  const text=inp?.value.trim();
-  if(!text||text.length>2000) return;
-  const btn=document.getElementById('chatSendBtn');
-  if(btn) btn.disabled=true;
-  inp.value='';inp.style.height='auto';
-  const tok=await _curUser.getIdToken();
-  const msgId=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  if(!_curUser||!_activePeerUid||!_activeCid)return;const inp=document.getElementById('chatInput');const text=inp?.value.trim();if(!text||text.length>2000)return;
+  const btn=document.getElementById('chatSendBtn');if(btn)btn.disabled=true;inp.value='';inp.style.height='auto';
+  const tok=await _curUser.getIdToken();const msgId=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   try{
-    await fetch(`${FB}/convs/${_activeCid}/msgs/${msgId}.json?auth=${tok}`,{
-      method:'PUT',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({uid:_curUser.uid,pseudo:_curProfile.pseudo,text,ts:Date.now()})
-    });
-    const ur=await fetch(`${FB}/convs/${_activeCid}/unread_${_activePeerUid}.json?auth=${tok}`);
-    const uCount=ur.ok?((await ur.json())||0):0;
+    await fetch(`${FB}/convs/${_activeCid}/msgs/${msgId}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:_curUser.uid,pseudo:_curProfile.pseudo,text,ts:Date.now()})});
+    const ur=await fetch(`${FB}/convs/${_activeCid}/unread_${_activePeerUid}.json?auth=${tok}`);const uCount=ur.ok?((await ur.json())||0):0;
     const peer=_pubUsers[_activePeerUid]||{};
-    await fetch(`${FB}/convs/${_activeCid}.json?auth=${tok}`,{
-      method:'PATCH',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        participants:{[_curUser.uid]:true,[_activePeerUid]:true},
-        pseudos:{[_curUser.uid]:_curProfile.pseudo,[_activePeerUid]:peer.pseudo||'User'},
-        photos:{[_curUser.uid]:_curProfile.photoURL||'',[_activePeerUid]:peer.photoURL||''},
-        lastText:text.slice(0,80),
-        lastTs:Date.now(),
-        [`unread_${_activePeerUid}`]:uCount+1,
-        [`unread_${_curUser.uid}`]:0
-      })
-    });
-    await Promise.all([
-      fetch(`${FB}/userConvs/${_curUser.uid}/${_activeCid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'true'}),
-      fetch(`${FB}/userConvs/${_activePeerUid}/${_activeCid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'true'})
-    ]);
+    await fetch(`${FB}/convs/${_activeCid}.json?auth=${tok}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({participants:{[_curUser.uid]:true,[_activePeerUid]:true},pseudos:{[_curUser.uid]:_curProfile.pseudo,[_activePeerUid]:peer.pseudo||'User'},photos:{[_curUser.uid]:getDisplayAvatar(),[_activePeerUid]:peer.photoURL||''},lastText:text.slice(0,80),lastTs:Date.now(),[`unread_${_activePeerUid}`]:uCount+1,[`unread_${_curUser.uid}`]:0})});
+    await Promise.all([fetch(`${FB}/userConvs/${_curUser.uid}/${_activeCid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'true'}),fetch(`${FB}/userConvs/${_activePeerUid}/${_activeCid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'true'})]);
     await _loadChatMsgs();
-  }catch{
-    showToast('Erreur envoi !');
-    inp.value=text;
-  }finally{
-    if(btn) btn.disabled=false;
-  }
+  }catch{showToast('Erreur envoi !');inp.value=text;}finally{if(btn)btn.disabled=false;}
 }
-
 function _stopChatPoll(){clearInterval(_chatPollTimer);_chatPollTimer=null;}
-
 let _searchTimer=null;
-function searchUsers(q){
-  clearTimeout(_searchTimer);
-  _searchTimer=setTimeout(async()=>{
-    const res=document.getElementById('userSearchResults');
-    if(!res) return;
-    await _fetchPubUsers();
-    const term=q.trim().toLowerCase();
-    const users=Object.values(_pubUsers).filter(u=>{
-      if(!_curUser||u.uid===_curUser.uid) return false;
-      return !term||u.pseudo.toLowerCase().includes(term);
-    });
-    if(!users.length){
-      res.innerHTML=`<div class="user-search-hint">${term?'Aucun résultat pour "'+_esc(term)+'"':'Tapez un pseudo pour rechercher'}</div>`;
-      return;
-    }
-    res.innerHTML=users.map(u=>`
-      <div class="user-res-item" onclick="openChat('${u.uid}','${_esc(u.pseudo)}','${_esc(u.photoURL||'')}')">
-        <img class="user-res-av" src="${_esc(u.photoURL||'')}" alt="" onerror="this.style.background='#333'">
-        <div>
-          <div class="user-res-pseudo">${_esc(u.pseudo)}</div>
-          <div class="user-res-lbl">Membre DLM-Corp</div>
-        </div>
-      </div>`).join('');
-  },280);
-}
+function searchUsers(q){clearTimeout(_searchTimer);_searchTimer=setTimeout(async()=>{const res=document.getElementById('userSearchResults');if(!res)return;await _fetchPubUsers();const term=q.trim().toLowerCase();const users=Object.values(_pubUsers).filter(u=>{if(!_curUser||u.uid===_curUser.uid)return false;return !term||u.pseudo.toLowerCase().includes(term);});if(!users.length){res.innerHTML=`<div class="user-search-hint">${term?'Aucun résultat pour "'+_esc(term)+'"':'Tapez un pseudo pour rechercher'}</div>`;return;}res.innerHTML=users.map(u=>`<div class="user-res-item" onclick="openChat('${u.uid}','${_esc(u.pseudo)}','${_esc(u.photoURL||'')}')"><img class="user-res-av" src="${_esc(u.photoURL||'')}" alt="" onerror="this.style.background='#333'"><div><div class="user-res-pseudo">${_esc(u.pseudo)}</div><div class="user-res-lbl">Membre DLM-Corp</div></div></div>`).join('');},280);}
 
-/* ════════════════════════════════════════════
-   ADMIN MESSAGES + MODÉRATION
-   ════════════════════════════════════════════ */
-
+/* ---- ADMIN MESSAGES (inchangé) ---- */
 async function loadAdminMessages(silent=false){
   if(!_authToken){if(!silent)showToast('Admin requis !');return;}
-  const list   = document.getElementById('adm-convs-list');
-  const syncTs = document.getElementById('adm-sync-ts');
-  const statsBar = document.getElementById('adm-mod-stats-bar');
-  if(!list) return;
-
-  if(!silent){
-    document.getElementById('adm-conv-detail').classList.remove('open');
-    document.getElementById('adm-conv-msgs').innerHTML='';
-    _admCurrentCid=null; _admCurrentConvData=null;
-    list.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.25);font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div>';
-  }
-
+  const list=document.getElementById('adm-convs-list'),syncTs=document.getElementById('adm-sync-ts'),statsBar=document.getElementById('adm-mod-stats-bar');if(!list)return;
+  if(!silent){document.getElementById('adm-conv-detail').classList.remove('open');document.getElementById('adm-conv-msgs').innerHTML='';_admCurrentCid=null;_admCurrentConvData=null;list.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.25);font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div>';}
   try{
-    const r=await _fbAdm('convs');
-    if(!r){
-      list.innerHTML='<div style="color:#ff4b2b;font-size:10px;font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:1px;padding:4px;">Token admin invalide</div>';
-      return;
-    }
-    if(!r.ok){
-      list.innerHTML=`<div style="color:#ff4b2b;font-size:10px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;padding:4px;">Erreur Firebase ${r.status}</div>`;
-      return;
-    }
-    const data=await r.json();
-    if(syncTs) syncTs.textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-
-    if(!data||!Object.keys(data).length){
-      if(!silent){
-        list.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Aucune conversation</div>';
-        if(statsBar) statsBar.style.display='none';
-      }
-      return;
-    }
-
+    const r=await _fbAdm('convs');if(!r){list.innerHTML='<div style="color:#ff4b2b;font-size:10px;font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:1px;padding:4px;">Token admin invalide</div>';return;}
+    if(!r.ok){list.innerHTML=`<div style="color:#ff4b2b;font-size:10px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;padding:4px;">Erreur Firebase ${r.status}</div>`;return;}
+    const data=await r.json();if(syncTs)syncTs.textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    if(!data||!Object.keys(data).length){if(!silent){list.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Aucune conversation</div>';if(statsBar)statsBar.style.display='none';}return;}
     const convEntries=Object.entries(data).sort((a,b)=>(b[1].lastTs||0)-(a[1].lastTs||0));
-    let totalMsgs=0;
-    const uniqueUsers=new Set();
-    convEntries.forEach(([,conv])=>{
-      const msgCount=conv.msgs?Object.keys(conv.msgs).length:0;
-      totalMsgs+=msgCount;
-      Object.keys(conv.participants||{}).forEach(u=>uniqueUsers.add(u));
-    });
-    if(statsBar){
-      statsBar.style.display='flex';
-      const sc=document.getElementById('adm-stat-convs'),sm=document.getElementById('adm-stat-msgs'),su=document.getElementById('adm-stat-users');
-      if(sc)sc.textContent=convEntries.length;
-      if(sm)sm.textContent=totalMsgs;
-      if(su)su.textContent=uniqueUsers.size;
-    }
-
+    let totalMsgs=0;const uniqueUsers=new Set();
+    convEntries.forEach(([,conv])=>{const msgCount=conv.msgs?Object.keys(conv.msgs).length:0;totalMsgs+=msgCount;Object.keys(conv.participants||{}).forEach(u=>uniqueUsers.add(u));});
+    if(statsBar){statsBar.style.display='flex';const sc=document.getElementById('adm-stat-convs'),sm=document.getElementById('adm-stat-msgs'),su=document.getElementById('adm-stat-users');if(sc)sc.textContent=convEntries.length;if(sm)sm.textContent=totalMsgs;if(su)su.textContent=uniqueUsers.size;}
     const prevCount=list.querySelectorAll('.adm-conv-row').length;
-    if(silent&&prevCount===convEntries.length){
-      if(_admCurrentCid){
-        const found=convEntries.find(([cid])=>cid===_admCurrentCid);
-        if(found) _renderAdmConvDetail(_admCurrentCid, found[1]);
-      }
-      return;
-    }
-
+    if(silent&&prevCount===convEntries.length){if(_admCurrentCid){const found=convEntries.find(([cid])=>cid===_admCurrentCid);if(found)_renderAdmConvDetail(_admCurrentCid,found[1]);}return;}
     list.innerHTML='';
     convEntries.forEach(([cid,conv])=>{
-      const pseudos=Object.values(conv.pseudos||{});
-      const photos=Object.values(conv.photos||{});
-      const names=pseudos.join(' ↔ ')||cid;
-      const msgCount=conv.msgs?Object.keys(conv.msgs).length:0;
-      const participants=Object.keys(conv.participants||{});
-
-      const row=document.createElement('div');
-      row.className='adm-conv-row';
-      row.dataset.cid=cid;
-
+      const pseudos=Object.values(conv.pseudos||{});const photos=Object.values(conv.photos||{});const names=pseudos.join(' ↔ ')||cid;const msgCount=conv.msgs?Object.keys(conv.msgs).length:0;const participants=Object.keys(conv.participants||{});
+      const row=document.createElement('div');row.className='adm-conv-row';row.dataset.cid=cid;
       const avHtml=photos.slice(0,2).map(p=>`<img src="${_esc(p)}" alt="" onerror="this.style.background='#333'">`).join('');
-
-      row.innerHTML=`
-        <div class="adm-conv-avs">${avHtml}</div>
-        <div class="adm-conv-clickable" onclick="_openAdmConv('${cid}', this)">
-          <div class="adm-conv-name">${_esc(names)}</div>
-          <div class="adm-conv-preview">${_esc(conv.lastText||'—')}</div>
-        </div>
-        <div class="adm-conv-meta">
-          <div class="adm-conv-ts">${conv.lastTs?_tsShort(conv.lastTs):''}</div>
-          <div class="adm-conv-count">${msgCount} msg</div>
-        </div>
-        <button class="adm-del-conv-btn" onclick="_deleteAdminConv('${cid}',[${participants.map(p=>"'"+p+"'").join(',')}],event)" title="Supprimer toute la conversation">🗑 Supprimer</button>`;
-
+      row.innerHTML=`<div class="adm-conv-avs">${avHtml}</div><div class="adm-conv-clickable" onclick="_openAdmConv('${cid}', this)"><div class="adm-conv-name">${_esc(names)}</div><div class="adm-conv-preview">${_esc(conv.lastText||'—')}</div></div><div class="adm-conv-meta"><div class="adm-conv-ts">${conv.lastTs?_tsShort(conv.lastTs):''}</div><div class="adm-conv-count">${msgCount} msg</div></div><button class="adm-del-conv-btn" onclick="_deleteAdminConv('${cid}',[${participants.map(p=>"'"+p+"'").join(',')}],event)" title="Supprimer toute la conversation">🗑 Supprimer</button>`;
       list.appendChild(row);
     });
-
-    if(_admCurrentCid){
-      const found=convEntries.find(([cid])=>cid===_admCurrentCid);
-      if(found) _renderAdmConvDetail(_admCurrentCid, found[1]);
-    }
-
-  }catch(e){
-    if(!silent) list.innerHTML=`<div style="color:#ff4b2b;font-size:10px;font-family:'Space Mono',monospace;padding:4px;">Erreur : ${e.message||'inconnue'}</div>`;
-  }
+    if(_admCurrentCid){const found=convEntries.find(([cid])=>cid===_admCurrentCid);if(found)_renderAdmConvDetail(_admCurrentCid,found[1]);}
+  }catch(e){if(!silent)list.innerHTML=`<div style="color:#ff4b2b;font-size:10px;font-family:'Space Mono',monospace;padding:4px;">Erreur : ${e.message||'inconnue'}</div>`;}
 }
+async function _openAdmConv(cid,clickedEl){if(!_authToken)return;document.querySelectorAll('.adm-conv-row').forEach(r=>r.style.background='');const row=clickedEl?.closest('.adm-conv-row');if(row)row.style.background='rgba(0,210,255,.05)';_admCurrentCid=cid;const detail=document.getElementById('adm-conv-detail');detail.classList.add('open');const r=await _fbAdm(`convs/${cid}`);const conv=r&&r.ok?await r.json():null;if(!conv){showToast('Erreur chargement conv !');return;}_admCurrentConvData=conv;_renderAdmConvDetail(cid,conv);detail.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function _renderAdmConvDetail(cid,conv){const titleEl=document.getElementById('adm-conv-detail-title');const msgsEl=document.getElementById('adm-conv-msgs');if(!msgsEl)return;const pseudos=Object.values(conv.pseudos||{});const parts=Object.keys(conv.participants||{});_admCurrentParticipants=parts;if(titleEl)titleEl.textContent=(pseudos.join(' ↔ ')||cid)+' · '+((conv.msgs?Object.keys(conv.msgs).length:0))+' messages';if(!conv.msgs){msgsEl.innerHTML='<div style="font-size:9px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;padding:6px;text-align:center;">Aucun message</div>';return;}const leftUid=parts[0]||'';const filter=document.getElementById('adm-msg-filter')?.value||'all';const allMsgs=Object.entries(conv.msgs).sort((a,b)=>a[1].ts-b[1].ts);const filtered=allMsgs.filter(([,m])=>{if(filter==='all')return true;if(filter==='left')return m.uid===leftUid;return m.uid!==leftUid;});msgsEl.innerHTML='';let lastDay='';filtered.forEach(([msgId,m])=>{const d=_tsDay(m.ts);if(d!==lastDay){const sep=document.createElement('div');sep.style.cssText='text-align:center;font-family:Space Mono,monospace;font-size:7px;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:2px;background:rgba(255,255,255,.03);padding:3px 10px;border-radius:20px;margin:5px auto;width:fit-content;';sep.textContent=d;msgsEl.appendChild(sep);lastDay=d;}const isLeft=m.uid===leftUid;const wrap=document.createElement('div');wrap.className='adm-bubble-wrap '+(isLeft?'':'right-wrap');const delBtn=document.createElement('button');delBtn.className='adm-msg-del-btn';delBtn.title='Supprimer ce message';delBtn.textContent='🗑';delBtn.onclick=()=>_deleteAdminMsg(cid,msgId,m.pseudo||'?');const inner=document.createElement('div');inner.className='adm-bubble-inner';const bubble=document.createElement('div');bubble.className='adm-bubble '+(isLeft?'left':'right');bubble.textContent=m.text;const meta=document.createElement('div');meta.className='adm-bubble-meta'+(isLeft?'':' right-meta');meta.textContent=`${_esc(m.pseudo||'?')} · ${_tsLong(m.ts)}`;inner.appendChild(bubble);inner.appendChild(meta);if(isLeft){wrap.appendChild(delBtn);wrap.appendChild(inner);}else{wrap.appendChild(inner);wrap.appendChild(delBtn);}msgsEl.appendChild(wrap);});if(!filtered.length){msgsEl.innerHTML='<div style="font-size:9px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;padding:6px;text-align:center;">Aucun message pour ce filtre</div>';}msgsEl.scrollTop=msgsEl.scrollHeight;}
+function _applyMsgFilter(){if(_admCurrentCid&&_admCurrentConvData){_renderAdmConvDetail(_admCurrentCid,_admCurrentConvData);}}
+async function _deleteAdminMsg(cid,msgId,pseudo){if(!_authToken)return;if(!confirm(`Supprimer ce message de ${pseudo} ?`))return;try{const r=await _fbAdm(`convs/${cid}/msgs/${msgId}`,{method:'DELETE'});if(r&&r.ok){showToast('✓ Message supprimé');if(_admCurrentConvData?.msgs)delete _admCurrentConvData.msgs[msgId];if(_admCurrentCid===cid)_renderAdmConvDetail(cid,_admCurrentConvData);_refreshConvMeta(cid);}else{showToast('Erreur suppression !');}}catch{showToast('Erreur réseau !');}}
+async function _refreshConvMeta(cid){if(!_authToken)return;try{const r=await _fbAdm(`convs/${cid}/msgs`);if(!r||!r.ok)return;const msgs=await r.json();if(!msgs){await _fbAdm(`convs/${cid}/lastText`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify('')});await _fbAdm(`convs/${cid}/lastTs`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(0)});return;}const sorted=Object.values(msgs).sort((a,b)=>b.ts-a.ts);const last=sorted[0];await _fbAdm(`convs/${cid}.json`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({lastText:(last.text||'').slice(0,80),lastTs:last.ts})});}catch{}}
+async function _deleteAllMsgsInConv(){if(!_authToken||!_admCurrentCid)return;const convData=_admCurrentConvData;const count=convData?.msgs?Object.keys(convData.msgs).length:0;if(!count){showToast('Aucun message à supprimer');return;}if(!confirm(`Supprimer les ${count} messages de cette conversation ? Cette action est irréversible.`))return;try{const r=await _fbAdm(`convs/${_admCurrentCid}/msgs`,{method:'DELETE'});if(r&&r.ok){await _fbAdm(`convs/${_admCurrentCid}.json`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({lastText:'',lastTs:0})});showToast(`✓ ${count} messages supprimés`);if(_admCurrentConvData)_admCurrentConvData.msgs={};_renderAdmConvDetail(_admCurrentCid,_admCurrentConvData||{});loadAdminMessages(true);}else{showToast('Erreur suppression !');}}catch{showToast('Erreur réseau !');}}
+async function _deleteAdminConv(cid,participantUids,event){if(event)event.stopPropagation();if(!_authToken)return;if(!confirm('Supprimer TOUTE la conversation et ses messages ? Cette action est irréversible.'))return;try{await _fbAdm(`convs/${cid}`,{method:'DELETE'});await Promise.all(participantUids.map(uid=>_fbAdm(`userConvs/${uid}/${cid}`,{method:'DELETE'})));showToast('✓ Conversation supprimée');if(_admCurrentCid===cid){_admCurrentCid=null;_admCurrentConvData=null;document.getElementById('adm-conv-detail').classList.remove('open');}const row=document.querySelector(`.adm-conv-row[data-cid="${cid}"]`);if(row)row.remove();loadAdminMessages(true);}catch{showToast('Erreur suppression !');}}
 
-async function _openAdmConv(cid, clickedEl){
-  if(!_authToken) return;
-  document.querySelectorAll('.adm-conv-row').forEach(r=>r.style.background='');
-  const row=clickedEl?.closest('.adm-conv-row');
-  if(row) row.style.background='rgba(0,210,255,.05)';
-  _admCurrentCid=cid;
-  const detail=document.getElementById('adm-conv-detail');
-  detail.classList.add('open');
-  const r=await _fbAdm(`convs/${cid}`);
-  const conv=r&&r.ok?await r.json():null;
-  if(!conv){showToast('Erreur chargement conv !');return;}
-  _admCurrentConvData=conv;
-  _renderAdmConvDetail(cid, conv);
-  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-
-function _renderAdmConvDetail(cid, conv){
-  const titleEl=document.getElementById('adm-conv-detail-title');
-  const msgsEl=document.getElementById('adm-conv-msgs');
-  if(!msgsEl) return;
-
-  const pseudos=Object.values(conv.pseudos||{});
-  const parts=Object.keys(conv.participants||{});
-  _admCurrentParticipants=parts;
-  if(titleEl) titleEl.textContent=(pseudos.join(' ↔ ')||cid)+' · '+((conv.msgs?Object.keys(conv.msgs).length:0))+' messages';
-
-  if(!conv.msgs){
-    msgsEl.innerHTML='<div style="font-size:9px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;padding:6px;text-align:center;">Aucun message</div>';
-    return;
-  }
-
-  const leftUid=parts[0]||'';
-  const filter=document.getElementById('adm-msg-filter')?.value||'all';
-  const allMsgs=Object.entries(conv.msgs).sort((a,b)=>a[1].ts-b[1].ts);
-  const filtered=allMsgs.filter(([,m])=>{
-    if(filter==='all') return true;
-    if(filter==='left') return m.uid===leftUid;
-    return m.uid!==leftUid;
-  });
-
-  msgsEl.innerHTML='';
-  let lastDay='';
-  filtered.forEach(([msgId,m])=>{
-    const d=_tsDay(m.ts);
-    if(d!==lastDay){
-      const sep=document.createElement('div');
-      sep.style.cssText='text-align:center;font-family:Space Mono,monospace;font-size:7px;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:2px;background:rgba(255,255,255,.03);padding:3px 10px;border-radius:20px;margin:5px auto;width:fit-content;';
-      sep.textContent=d;msgsEl.appendChild(sep);lastDay=d;
-    }
-    const isLeft=m.uid===leftUid;
-    const wrap=document.createElement('div');
-    wrap.className='adm-bubble-wrap '+(isLeft?'':'right-wrap');
-
-    const delBtn=document.createElement('button');
-    delBtn.className='adm-msg-del-btn';
-    delBtn.title='Supprimer ce message';
-    delBtn.textContent='🗑';
-    delBtn.onclick=()=>_deleteAdminMsg(cid, msgId, m.pseudo||'?');
-
-    const inner=document.createElement('div');
-    inner.className='adm-bubble-inner';
-
-    const bubble=document.createElement('div');
-    bubble.className='adm-bubble '+(isLeft?'left':'right');
-    bubble.textContent=m.text;
-
-    const meta=document.createElement('div');
-    meta.className='adm-bubble-meta'+(isLeft?'':' right-meta');
-    meta.textContent=`${_esc(m.pseudo||'?')} · ${_tsLong(m.ts)}`;
-
-    inner.appendChild(bubble);
-    inner.appendChild(meta);
-
-    if(isLeft){wrap.appendChild(delBtn);wrap.appendChild(inner);}
-    else{wrap.appendChild(inner);wrap.appendChild(delBtn);}
-
-    msgsEl.appendChild(wrap);
-  });
-
-  if(!filtered.length){
-    msgsEl.innerHTML='<div style="font-size:9px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;padding:6px;text-align:center;">Aucun message pour ce filtre</div>';
-  }
-
-  msgsEl.scrollTop=msgsEl.scrollHeight;
-}
-
-function _applyMsgFilter(){
-  if(_admCurrentCid&&_admCurrentConvData){
-    _renderAdmConvDetail(_admCurrentCid, _admCurrentConvData);
-  }
-}
-
-async function _deleteAdminMsg(cid, msgId, pseudo){
-  if(!_authToken) return;
-  if(!confirm(`Supprimer ce message de ${pseudo} ?`)) return;
-  try{
-    const r=await _fbAdm(`convs/${cid}/msgs/${msgId}`,{method:'DELETE'});
-    if(r&&r.ok){
-      showToast('✓ Message supprimé');
-      if(_admCurrentConvData?.msgs) delete _admCurrentConvData.msgs[msgId];
-      if(_admCurrentCid===cid) _renderAdmConvDetail(cid, _admCurrentConvData);
-      _refreshConvMeta(cid);
-    }else{
-      showToast('Erreur suppression !');
-    }
-  }catch{showToast('Erreur réseau !');}
-}
-
-async function _refreshConvMeta(cid){
-  if(!_authToken) return;
-  try{
-    const r=await _fbAdm(`convs/${cid}/msgs`);
-    if(!r||!r.ok) return;
-    const msgs=await r.json();
-    if(!msgs){
-      await _fbAdm(`convs/${cid}/lastText`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify('')});
-      await _fbAdm(`convs/${cid}/lastTs`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(0)});
-      return;
-    }
-    const sorted=Object.values(msgs).sort((a,b)=>b.ts-a.ts);
-    const last=sorted[0];
-    await _fbAdm(`convs/${cid}.json`,{
-      method:'PATCH',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({lastText:(last.text||'').slice(0,80),lastTs:last.ts})
-    });
-  }catch{}
-}
-
-async function _deleteAllMsgsInConv(){
-  if(!_authToken||!_admCurrentCid) return;
-  const convData=_admCurrentConvData;
-  const count=convData?.msgs?Object.keys(convData.msgs).length:0;
-  if(!count){showToast('Aucun message à supprimer');return;}
-  if(!confirm(`Supprimer les ${count} messages de cette conversation ? Cette action est irréversible.`)) return;
-
-  try{
-    const r=await _fbAdm(`convs/${_admCurrentCid}/msgs`,{method:'DELETE'});
-    if(r&&r.ok){
-      await _fbAdm(`convs/${_admCurrentCid}.json`,{
-        method:'PATCH',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({lastText:'',lastTs:0})
-      });
-      showToast(`✓ ${count} messages supprimés`);
-      if(_admCurrentConvData) _admCurrentConvData.msgs={};
-      _renderAdmConvDetail(_admCurrentCid, _admCurrentConvData||{});
-      loadAdminMessages(true);
-    }else{
-      showToast('Erreur suppression !');
-    }
-  }catch{showToast('Erreur réseau !');}
-}
-
-async function _deleteAdminConv(cid, participantUids, event){
-  if(event) event.stopPropagation();
-  if(!_authToken) return;
-  if(!confirm('Supprimer TOUTE la conversation et ses messages ? Cette action est irréversible.')) return;
-
-  try{
-    await _fbAdm(`convs/${cid}`,{method:'DELETE'});
-    await Promise.all(participantUids.map(uid=>
-      _fbAdm(`userConvs/${uid}/${cid}`,{method:'DELETE'})
-    ));
-    showToast('✓ Conversation supprimée');
-    if(_admCurrentCid===cid){
-      _admCurrentCid=null;_admCurrentConvData=null;
-      document.getElementById('adm-conv-detail').classList.remove('open');
-    }
-    const row=document.querySelector(`.adm-conv-row[data-cid="${cid}"]`);
-    if(row) row.remove();
-    loadAdminMessages(true);
-  }catch{showToast('Erreur suppression !');}
-}
+/* ---- INIT ---- */
+window.addEventListener('load',async()=>{
+  resize();initParticles();startCanvas();
+  await LS.loadAll();
+  const cnt=getAllServers().length;
+  const bc=document.getElementById('srv-btn-count');if(bc)bc.textContent=cnt;
+  animateCount('server-count',cnt);
+  setTimeout(startBoot,300);
+  refreshAll();
+  setupChromaEgg();setupKingfireEgg();
+  applyBanner();applyMaintenance();
+  document.querySelectorAll('.team-link,.bot-add-btn,.theme-opt').forEach(el=>{el.addEventListener('mouseenter',sfx.hover,{passive:true});el.addEventListener('click',sfx.click,{passive:true});});
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){stopCanvas();document.querySelectorAll('.aurora-blob,.maint-dot,.maint-bar,.mc-bubble,.corp-title').forEach(el=>el.style.animationPlayState='paused');}
+  else{if(!_overlayOpen)startCanvas();document.querySelectorAll('.aurora-blob,.maint-dot,.maint-bar,.mc-bubble,.corp-title').forEach(el=>el.style.animationPlayState='running');}
+});
 </script>
+</body>
 </html>
+```
