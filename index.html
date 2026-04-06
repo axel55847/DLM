@@ -1,28 +1,3 @@
-Voici le code complet du site avec les améliorations demandées pour la partie profil : description (50 caractères max), liens sociaux (YouTube, Twitch, Spotify, TikTok), demande de suppression de données envoyée à l’admin, et photo de profil personnalisée (upload base64).
-
-**Modifications apportées :**
-
-1. **Profil utilisateur** :
-   - Ajout d’une zone de texte pour la description (max 50 caractères).
-   - Champs pour les liens YouTube, Twitch, Spotify, TikTok.
-   - Bouton « Mettre à jour le profil » pour sauvegarder description + liens.
-   - Upload d’avatar personnalisé (fichier image → base64) + bouton « Réinitialiser l’avatar » pour revenir à la photo Google.
-   - Bouton « Demander la suppression de mon compte » → envoie une requête à l’admin.
-
-2. **Administration** :
-   - Nouvel onglet « Demandes » dans le panneau admin.
-   - Liste des demandes de suppression avec :
-     - Pseudo, email, date de la demande.
-     - Bouton « Supprimer le compte » (efface l’utilisateur de Firebase et les conversations associées).
-     - Bouton « Ignorer » (supprime seulement la demande).
-
-3. **Base de données Firebase** :
-   - Chaque utilisateur stocke désormais : `description`, `socialLinks`, `customPhoto`.
-   - Les demandes sont enregistrées dans `/deletionRequests`.
-
-Le code conserve toutes les fonctionnalités existantes (serveurs, messages, thèmes, etc.) et intègre les nouveautés de manière fluide.
-
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
