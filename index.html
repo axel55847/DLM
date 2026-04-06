@@ -196,12 +196,12 @@ body.admin-mode .card-del-btn{display:block!important;}
 .bot-add-btn{background:rgba(0,0,0,.6);color:var(--sub)!important;border:2px solid var(--sub);padding:11px 20px;border-radius:11px;font-weight:800;text-transform:uppercase;text-decoration:none!important;transition:.4s cubic-bezier(.175,.885,.32,1.275);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;}
 .bot-add-btn:hover{background:var(--sub);color:black!important;transform:scale(1.06);box-shadow:0 0 24px var(--sub);}
 
-/* ---- ANNOUNCE BANNER ---- */
+
 #announceBanner{display:none;position:fixed;top:0;left:0;right:0;z-index:500;background:linear-gradient(90deg,rgba(0,0,0,.7),rgba(0,0,0,.5));border-bottom:1px solid var(--sub);padding:10px 50px;text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:white;text-transform:uppercase;letter-spacing:2px;}
 #announceBanner.active{display:block!important;}
 #announceBannerClose{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;}
 
-/* ---- FIXED BUTTONS ---- */
+
 #muteBtn{position:fixed;bottom:22px;left:22px;z-index:8500;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.33);font-size:15px;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;padding:0;}
 #muteBtn:hover{border-color:var(--sub)!important;color:var(--sub)!important;}
 #muteBtn.muted{color:rgba(255,75,43,.5)!important;border-color:rgba(255,75,43,.3)!important;}
@@ -209,7 +209,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 #adminBtn:hover{border-color:var(--sub)!important;color:var(--sub)!important;}
 #saveToast{position:fixed;bottom:38px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:var(--sub);padding:11px 24px;border-radius:50px;border:1px solid var(--sub);font-weight:800;font-size:11px;text-transform:uppercase;z-index:9999;box-shadow:0 0 20px var(--glow);display:none;font-family:'Space Mono',monospace;white-space:nowrap;}
 
-/* ---- EASTER EGGS ---- */
+
 #ohhOverlay{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);}
 #ohhOverlay.active{display:flex!important;}
 @keyframes ohhIn{0%{opacity:0;transform:translate(-50%,-50%)scale(.4)rotate(-10deg)}60%{transform:translate(-50%,-50%)scale(1.07)rotate(2deg)}100%{opacity:1;transform:translate(-50%,-50%)scale(1)rotate(0deg)}}
@@ -223,7 +223,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 #kingfireBox{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(8,2,2,.96);border:2px solid #ff4b2b;border-radius:28px;padding:44px 54px;text-align:center;box-shadow:0 0 80px rgba(255,75,43,.6);cursor:pointer;max-width:90vw;animation:ohhIn .6s cubic-bezier(.175,.885,.32,1.275) both;}
 #kingfireBox .ohh-text{background:linear-gradient(90deg,#fff,#ff4b2b,#ff0000,#ff4b2b,#fff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:ohhG 2s linear infinite;}
 
-/* ---- PASSWORD MODAL ---- */
+
 #passwordOverlay{position:fixed;inset:0;z-index:8600;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
 #passwordOverlay.active{opacity:1!important;pointer-events:all!important;}
 @keyframes modalIn{0%{opacity:0;transform:translateY(26px)scale(.95)}100%{opacity:1;transform:translateY(0)scale(1)}}
@@ -243,7 +243,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .pw-close:hover{color:white;}
 .pw-error{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff4b2b;text-align:center;min-height:14px;margin-bottom:7px;}
 
-/* ---- ADMIN PANEL  ---- */
+
 #adminPanel{position:fixed;inset:0;z-index:8700;display:none;}
 #adminPanel.active{display:flex!important;}
 @keyframes adminIn{from{transform:translateX(105%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -309,7 +309,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .a-cbody{display:none;padding:14px;background:rgba(0,210,255,.02);border:1px solid var(--sub);border-top:none;border-radius:0 0 11px 11px;margin-bottom:5px;}
 .a-cbody.open{display:block;}
 
-/* ---- PROFIL AMÉLIORÉ ---- */
+
 .prof-social-input{width:100%;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;transition:.2s;}
 .prof-social-input:focus{border-color:var(--sub);box-shadow:0 0 8px var(--glow);}
 .prof-desc-textarea{width:100%;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;resize:vertical;min-height:60px;}
@@ -325,7 +325,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .prof-delete-req-btn{background:rgba(255,75,43,.12);border:1px solid rgba(255,75,43,.3);color:#ff4b2b;padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
 .prof-delete-req-btn:hover{background:rgba(255,75,43,.25);border-color:#ff4b2b;}
 
-/* ---- PROFIL PANEL ---- */
+
 #profilePanel{position:fixed;inset:0;z-index:7000;display:none;}
 #profilePanel.active{display:flex!important;}
 #profileBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
@@ -367,7 +367,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .prof-hist-ts{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);margin-top:2px;}
 .prof-hist-empty{text-align:center;padding:22px 0;color:rgba(255,255,255,.12);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
 
-/* ---- MEMBRES ADMIN ---- */
+
 .member-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
 .member-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.06);flex-shrink:0;}
 .member-info{flex:1;min-width:0;}
@@ -378,7 +378,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .member-role-select:focus{border-color:var(--sub);}
 .member-role-select option{background:#060610;color:white;}
 
-/* ---- DEMANDES ADMIN ---- */
+
 .req-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
 .req-info{flex:1;min-width:0;}
 .req-pseudo{font-size:11px;font-weight:800;color:white;text-transform:uppercase;}
@@ -390,7 +390,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .req-ignore-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);padding:5px 10px;border-radius:8px;font-size:9px;font-weight:800;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;}
 .req-ignore-btn:hover{background:rgba(255,255,255,.12);color:white;}
 
-/* ---- MESSAGERIE ---- */
+
 #msgPanel{position:fixed;inset:0;z-index:7200;display:none;}
 #msgPanel.active{display:flex!important;}
 #msgBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
@@ -455,7 +455,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .user-res-lbl{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);margin-top:2px;}
 .user-search-hint{text-align:center;padding:30px 16px;color:rgba(255,255,255,.13);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
 
-/* ---- PRIVACY POLICY  ---- */
+
 #privacyOverlay{position:fixed;inset:0;z-index:6500;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 #privacyOverlay.active{opacity:1;pointer-events:all;}
 #privacyBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.88);}
@@ -495,7 +495,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .pp-footer-accept{padding:9px 22px;border-radius:10px;border:none;background:var(--sub);color:#000;font-family:'Space Mono',monospace;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.2s;}
 .pp-footer-accept:hover{filter:brightness(1.15);transform:scale(1.03);}
 
-/* ---- FOOTER ---- */
+
 #site-footer{width:100%;padding:28px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:10px;border-top:1px solid rgba(255,255,255,.04);position:relative;z-index:3;}
 .footer-links{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;}
 .footer-link{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.2s;background:none;border:none;padding:4px 8px;}
@@ -520,7 +520,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 </head>
 <body>
 
-<!-- MAINTENANCE OVERLAY -->
+
 <div id="maintenanceOverlay">
   <div class="maint-blob"></div><div class="maint-blob"></div>
   <div class="maint-content">
@@ -532,7 +532,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   <span class="maint-hint" onclick="openPasswordModal()">admin</span>
 </div>
 
-<!-- EASTER EGGS -->
+
 <div id="ohhOverlay" onclick="closeOhh()">
   <div id="ohhBox"><span class="ohh-text">OHH I CANT MOVE!</span><span class="ohh-sub">Chromanticore — Producer DLM</span><span class="ohh-hint">clique pour fermer</span></div>
 </div>
@@ -540,7 +540,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   <div id="kingfireBox"><span class="ohh-text">BECAREFUL !</span><span class="ohh-sub">Kingfire — Co-Fondateur DLM</span><span class="ohh-hint">clique pour fermer</span></div>
 </div>
 
-<!-- PASSWORD MODAL -->
+
 <div id="passwordOverlay">
   <div class="pw-box" id="pwBox">
     <button class="pw-close" onclick="closePwModal()">×</button>
@@ -554,7 +554,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   </div>
 </div>
 
-<!-- ADMIN PANEL (ajout de l'onglet Demandes) -->
+
 <div id="adminPanel">
   <div id="adminBackdrop" onclick="closeAdminPanel()"></div>
   <div id="adminInner">
@@ -581,7 +581,7 @@ body.admin-mode .card-del-btn{display:block!important;}
         <button class="anav-btn anav-danger" onclick="adminLogout()"><span class="anav-ic">🚪</span>Déco</button>
       </nav>
       <div id="adminContent">
-        <!-- Dashboard (inchangé) -->
+      
         <div class="apage active" id="apage-dashboard">
           <div class="ap-title">Dashboard</div><div class="ap-sub">Vue d'ensemble</div>
           <div class="a-pills">
@@ -593,14 +593,14 @@ body.admin-mode .card-del-btn{display:block!important;}
           <div class="a-card"><div class="a-card-t">🖥 Serveurs</div><div id="adm-srv-preview"></div></div>
           <div class="a-card"><div class="a-card-t">📡 API Discord</div><div style="display:flex;align-items:center;gap:10px;"><div id="adm-api-dot" style="width:9px;height:9px;border-radius:50%;background:#555;transition:.3s;"></div><span id="adm-api-lbl" style="font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;">—</span><span id="adm-api-lat" style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);"></span></div></div>
         </div>
-        <!-- Annonce (inchangé) -->
+       
         <div class="apage" id="apage-announce">
           <div class="ap-title">Annonce</div><div class="ap-sub">Bannière visiteurs</div>
           <div class="a-card"><div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl">Afficher</div><div class="a-ts">Active la bannière</div></div><div class="a-sw" id="bannerToggle" onclick="toggleBanner()"></div></div></div>
           <div class="a-card"><div class="a-card-t">✏️Texte✏️</div><label class="a-label">Message (max 120)</label><input type="text" class="a-input" id="announceInput" maxlength="120" placeholder="Ex: Nouveau serveur !" oninput="document.getElementById('announce-preview').textContent=this.value||'—'"><button class="a-btn" onclick="saveBanner()">💾 Sauvegarder</button></div>
           <div class="a-card" style="background:rgba(0,210,255,.03);border-color:rgba(0,210,255,.15);"><div class="a-card-t">👁 Aperçu</div><div id="announce-preview" style="background:rgba(0,0,0,.4);border:1px solid var(--sub);border-radius:8px;padding:9px 14px;font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:2px;text-align:center;">—</div></div>
         </div>
-        <!-- Ajouter serveur (inchangé) -->
+       
         <div class="apage" id="apage-add">
           <div class="ap-title">Ajouter</div><div class="ap-sub">Nouveau serveur Discord</div>
           <div class="a-card"><div class="a-card-t">➕ Infos</div>
@@ -611,25 +611,25 @@ body.admin-mode .card-del-btn{display:block!important;}
             <button class="a-btn" onclick="addServer()">➕ Ajouter</button>
           </div>
         </div>
-        <!-- Gérer serveurs (inchangé) -->
+      
         <div class="apage" id="apage-manage">
           <div class="ap-title">Gérer</div><div class="ap-sub">Serveurs manuels</div>
           <div id="manage-list"></div>
           <div id="manage-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun serveur</div>
         </div>
-        <!-- Base serveurs (inchangé) -->
+     
         <div class="apage" id="apage-base">
           <div class="ap-title">Serveurs base</div><div class="ap-sub">Modifier JX, DLM, WYNS'Z</div>
           <div id="baseList"></div>
           <button class="a-btn" onclick="saveBaseServers()" style="margin-top:6px;">💾Sauvegarder💾</button>
         </div>
-        <!-- Membres (inchangé) -->
+       
         <div class="apage" id="apage-membres">
           <div class="ap-title">Membres</div><div class="ap-sub">Comptes inscrits · Rôles</div>
           <div id="membres-list"></div>
           <div id="membres-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun membre inscrit</div>
         </div>
-        <!-- Messages (inchangé) -->
+       
         <div class="apage" id="apage-messages">
           <div class="ap-title">Messages</div><div class="ap-sub">Modération · Surveillance · Suppression</div>
           <div class="adm-mod-stats" id="adm-mod-stats-bar" style="display:none;"><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-convs">0</div><div class="adm-mod-stat-l">Conversations</div></div><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-msgs">0</div><div class="adm-mod-stat-l">Messages</div></div><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-users">0</div><div class="adm-mod-stat-l">Utilisateurs</div></div></div>
@@ -638,12 +638,12 @@ body.admin-mode .card-del-btn{display:block!important;}
           <div id="adm-convs-list"><div style="font-size:10px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div></div></div>
           <div id="adm-conv-detail"><div class="adm-conv-detail-hdr"><div id="adm-conv-detail-title">Historique</div><div class="adm-conv-detail-actions"><select class="adm-filter-select" id="adm-msg-filter" onchange="_applyMsgFilter()"><option value="all">Tous</option><option value="left">Participant 1</option><option value="right">Participant 2</option></select><button class="adm-del-all-btn" onclick="_deleteAllMsgsInConv()" title="Supprimer tous les messages de cette conversation">🗑 Vider conv</button><button onclick="document.getElementById('adm-conv-detail').classList.remove('open')" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:18px;cursor:pointer;line-height:1;padding:0 2px;">×</button></div></div><div id="adm-conv-msgs"></div></div>
         </div>
-        <!-- NOUVEAU : Demandes de suppression -->
+      
         <div class="apage" id="apage-demandes">
           <div class="ap-title">Demandes de suppression</div><div class="ap-sub">Utilisateurs souhaitant effacer leurs données</div>
           <div id="demandes-list"><div style="font-size:10px;color:rgba(255,255,255,.25);padding:4px;">Chargement…</div></div>
         </div>
-        <!-- Paramètres (inchangé) -->
+      
         <div class="apage" id="apage-settings">
           <div class="ap-title">Paramètres</div><div class="ap-sub">Configuration</div>
           <div class="a-card" style="background:rgba(255,75,43,.04);border-color:rgba(255,75,43,.2);">
@@ -656,7 +656,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   </div>
 </div>
 
-<!-- PROFIL AMÉLIORÉ -->
+
 <div id="profilePanel">
   <div id="profileBackdrop" onclick="closeProfile()"></div>
   <div id="profileInner">
@@ -678,7 +678,7 @@ body.admin-mode .card-del-btn{display:block!important;}
         <input type="text" class="prof-pseudo-input" id="pseudoInput" maxlength="20" placeholder="Nouveau pseudo..." onkeydown="if(event.key==='Enter')savePseudo()">
         <div class="prof-editor-actions"><button class="prof-save-btn" onclick="savePseudo()">Sauvegarder</button><button class="prof-cancel-btn" onclick="closePseudoEditor()">Annuler</button></div>
       </div>
-      <!-- Upload avatar personnalisé -->
+     
       <div class="prof-avatar-upload">
         <label class="prof-avatar-label" for="customAvatarInput">📷 Changer avatar</label>
         <input type="file" id="customAvatarInput" accept="image/jpeg,image/png,image/gif" style="display:none;" onchange="uploadCustomAvatar(this)">
@@ -686,32 +686,32 @@ body.admin-mode .card-del-btn{display:block!important;}
       </div>
     </div>
     <div class="prof-body">
-      <!-- Description (max 50 caractères) -->
+      
       <div class="prof-section-lbl">📝Bio📝</div>
       <textarea id="profDescription" class="prof-desc-textarea" maxlength="50" placeholder="Description (50 caractères max)"></textarea>
       
-      <!-- Liens sociaux -->
+     
       <div class="prof-section-lbl">🔗Liens sociaux🔗</div>
       <input type="text" id="profYoutube" class="prof-social-input" placeholder="YouTube URL">
       <input type="text" id="profTwitch" class="prof-social-input" placeholder="Twitch URL">
       <input type="text" id="profSpotify" class="prof-social-input" placeholder="Spotify URL">
       <input type="text" id="profTiktok" class="prof-social-input" placeholder="TikTok URL">
       
-      <!-- Bouton mise à jour -->
+     
       <button class="prof-update-btn" onclick="updateProfileData()">💾Mettre à jour le profil💾</button>
       
-      <!-- Historique -->
+      
       <div class="prof-section-lbl">Historique d'activité</div>
       <div class="prof-hist-list" id="profHistList"></div>
       
-      <!-- Demande de suppression -->
+    
       <button class="prof-delete-req-btn" onclick="requestAccountDeletion()">⚠️Demander la suppression de mon compte⚠️</button>
       <button class="prof-signout-btn" onclick="signOutUser()" style="margin-top:12px;">🚪Se déconnecter🚪</button>
     </div>
   </div>
 </div>
 
-<!-- MESSAGERIE  -->
+
 <div id="msgPanel">
   <div id="msgBackdrop" onclick="closeMsgPanel()"></div>
   <div id="msgInner">
@@ -732,7 +732,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   </div>
 </div>
 
-<!-- PRIVACY POLICY  -->
+
 <div id="privacyOverlay">
   <div id="privacyBackdrop" onclick="closePrivacy()"></div>
   <div id="privacyPanel">
@@ -746,19 +746,19 @@ body.admin-mode .card-del-btn{display:block!important;}
       <div class="pp-section"><div class="pp-section-num">Article 05</div><div class="pp-section-title">Conservation et Suppression des données</div><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Conservation :&nbsp;</strong>Vos données sont conservées tant que votre compte est actif sur la plateforme.</li><li><strong style="color:rgba(255,255,255,.75);">Suppression :&nbsp;</strong>Vous pouvez demander la suppression de votre compte à tout moment. Cette action entraîne l'effacement définitif de votre profil, de vos accès et de vos messages stockés sous un délai de 30 jours.</li><li><strong style="color:rgba(255,255,255,.75);">Révocation :&nbsp;</strong>Vous pouvez également annuler l'autorisation d'accès de notre plateforme depuis les paramètres de sécurité de votre compte Google.</li></ul></div>
       <div class="pp-section"><div class="pp-section-num">Article 06</div><div class="pp-section-title">Contact et Droits des utilisateurs</div><p class="pp-text">Conformément à la réglementation sur la protection des données (RGPD), vous disposez d'un droit d'accès, de rectification et d'effacement de vos informations.</p><p class="pp-text">Pour toute question relative à vos données ou pour exercer vos droits, vous pouvez nous contacter directement :</p><div class="pp-contact-block"><div><div class="pp-contact-lbl">Adresse e-mail de contact</div><a class="pp-contact-email" href="mailto:axell01020304@gmail.com">axell01020304@gmail.com</a></div></div></div>
     </div>
-    <div class="pp-footer-bar"><div class="pp-footer-note">DLM-Corp · Dernière mise à jour 2025 </div><button class="pp-footer-accept" onclick="closePrivacy()">✓ J'ai compris</button></div>
+    <div class="pp-footer-bar"><div class="pp-footer-note">DLM-Corp · Dernière mise à jour 2026 </div><button class="pp-footer-accept" onclick="closePrivacy()">✓ J'ai compris</button></div>
   </div>
 </div>
 
-<!-- DIVERS FIXED -->
+
 <div id="saveToast"></div>
 <div id="announceBanner"><span id="announceText"></span><button id="announceBannerClose" onclick="dismissBanner()">×</button></div>
 <button id="muteBtn" onclick="toggleMute()">🔊</button>
-<button id="adminBtn" onclick="openPasswordModal()">⚙ Admin</button>
+<button id="adminBtn" onclick="openPasswordModal()">⚙Admin⚙</button>
 <div id="aurora"><div class="aurora-blob"></div><div class="aurora-blob"></div></div>
 <canvas id="particleCanvas"></canvas>
 
-<!-- SERVER OVERLAY -->
+
 <div id="serversOverlay">
   <div id="serversBackdrop" onclick="closeServers()"></div>
   <div id="serversPanel">
@@ -786,7 +786,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   <button class="save-btn" onclick="saveCurrentTheme()">Sauvegarder</button>
 </div>
 
-<!-- PAGE PRINCIPALE -->
+
 <div id="page">
   <section id="hero">
     <div class="corp-eyebrow" id="eyebrow">Communauté Française</div>
@@ -888,7 +888,7 @@ const animate=ts=>{
 const stopCanvas =()=>{if(_rafId){cancelAnimationFrame(_rafId);_rafId=null;}};
 const startCanvas=()=>{if(!_rafId)_rafId=requestAnimationFrame(animate);};
 
-/* ---- AUDIO ---- */
+
 let _ac=null,_muted=localStorage.getItem('dlm_muted')==='1',_lastHover=0;
 const getAC=()=>{if(!_ac){_ac=new(window.AudioContext||window.webkitAudioContext)();}return _ac;};
 const playSfx=(f,t,d,v)=>{if(_muted)return;try{const ac=getAC();if(ac.state==='suspended')ac.resume();const o=ac.createOscillator(),g=ac.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d);}catch{}};
@@ -896,7 +896,7 @@ const sfx={hover:()=>{const now=Date.now();if(now-_lastHover<80)return;_lastHove
 function toggleMute(){_muted=!_muted;localStorage.setItem('dlm_muted',_muted?'1':'0');const b=document.getElementById('muteBtn');b.textContent=_muted?'🔇':'🔊';b.classList.toggle('muted',_muted);}
 const showToast=(msg,d=2400)=>{const t=document.getElementById('saveToast');t.textContent=msg;t.style.display='block';clearTimeout(t._tid);t._tid=setTimeout(()=>t.style.display='none',d);};
 
-/* ---- THEME  ---- */
+
 const THEMES=['theme-red','theme-green','theme-gold','theme-ocean','theme-neon','theme-amethyst','theme-magma','theme-mint','theme-cyber','theme-quartz','theme-crimson'];
 let _acc=null;
 const toggleThemeMenu=()=>document.getElementById('themeMenu').classList.toggle('active');
@@ -905,14 +905,14 @@ const applyCustomColor=hex=>{THEMES.forEach(t=>document.body.classList.remove(t)
 const saveCurrentTheme=()=>{const cls=Array.from(document.body.classList).find(x=>x.startsWith('theme-'));localStorage.setItem('dlm_user_theme',JSON.stringify({className:cls||'',customColor:_acc}));document.getElementById('themeMenu').classList.remove('active');showToast('Thème sauvegardé !');};
 const loadSavedTheme=()=>{const s=localStorage.getItem('dlm_user_theme');if(s){const d=JSON.parse(s);if(d.className)setTheme(d.className);if(d.customColor)applyCustomColor(d.customColor);}};
 
-/* ---- BOOT  ---- */
+
 function startBoot(){
   loadSavedTheme();
   [['eyebrow',0],['corpTitle',90],['corpLine',200],['corpSub',280],['ctaZone',370]].forEach(([id,delay])=>{setTimeout(()=>document.getElementById(id)?.classList.add('reveal'),delay);});
   if(_muted){const b=document.getElementById('muteBtn');b.textContent='🔇';b.classList.add('muted');}
 }
 
-/* ---- COUNT ANIMATION ---- */
+
 const _countQueue=new Map();let _countRafId=null;
 function _runCounters(now){
   _countRafId=null;let hasMore=false;
@@ -931,7 +931,7 @@ function animateCount(id,target){
   if(!_countRafId)_countRafId=requestAnimationFrame(_runCounters);
 }
 
-/* ---- SERVER OVERLAY  ---- */
+
 let _overlayOpen=false;
 function openServers(){sfx.open();_overlayOpen=true;stopCanvas();document.getElementById('serversOverlay').classList.add('active');document.body.style.overflow='hidden';if(!document.querySelector('.glass-card'))renderServerCards();updateStats();checkDiscordAPI();}
 function closeServers(){_overlayOpen=false;startCanvas();document.getElementById('serversOverlay').classList.remove('active');document.body.style.overflow='';}
@@ -1115,19 +1115,19 @@ function saveBaseServers(){
   LS.setOv(ov);renderServerCards();refreshAll();showToast('Serveurs mis à jour !');
 }
 
-/* ---- BANNER  ---- */
+
 const applyBanner=()=>{const d=LS.getBanner(),b=document.getElementById('announceBanner'),t=document.getElementById('announceText');if(!b)return;if(d.active&&d.text){t.textContent=d.text;b.classList.add('active');}else b.classList.remove('active');};
 const dismissBanner=()=>document.getElementById('announceBanner').classList.remove('active');
 const loadBannerForm=()=>{const d=LS.getBanner(),inp=document.getElementById('announceInput'),tog=document.getElementById('bannerToggle'),prev=document.getElementById('announce-preview');if(inp)inp.value=d.text||'';if(tog)tog.classList.toggle('on',!!d.active);if(prev)prev.textContent=d.text||'—';};
 const toggleBanner=()=>{const d=LS.getBanner();d.active=!d.active;LS.setBanner(d);document.getElementById('bannerToggle')?.classList.toggle('on',d.active);applyBanner();};
 const saveBanner=()=>{const text=document.getElementById('announceInput')?.value.trim();if(!text){showToast('Texte vide !');return;}const d=LS.getBanner();d.text=text;LS.setBanner(d);applyBanner();document.getElementById('announce-preview').textContent=text;showToast('Bannière mise à jour !');};
 
-/* ---- MAINTENANCE  ---- */
+
 const applyMaintenance=()=>document.getElementById('maintenanceOverlay').classList.toggle('active',LS.getMaint());
 const toggleMaintenance=()=>{const v=!LS.getMaint();LS.setMaint(v);document.getElementById('maintToggle')?.classList.toggle('on',v);applyMaintenance();if(v){closeAdminPanel();document.body.classList.remove('admin-mode');}showToast(v?'🔴 Maintenance activée !':'✅ Désactivée !');};
 const loadSettingsForm=()=>document.getElementById('maintToggle')?.classList.toggle('on',LS.getMaint());
 
-/* ---- EASTER EGGS  ---- */
+
 let _chromaT=null;
 function setupChromaEgg(){const link=document.getElementById('chromaLink');if(!link)return;link.addEventListener('mouseenter',()=>{clearTimeout(_chromaT);_chromaT=setTimeout(openOhh,10000);});link.addEventListener('mouseleave',()=>{clearTimeout(_chromaT);_chromaT=null;});link.addEventListener('click',e=>{if(document.getElementById('ohhOverlay').classList.contains('active'))e.preventDefault();});}
 const openOhh=()=>{document.getElementById('ohhOverlay').classList.add('active');sfx.save();if(navigator.vibrate)navigator.vibrate([80,40,80,40,180]);};
@@ -1137,7 +1137,7 @@ function setupKingfireEgg(){const link=document.getElementById('kingfireLink');i
 const openKingfire=()=>{document.getElementById('kingfireOverlay').classList.add('active');sfx.save();if(navigator.vibrate)navigator.vibrate([100,50,200,50,100]);};
 const closeKingfire=()=>document.getElementById('kingfireOverlay').classList.remove('active');
 
-/* ---- FIREBASE AUTH & PROFIL  ---- */
+
 const FB_AUTH_DOMAIN = 'dlm-realtime.firebaseapp.com';
 const FB_PROJECT_ID  = 'dlm-realtime';
 firebase.initializeApp({apiKey:FB_API_KEY,authDomain:FB_AUTH_DOMAIN,databaseURL:FB,projectId:FB_PROJECT_ID});
@@ -1236,7 +1236,7 @@ function renderProfilePanel(){
     badge.textContent=role;
     badge.className='prof-role-badge role-'+role.toLowerCase().replace(/[^a-z]/g,'-');
   }
-  // Remplir les champs
+ 
   document.getElementById('profDescription').value=_curProfile.description||'';
   document.getElementById('profYoutube').value=_curProfile.socialLinks?.youtube||'';
   document.getElementById('profTwitch').value=_curProfile.socialLinks?.twitch||'';
@@ -1266,7 +1266,7 @@ async function savePseudo(){
 }
 const sanitizePseudo=name=>(name||'User').split(' ')[0].replace(/[^a-zA-Z0-9_\-.]/g,'').slice(0,20)||'User';
 
-/* ---- Sauvegarde des données profil ---- */
+
 async function updateProfileData(){
   if(!_curUser||!_curProfile) return;
   const desc=document.getElementById('profDescription').value.trim().slice(0,50);
@@ -1284,7 +1284,7 @@ async function updateProfileData(){
   showToast('Profil mis à jour !');
   renderProfilePanel();
 }
-/* ---- Avatar custom (base64) ---- */
+
 function uploadCustomAvatar(input){
   const file=input.files[0];
   if(!file) return;
@@ -1305,10 +1305,10 @@ async function resetAvatar(){
   const idToken=await _curUser.getIdToken();
   await fetch(`${FB}/users/${_curUser.uid}/customPhoto.json?auth=${idToken}`,{method:'DELETE'});
   _curProfile.customPhoto=null;
-  _curProfile = await pushHistory(_curUser, idToken, _curProfile, '🖼️ Réinitialisation avatar');
+  _curProfile = await pushHistory(_curUser, idToken, _curProfile, '🖼️Réinitialisation avatar🖼️');
   renderProfilePanel(); updateTopbarProfile(); showToast('Avatar réinitialisé');
 }
-/* ---- Demande de suppression de données ---- */
+
 async function requestAccountDeletion(){
   if(!confirm('⚠️Demander la suppression définitive de votre compte et de toutes vos données ? Un administrateur traitera votre demande.')) return;
   const idToken=await _curUser.getIdToken();
@@ -1318,7 +1318,7 @@ async function requestAccountDeletion(){
   sfx.save();
 }
 
-/* ---- MEMBRES ADMIN  ---- */
+
 async function loadMembres(){
   if(!_authToken){showToast('Connexion admin requise !');return;}
   const list=document.getElementById('membres-list'),empty=document.getElementById('membres-empty');
@@ -1405,7 +1405,7 @@ async function ignoreDeletion(uid){
   loadDeletionRequests();
 }
 
-/* ---- MESSAGERIE  ---- */
+
 const _esc   = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const _cid   = (a,b) => [a,b].sort().join('_');
 const _tsShort = ts => {const d=new Date(ts),n=new Date();return d.toDateString()===n.toDateString()?d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});};
@@ -1483,7 +1483,7 @@ function _stopChatPoll(){clearInterval(_chatPollTimer);_chatPollTimer=null;}
 let _searchTimer=null;
 function searchUsers(q){clearTimeout(_searchTimer);_searchTimer=setTimeout(async()=>{const res=document.getElementById('userSearchResults');if(!res)return;await _fetchPubUsers();const term=q.trim().toLowerCase();const users=Object.values(_pubUsers).filter(u=>{if(!_curUser||u.uid===_curUser.uid)return false;return !term||u.pseudo.toLowerCase().includes(term);});if(!users.length){res.innerHTML=`<div class="user-search-hint">${term?'Aucun résultat pour "'+_esc(term)+'"':'Tapez un pseudo pour rechercher'}</div>`;return;}res.innerHTML=users.map(u=>`<div class="user-res-item" onclick="openChat('${u.uid}','${_esc(u.pseudo)}','${_esc(u.photoURL||'')}')"><img class="user-res-av" src="${_esc(u.photoURL||'')}" alt="" onerror="this.style.background='#333'"><div><div class="user-res-pseudo">${_esc(u.pseudo)}</div><div class="user-res-lbl">Membre DLM-Corp</div></div></div>`).join('');},280);}
 
-/* ---- ADMIN MESSAGES  ---- */
+
 async function loadAdminMessages(silent=false){
   if(!_authToken){if(!silent)showToast('Admin requis !');return;}
   const list=document.getElementById('adm-convs-list'),syncTs=document.getElementById('adm-sync-ts'),statsBar=document.getElementById('adm-mod-stats-bar');if(!list)return;
@@ -1518,7 +1518,7 @@ async function _refreshConvMeta(cid){if(!_authToken)return;try{const r=await _fb
 async function _deleteAllMsgsInConv(){if(!_authToken||!_admCurrentCid)return;const convData=_admCurrentConvData;const count=convData?.msgs?Object.keys(convData.msgs).length:0;if(!count){showToast('Aucun message à supprimer');return;}if(!confirm(`Supprimer les ${count} messages de cette conversation ? Cette action est irréversible.`))return;try{const r=await _fbAdm(`convs/${_admCurrentCid}/msgs`,{method:'DELETE'});if(r&&r.ok){await _fbAdm(`convs/${_admCurrentCid}.json`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({lastText:'',lastTs:0})});showToast(`✓ ${count} messages supprimés`);if(_admCurrentConvData)_admCurrentConvData.msgs={};_renderAdmConvDetail(_admCurrentCid,_admCurrentConvData||{});loadAdminMessages(true);}else{showToast('Erreur suppression !');}}catch{showToast('Erreur réseau !');}}
 async function _deleteAdminConv(cid,participantUids,event){if(event)event.stopPropagation();if(!_authToken)return;if(!confirm('Supprimer TOUTE la conversation et ses messages ? Cette action est irréversible.'))return;try{await _fbAdm(`convs/${cid}`,{method:'DELETE'});await Promise.all(participantUids.map(uid=>_fbAdm(`userConvs/${uid}/${cid}`,{method:'DELETE'})));showToast('✓ Conversation supprimée');if(_admCurrentCid===cid){_admCurrentCid=null;_admCurrentConvData=null;document.getElementById('adm-conv-detail').classList.remove('open');}const row=document.querySelector(`.adm-conv-row[data-cid="${cid}"]`);if(row)row.remove();loadAdminMessages(true);}catch{showToast('Erreur suppression !');}}
 
-/* ---- INIT ---- */
+
 window.addEventListener('load',async()=>{
   resize();initParticles();startCanvas();
   await LS.loadAll();
