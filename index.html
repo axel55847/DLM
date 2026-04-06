@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
-/* ===== STYLES EXISTANTS (inchangés) ===== */
+/* ===== STYLES EXISTANTS ===== */
 :root{--accent:#6a0dad;--sub:#00d2ff;--glow:rgba(0,210,255,.5);--bg-dark:#020208;--bg-grad-1:rgba(106,13,173,.4);--bg-grad-2:rgba(0,210,255,.4);}
 .theme-red{--accent:#ff0000;--sub:#ff4b2b;--glow:rgba(255,0,0,.5);--bg-dark:#080101;--bg-grad-1:rgba(255,0,0,.4);--bg-grad-2:rgba(255,75,43,.4);}
 .theme-green{--accent:#00ff41;--sub:#00ff41;--glow:rgba(0,255,65,.4);--bg-dark:#010801;--bg-grad-1:rgba(0,255,65,.3);--bg-grad-2:rgba(0,255,65,.3);}
@@ -106,7 +106,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .mc-bubble-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:2px;}
 .mc-bubble-badge{background:linear-gradient(135deg,#56ab2f,#a8e063);color:#000;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;white-space:nowrap;}
 
-/* ---- SERVER OVERLAY (simplifié) ---- */
+/* ---- SERVER OVERLAY ---- */
 #serversOverlay{position:fixed;inset:0;z-index:4000;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 #serversOverlay.active{opacity:1;pointer-events:all;}
 #serversBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.9);}
@@ -243,7 +243,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .pw-close:hover{color:white;}
 .pw-error{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff4b2b;text-align:center;min-height:14px;margin-bottom:7px;}
 
-/* ---- ADMIN PANEL (partiel, conservé) ---- */
+/* ---- ADMIN PANEL  ---- */
 #adminPanel{position:fixed;inset:0;z-index:8700;display:none;}
 #adminPanel.active{display:flex!important;}
 @keyframes adminIn{from{transform:translateX(105%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -309,7 +309,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .a-cbody{display:none;padding:14px;background:rgba(0,210,255,.02);border:1px solid var(--sub);border-top:none;border-radius:0 0 11px 11px;margin-bottom:5px;}
 .a-cbody.open{display:block;}
 
-/* ---- PROFIL AMÉLIORÉ (nouveaux styles) ---- */
+/* ---- PROFIL AMÉLIORÉ ---- */
 .prof-social-input{width:100%;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;transition:.2s;}
 .prof-social-input:focus{border-color:var(--sub);box-shadow:0 0 8px var(--glow);}
 .prof-desc-textarea{width:100%;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;resize:vertical;min-height:60px;}
@@ -325,7 +325,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .prof-delete-req-btn{background:rgba(255,75,43,.12);border:1px solid rgba(255,75,43,.3);color:#ff4b2b;padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
 .prof-delete-req-btn:hover{background:rgba(255,75,43,.25);border-color:#ff4b2b;}
 
-/* ---- PROFIL PANEL (structure) ---- */
+/* ---- PROFIL PANEL ---- */
 #profilePanel{position:fixed;inset:0;z-index:7000;display:none;}
 #profilePanel.active{display:flex!important;}
 #profileBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
@@ -378,7 +378,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .member-role-select:focus{border-color:var(--sub);}
 .member-role-select option{background:#060610;color:white;}
 
-/* ---- DEMANDES ADMIN (nouveau) ---- */
+/* ---- DEMANDES ADMIN ---- */
 .req-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
 .req-info{flex:1;min-width:0;}
 .req-pseudo{font-size:11px;font-weight:800;color:white;text-transform:uppercase;}
@@ -390,7 +390,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .req-ignore-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);padding:5px 10px;border-radius:8px;font-size:9px;font-weight:800;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;}
 .req-ignore-btn:hover{background:rgba(255,255,255,.12);color:white;}
 
-/* ---- MESSAGERIE (inchangée) ---- */
+/* ---- MESSAGERIE ---- */
 #msgPanel{position:fixed;inset:0;z-index:7200;display:none;}
 #msgPanel.active{display:flex!important;}
 #msgBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
@@ -455,7 +455,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 .user-res-lbl{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);margin-top:2px;}
 .user-search-hint{text-align:center;padding:30px 16px;color:rgba(255,255,255,.13);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
 
-/* ---- PRIVACY POLICY (inchangée) ---- */
+/* ---- PRIVACY POLICY  ---- */
 #privacyOverlay{position:fixed;inset:0;z-index:6500;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 #privacyOverlay.active{opacity:1;pointer-events:all;}
 #privacyBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.88);}
@@ -597,7 +597,7 @@ body.admin-mode .card-del-btn{display:block!important;}
         <div class="apage" id="apage-announce">
           <div class="ap-title">Annonce</div><div class="ap-sub">Bannière visiteurs</div>
           <div class="a-card"><div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl">Afficher</div><div class="a-ts">Active la bannière</div></div><div class="a-sw" id="bannerToggle" onclick="toggleBanner()"></div></div></div>
-          <div class="a-card"><div class="a-card-t">✏️ Texte</div><label class="a-label">Message (max 120)</label><input type="text" class="a-input" id="announceInput" maxlength="120" placeholder="Ex: Nouveau serveur !" oninput="document.getElementById('announce-preview').textContent=this.value||'—'"><button class="a-btn" onclick="saveBanner()">💾 Sauvegarder</button></div>
+          <div class="a-card"><div class="a-card-t">✏️Texte✏️</div><label class="a-label">Message (max 120)</label><input type="text" class="a-input" id="announceInput" maxlength="120" placeholder="Ex: Nouveau serveur !" oninput="document.getElementById('announce-preview').textContent=this.value||'—'"><button class="a-btn" onclick="saveBanner()">💾 Sauvegarder</button></div>
           <div class="a-card" style="background:rgba(0,210,255,.03);border-color:rgba(0,210,255,.15);"><div class="a-card-t">👁 Aperçu</div><div id="announce-preview" style="background:rgba(0,0,0,.4);border:1px solid var(--sub);border-radius:8px;padding:9px 14px;font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:2px;text-align:center;">—</div></div>
         </div>
         <!-- Ajouter serveur (inchangé) -->
@@ -621,7 +621,7 @@ body.admin-mode .card-del-btn{display:block!important;}
         <div class="apage" id="apage-base">
           <div class="ap-title">Serveurs base</div><div class="ap-sub">Modifier JX, DLM, WYNS'Z</div>
           <div id="baseList"></div>
-          <button class="a-btn" onclick="saveBaseServers()" style="margin-top:6px;">💾 Sauvegarder</button>
+          <button class="a-btn" onclick="saveBaseServers()" style="margin-top:6px;">💾Sauvegarder💾</button>
         </div>
         <!-- Membres (inchangé) -->
         <div class="apage" id="apage-membres">
@@ -647,7 +647,7 @@ body.admin-mode .card-del-btn{display:block!important;}
         <div class="apage" id="apage-settings">
           <div class="ap-title">Paramètres</div><div class="ap-sub">Configuration</div>
           <div class="a-card" style="background:rgba(255,75,43,.04);border-color:rgba(255,75,43,.2);">
-            <div class="a-card-t" style="color:#ff9068;">⚠️ Zone dangereuse</div>
+            <div class="a-card-t" style="color:#ff9068;">⚠️Zone dangereuse⚠️</div>
             <div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl" style="color:#ff9068;">Mode Maintenance</div><div class="a-ts">Cache tout le site</div></div><div class="a-sw danger" id="maintToggle" onclick="toggleMaintenance()"></div></div>
           </div>
         </div>
@@ -687,26 +687,26 @@ body.admin-mode .card-del-btn{display:block!important;}
     </div>
     <div class="prof-body">
       <!-- Description (max 50 caractères) -->
-      <div class="prof-section-lbl">📝 Bio</div>
+      <div class="prof-section-lbl">📝Bio📝</div>
       <textarea id="profDescription" class="prof-desc-textarea" maxlength="50" placeholder="Description (50 caractères max)"></textarea>
       
       <!-- Liens sociaux -->
-      <div class="prof-section-lbl">🔗 Liens sociaux</div>
+      <div class="prof-section-lbl">🔗Liens sociaux🔗</div>
       <input type="text" id="profYoutube" class="prof-social-input" placeholder="YouTube URL">
       <input type="text" id="profTwitch" class="prof-social-input" placeholder="Twitch URL">
       <input type="text" id="profSpotify" class="prof-social-input" placeholder="Spotify URL">
       <input type="text" id="profTiktok" class="prof-social-input" placeholder="TikTok URL">
       
       <!-- Bouton mise à jour -->
-      <button class="prof-update-btn" onclick="updateProfileData()">💾 Mettre à jour le profil</button>
+      <button class="prof-update-btn" onclick="updateProfileData()">💾Mettre à jour le profil💾</button>
       
       <!-- Historique -->
       <div class="prof-section-lbl">Historique d'activité</div>
       <div class="prof-hist-list" id="profHistList"></div>
       
       <!-- Demande de suppression -->
-      <button class="prof-delete-req-btn" onclick="requestAccountDeletion()">⚠️ Demander la suppression de mon compte</button>
-      <button class="prof-signout-btn" onclick="signOutUser()" style="margin-top:12px;">🚪 Se déconnecter</button>
+      <button class="prof-delete-req-btn" onclick="requestAccountDeletion()">⚠️Demander la suppression de mon compte⚠️</button>
+      <button class="prof-signout-btn" onclick="signOutUser()" style="margin-top:12px;">🚪Se déconnecter🚪</button>
     </div>
   </div>
 </div>
@@ -737,7 +737,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   <div id="privacyBackdrop" onclick="closePrivacy()"></div>
   <div id="privacyPanel">
     <div class="pp-drag-handle"><div class="pp-drag-bar"></div></div>
-    <div class="pp-topbar"><div class="pp-title-block"><div class="pp-icon">🔒</div><div><div class="pp-title">Politique de Confidentialité</div><div class="pp-sub">DLM-Corp · RGPD · Données personnelles</div></div></div><button class="pp-close-btn" onclick="closePrivacy()">×</button></div>
+    <div class="pp-topbar"><div class="pp-title-block"><div class="pp-icon">🔒</div><div><div class="pp-title">Politique de Confidentialité🔒</div><div class="pp-sub">DLM-Corp · RGPD · Données personnelles</div></div></div><button class="pp-close-btn" onclick="closePrivacy()">×</button></div>
     <div class="pp-body">
       <div class="pp-section"><div class="pp-section-num">Article 01</div><div class="pp-section-title">Collecte des données personnelles</div><p class="pp-text">Lors de l'utilisation de la connexion via Google, nous collectons et stockons les informations suivantes dans notre base de données :</p><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Identité et Profil :&nbsp;</strong>Nom associé au compte Google, pseudonyme personnalisé, adresse e-mail et URL de la photo de profil.</li><li><strong style="color:rgba(255,255,255,.75);">Identifiants techniques :&nbsp;</strong>Identifiant unique (UID) permettant de lier votre profil à vos activités, et jetons d'authentification pour sécuriser vos sessions.</li><li><strong style="color:rgba(255,255,255,.75);">Données de gestion :&nbsp;</strong>Date de création du compte, rôle attribué (utilisateur, modérateur, etc.) et date de dernière connexion.</li></ul></div>
       <div class="pp-section"><div class="pp-section-num">Article 02</div><div class="pp-section-title">Finalité du traitement</div><p class="pp-text">Ces données sont traitées pour les objectifs suivants :</p><ul class="pp-list"><li>Assurer l'authentification sécurisée des utilisateurs.</li><li>Gérer les comptes et les permissions au sein de la plateforme.</li><li>Assurer le suivi technique et la sécurité du service.</li></ul></div>
@@ -1179,7 +1179,7 @@ async function loadOrCreateProfile(user){
   }catch{ profile=null; }
   if(profile&&profile.uid){
     await fetch(`${FB}/users/${user.uid}/lastSeen.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(Date.now())});
-    profile = await pushHistory(user, idToken, profile, '🔗 Connexion au site');
+    profile = await pushHistory(user, idToken, profile, '🔗Connexion au site🔗');
     // Ensure new fields exist
     if(profile.description===undefined) profile.description='';
     if(!profile.socialLinks) profile.socialLinks={};
@@ -1295,7 +1295,7 @@ function uploadCustomAvatar(input){
     const idToken=await _curUser.getIdToken();
     await fetch(`${FB}/users/${_curUser.uid}/customPhoto.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(base64)});
     _curProfile.customPhoto=base64;
-    _curProfile = await pushHistory(_curUser, idToken, _curProfile, '🖼️ Avatar personnalisé uploadé');
+    _curProfile = await pushHistory(_curUser, idToken, _curProfile, '🖼️Avatar personnalisé uploadé🖼️');
     renderProfilePanel(); updateTopbarProfile(); showToast('Avatar mis à jour !');
   };
   reader.readAsDataURL(file);
@@ -1348,7 +1348,7 @@ async function setMemberRole(uid, role){
   }catch{showToast('Erreur réseau !');}
 }
 
-/* ---- ADMIN : Demandes de suppression ---- */
+
 async function loadDeletionRequests(){
   if(!_authToken){showToast('Admin requis');return;}
   const container=document.getElementById('demandes-list');
@@ -1372,16 +1372,16 @@ async function loadDeletionRequests(){
 async function approveDeletion(uid){
   if(!confirm(`⚠️ Supprimer définitivement l'utilisateur ${uid} ? Toutes ses données et conversations seront effacées.`)) return;
   try{
-    // Supprimer l'utilisateur
+   
     await fetch(`${FB}/users/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
     await fetch(`${FB}/publicUsers/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
-    // Supprimer ses conversations
+   
     const convsRes=await fetch(`${FB}/userConvs/${uid}.json?auth=${_authToken}`);
     const convs=convsRes.ok?await convsRes.json():null;
     if(convs){
       for(const cid in convs){
         await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`,{method:'DELETE'});
-        // Nettoyer les références chez l'autre participant
+       
         const convData=await (await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`)).json();
         if(convData && convData.participants){
           for(const puid in convData.participants){
@@ -1391,11 +1391,11 @@ async function approveDeletion(uid){
       }
     }
     await fetch(`${FB}/userConvs/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
-    // Supprimer la demande
+   
     await fetch(`${FB}/deletionRequests/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
     showToast(`Utilisateur ${uid} supprimé.`);
     loadDeletionRequests();
-    loadMembres(); // rafraîchir la liste
+    loadMembres();
   }catch(e){showToast('Erreur suppression');}
 }
 async function ignoreDeletion(uid){
