@@ -8,7 +8,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
-/* ===== THEMES ===== */
 :root{--accent:#6a0dad;--sub:#00d2ff;--glow:rgba(0,210,255,.5);--bg-dark:#020208;--bg-grad-1:rgba(106,13,173,.4);--bg-grad-2:rgba(0,210,255,.4);}
 .theme-red{--accent:#ff0000;--sub:#ff4b2b;--glow:rgba(255,0,0,.5);--bg-dark:#080101;--bg-grad-1:rgba(255,0,0,.4);--bg-grad-2:rgba(255,75,43,.4);}
 .theme-green{--accent:#00ff41;--sub:#00ff41;--glow:rgba(0,255,65,.4);--bg-dark:#010801;--bg-grad-1:rgba(0,255,65,.3);--bg-grad-2:rgba(0,255,65,.3);}
@@ -21,16 +20,12 @@
 .theme-cyber{--accent:#f5d020;--sub:#f53803;--glow:rgba(245,56,3,.5);--bg-dark:#0a0802;--bg-grad-1:rgba(245,208,32,.4);--bg-grad-2:rgba(245,56,3,.4);}
 .theme-quartz{--accent:#e0e0e0;--sub:#ffffff;--glow:rgba(255,255,255,.4);--bg-dark:#0a0a0a;--bg-grad-1:rgba(255,255,255,.2);--bg-grad-2:rgba(200,200,200,.2);}
 .theme-crimson{--accent:#dc143c;--sub:#990000;--glow:rgba(220,20,60,.5);--bg-dark:#050001;--bg-grad-1:rgba(220,20,60,.3);--bg-grad-2:rgba(153,0,0,.3);}
-
-/* ===== GLOBAL ===== */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg-dark);font-family:'Inter',sans-serif;color:white;overflow-x:hidden;min-height:100vh;}
 body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px);}
 #aurora{display:none;}
 body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 55vw 55vw at 5% 5%,var(--bg-grad-1),transparent 70%),radial-gradient(ellipse 45vw 45vw at 95% 95%,var(--bg-grad-2),transparent 70%);}
 #particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;}
-
-/* ===== MAINTENANCE ===== */
 #maintenanceOverlay{display:none;position:fixed;inset:0;z-index:8000;background:#000;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
 #maintenanceOverlay.active{display:flex!important;}
 .maint-blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.2;pointer-events:none;animation:mblob 8s infinite alternate ease-in-out;}
@@ -50,8 +45,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 @keyframes mdot{0%,100%{transform:scale(1);opacity:.4;}50%{transform:scale(1.6);opacity:1;}}
 .maint-hint{position:fixed;bottom:18px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.05);cursor:pointer;transition:.3s;z-index:2;}
 .maint-hint:hover{color:rgba(255,255,255,.22);text-shadow:0 0 8px var(--sub);}
-
-/* ===== TOPBAR ===== */
 #topbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:rgba(2,2,8,.7);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.05);}
 .tb-brand{font-size:12px;font-weight:800;letter-spacing:6px;text-transform:uppercase;color:var(--sub);}
 .tb-right{display:flex;gap:9px;align-items:center;}
@@ -64,8 +57,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .auth-btn:hover{border-color:var(--sub);box-shadow:0 0 12px var(--glow);}
 .auth-avatar-tb{width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid var(--sub);flex-shrink:0;}
 .msg-unread-badge{position:absolute;top:-5px;right:-5px;background:#ff4b2b;color:#fff;font-size:7px;font-weight:900;font-family:'Space Mono',monospace;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;box-shadow:0 0 8px rgba(255,75,43,.7);pointer-events:none;}
-
-/* ===== THEME PANEL ===== */
 .theme-panel{position:fixed;top:58px;right:18px;width:210px;background:rgba(0,0,0,.96);backdrop-filter:blur(20px);border:1px solid var(--sub);border-radius:18px;padding:13px;z-index:200;display:none;flex-direction:column;gap:7px;box-shadow:0 10px 40px rgba(0,0,0,.7);}
 .theme-panel.active{display:flex;}
 .theme-opt{padding:7px 10px;border-radius:9px;font-size:10px;font-weight:800;color:white;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:.2s;text-transform:uppercase;text-align:center;font-family:'Space Mono',monospace;}
@@ -73,8 +64,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .color-picker-wrapper{display:flex;align-items:center;justify-content:space-between;margin-top:4px;padding-top:9px;border-top:1px solid rgba(255,255,255,.1);}
 #customColor{cursor:pointer;background:none;border:none;width:36px;height:28px;}
 .save-btn{background:var(--sub);color:black;border:none;padding:9px;border-radius:9px;font-size:10px;font-weight:800;text-transform:uppercase;cursor:pointer;font-family:'Space Mono',monospace;transition:.2s;}
-
-/* ===== HERO ===== */
 #page{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;}
 #hero{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:110px 32px 32px;text-align:center;gap:0;}
 .corp-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:7px;text-transform:uppercase;color:var(--sub);margin-bottom:14px;opacity:0;transform:translateY(12px);transition:all .55s ease;}
@@ -103,8 +92,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .mc-bubble-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:rgba(134,255,88,.9);text-transform:uppercase;letter-spacing:2px;}
 .mc-bubble-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:2px;}
 .mc-bubble-badge{background:linear-gradient(135deg,#56ab2f,#a8e063);color:#000;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;white-space:nowrap;}
-
-/* ===== SERVEURS ===== */
 #serversOverlay{position:fixed;inset:0;z-index:4000;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 #serversOverlay.active{opacity:1;pointer-events:all;}
 #serversBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.9);}
@@ -167,8 +154,6 @@ body.admin-mode .card-del-btn{display:block!important;}
 .card-skeleton{flex:1 1 260px;max-width:310px;height:280px;border-radius:22px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);overflow:hidden;position:relative;}
 .card-skeleton::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.04) 50%,transparent 100%);transform:translateX(-100%);animation:skel-shine 1.4s ease infinite;}
 @keyframes skel-shine{to{transform:translateX(100%);}}
-
-/* ===== TEAM / BOT ===== */
 #team-section{width:100%;max-width:820px;padding:0 24px 72px;display:flex;flex-direction:column;align-items:center;gap:20px;}
 .section-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--sub);display:flex;align-items:center;gap:10px;width:100%;}
 .section-label::before,.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--sub));}
@@ -185,21 +170,15 @@ body.admin-mode .card-del-btn{display:block!important;}
 .bot-tag{font-family:'Space Mono',monospace;font-size:9px;padding:4px 9px;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid var(--sub);color:white;letter-spacing:1px;}
 .bot-add-btn{background:rgba(0,0,0,.6);color:var(--sub)!important;border:2px solid var(--sub);padding:11px 20px;border-radius:11px;font-weight:800;text-transform:uppercase;text-decoration:none!important;transition:.4s cubic-bezier(.175,.885,.32,1.275);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;}
 .bot-add-btn:hover{background:var(--sub);color:black!important;transform:scale(1.06);box-shadow:0 0 24px var(--sub);}
-
-/* ===== ANNONCE ===== */
 #announceBanner{display:none;position:fixed;top:0;left:0;right:0;z-index:500;background:linear-gradient(90deg,rgba(0,0,0,.7),rgba(0,0,0,.5));border-bottom:1px solid var(--sub);padding:10px 50px;text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:white;text-transform:uppercase;letter-spacing:2px;}
 #announceBanner.active{display:block!important;}
 #announceBannerClose{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;}
-
-/* ===== BOUTONS FIXES ===== */
 #muteBtn{position:fixed;bottom:22px;left:22px;z-index:8500;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.33);font-size:15px;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;padding:0;}
 #muteBtn:hover{border-color:var(--sub)!important;color:var(--sub)!important;}
 #muteBtn.muted{color:rgba(255,75,43,.5)!important;border-color:rgba(255,75,43,.3)!important;}
 #adminBtn{position:fixed;bottom:22px;right:22px;z-index:8500;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.18);padding:7px 13px;border-radius:9px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.3s;font-family:inherit;}
 #adminBtn:hover{border-color:var(--sub)!important;color:var(--sub)!important;}
 #saveToast{position:fixed;bottom:38px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:var(--sub);padding:11px 24px;border-radius:50px;border:1px solid var(--sub);font-weight:800;font-size:11px;text-transform:uppercase;z-index:9999;box-shadow:0 0 20px var(--glow);display:none;font-family:'Space Mono',monospace;white-space:nowrap;}
-
-/* ===== EASTER EGGS ===== */
 #ohhOverlay{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);}
 #ohhOverlay.active{display:flex!important;}
 @keyframes ohhIn{0%{opacity:0;transform:translate(-50%,-50%)scale(.4)rotate(-10deg)}60%{transform:translate(-50%,-50%)scale(1.07)rotate(2deg)}100%{opacity:1;transform:translate(-50%,-50%)scale(1)rotate(0deg)}}
@@ -212,8 +191,6 @@ body.admin-mode .card-del-btn{display:block!important;}
 #kingfireOverlay.active{display:flex!important;}
 #kingfireBox{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(8,2,2,.96);border:2px solid #ff4b2b;border-radius:28px;padding:44px 54px;text-align:center;box-shadow:0 0 80px rgba(255,75,43,.6);cursor:pointer;max-width:90vw;animation:ohhIn .6s cubic-bezier(.175,.885,.32,1.275) both;}
 #kingfireBox .ohh-text{background:linear-gradient(90deg,#fff,#ff4b2b,#ff0000,#ff4b2b,#fff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:ohhG 2s linear infinite;}
-
-/* ===== PASSWORD MODAL ===== */
 #passwordOverlay{position:fixed;inset:0;z-index:8600;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
 #passwordOverlay.active{opacity:1!important;pointer-events:all!important;}
 @keyframes modalIn{0%{opacity:0;transform:translateY(26px)scale(.95)}100%{opacity:1;transform:translateY(0)scale(1)}}
@@ -231,8 +208,6 @@ body.admin-mode .card-del-btn{display:block!important;}
 .pw-close{position:absolute;top:13px;right:16px;background:none;border:none;color:rgba(255,255,255,.28);font-size:21px;cursor:pointer;}
 .pw-close:hover{color:white;}
 .pw-error{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff4b2b;text-align:center;min-height:14px;margin-bottom:7px;}
-
-/* ===== ADMIN PANEL ===== */
 #adminPanel{position:fixed;inset:0;z-index:8700;display:none;}
 #adminPanel.active{display:flex!important;}
 @keyframes adminIn{from{transform:translateX(105%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -295,18 +270,14 @@ body.admin-mode .card-del-btn{display:block!important;}
 .a-chdr.open .ca{transform:rotate(180deg);color:var(--sub);}
 .a-cbody{display:none;padding:14px;background:rgba(0,210,255,.02);border:1px solid var(--sub);border-top:none;border-radius:0 0 11px 11px;margin-bottom:5px;}
 .a-cbody.open{display:block;}
-
-/* ===== ADMIN MESSAGES MODÉRATION===== */
 .adm-mod-stats{display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap;}
 .adm-mod-stat{flex:1;min-width:70px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:11px;text-align:center;}
 .adm-mod-stat-v{font-size:19px;font-weight:800;color:var(--sub);}
 .adm-mod-stat-l{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.26);margin-top:3px;}
-
 .adm-sync-bar{display:flex;align-items:center;gap:8px;padding:7px 11px;border-radius:9px;background:rgba(0,210,255,.03);border:1px solid rgba(0,210,255,.08);margin-bottom:10px;}
 .adm-sync-dot{width:6px;height:6px;border-radius:50%;background:var(--sub);box-shadow:0 0 6px var(--glow);animation:dpulse 2s infinite;flex-shrink:0;}
 .adm-sync-txt{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1px;flex:1;}
 .adm-sync-ts{font-family:'Space Mono',monospace;font-size:8px;color:var(--sub);font-weight:800;}
-
 .adm-conv-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:6px;transition:.18s;}
 .adm-conv-row:hover{border-color:rgba(0,210,255,.2);background:rgba(0,210,255,.025);}
 .adm-conv-avs{display:flex;flex-shrink:0;align-items:center;}
@@ -320,7 +291,6 @@ body.admin-mode .card-del-btn{display:block!important;}
 .adm-conv-count{font-family:'Space Mono',monospace;font-size:8px;font-weight:800;color:var(--sub);background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.15);border-radius:6px;padding:1px 6px;}
 .adm-del-conv-btn{padding:5px 9px;border-radius:7px;background:rgba(255,75,43,.08);border:1px solid rgba(255,75,43,.22);color:rgba(255,75,43,.55);font-family:'Space Mono',monospace;font-size:8px;font-weight:800;text-transform:uppercase;cursor:pointer;transition:.18s;flex-shrink:0;white-space:nowrap;}
 .adm-del-conv-btn:hover{background:rgba(255,75,43,.2);color:#ff4b2b;border-color:#ff4b2b;}
-
 #adm-conv-detail{display:none;margin-top:14px;border-radius:14px;background:rgba(255,255,255,.018);border:1px solid rgba(0,210,255,.15);overflow:hidden;}
 #adm-conv-detail.open{display:block;}
 .adm-conv-detail-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:rgba(0,210,255,.04);border-bottom:1px solid rgba(0,210,255,.1);gap:8px;flex-wrap:wrap;}
@@ -331,11 +301,9 @@ body.admin-mode .card-del-btn{display:block!important;}
 .adm-filter-select option{background:#060610;color:white;}
 .adm-del-all-btn{padding:5px 10px;border-radius:7px;background:rgba(255,75,43,.08);border:1px solid rgba(255,75,43,.25);color:rgba(255,75,43,.65);font-family:'Space Mono',monospace;font-size:8px;font-weight:800;text-transform:uppercase;cursor:pointer;transition:.18s;white-space:nowrap;}
 .adm-del-all-btn:hover{background:rgba(255,75,43,.2);color:#ff4b2b;border-color:#ff4b2b;}
-
 #adm-conv-msgs{max-height:440px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:5px;}
 #adm-conv-msgs::-webkit-scrollbar{width:3px;}
 #adm-conv-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:2px;}
-
 .adm-bubble-wrap{display:flex;align-items:flex-start;gap:7px;max-width:85%;align-self:flex-start;}
 .adm-bubble-wrap.right-wrap{align-self:flex-end;flex-direction:row-reverse;}
 .adm-bubble-inner{display:flex;flex-direction:column;}
@@ -346,8 +314,6 @@ body.admin-mode .card-del-btn{display:block!important;}
 .adm-bubble-meta.right-meta{text-align:right;}
 .adm-msg-del-btn{width:26px;height:26px;border-radius:7px;background:rgba(255,75,43,.08);border:1px solid rgba(255,75,43,.2);color:rgba(255,75,43,.45);font-size:12px;cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:5px;padding:0;}
 .adm-msg-del-btn:hover{background:rgba(255,75,43,.22);color:#ff4b2b;border-color:#ff4b2b;}
-
-/* ===== PROFIL ===== */
 .prof-social-input{width:100%;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;transition:.2s;}
 .prof-social-input:focus{border-color:var(--sub);box-shadow:0 0 8px var(--glow);}
 .prof-desc-textarea{width:100%;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;resize:vertical;min-height:60px;}
@@ -362,10 +328,8 @@ body.admin-mode .card-del-btn{display:block!important;}
 .prof-update-btn:hover{filter:brightness(1.15);transform:scale(1.02);}
 .prof-delete-req-btn{background:rgba(255,75,43,.1);border:1px solid rgba(255,75,43,.28);color:#ff4b2b;padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
 .prof-delete-req-btn:hover{background:rgba(255,75,43,.22);border-color:#ff4b2b;}
-/* bouton déconnexion profil */
 .prof-signout-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;margin-top:9px;}
 .prof-signout-btn:hover{border-color:#ff4b2b;color:#ff4b2b;background:rgba(255,75,43,.07);}
-
 #profilePanel{position:fixed;inset:0;z-index:7000;display:none;}
 #profilePanel.active{display:flex!important;}
 #profileBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
@@ -406,8 +370,6 @@ body.admin-mode .card-del-btn{display:block!important;}
 .prof-hist-action{font-size:11px;font-weight:700;color:rgba(255,255,255,.78);line-height:1.4;}
 .prof-hist-ts{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);margin-top:2px;}
 .prof-hist-empty{text-align:center;padding:22px 0;color:rgba(255,255,255,.12);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
-
-/* ===== MEMBRES ADMIN ===== */
 .member-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
 .member-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.06);flex-shrink:0;}
 .member-info{flex:1;min-width:0;}
@@ -417,8 +379,6 @@ body.admin-mode .card-del-btn{display:block!important;}
 .member-role-select{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:white;border-radius:8px;padding:5px 9px;font-family:'Space Mono',monospace;font-size:9px;font-weight:800;text-transform:uppercase;cursor:pointer;outline:none;flex-shrink:0;}
 .member-role-select:focus{border-color:var(--sub);}
 .member-role-select option{background:#060610;color:white;}
-
-/* ===== DEMANDES ADMIN ===== */
 .req-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
 .req-info{flex:1;min-width:0;}
 .req-pseudo{font-size:11px;font-weight:800;color:white;text-transform:uppercase;}
@@ -429,8 +389,6 @@ body.admin-mode .card-del-btn{display:block!important;}
 .req-delete-btn:hover{background:rgba(255,75,43,.25);border-color:#ff4b2b;}
 .req-ignore-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);padding:5px 10px;border-radius:8px;font-size:9px;font-weight:800;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;}
 .req-ignore-btn:hover{background:rgba(255,255,255,.12);color:white;}
-
-/* ===== MESSAGERIE PRIVÉE ===== */
 #msgPanel{position:fixed;inset:0;z-index:7200;display:none;}
 #msgPanel.active{display:flex!important;}
 #msgBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
@@ -494,8 +452,65 @@ body.admin-mode .card-del-btn{display:block!important;}
 .user-res-pseudo{font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;}
 .user-res-lbl{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);margin-top:2px;}
 .user-search-hint{text-align:center;padding:30px 16px;color:rgba(255,255,255,.13);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
-
-/* ===== PRIVACY POLICY ===== */
+.user-res-actions{display:flex;gap:5px;flex-shrink:0;margin-left:auto;}
+#friendsPanel{position:fixed;inset:0;z-index:7100;display:none;}
+#friendsPanel.active{display:flex!important;}
+#friendsBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
+#friendsInner{position:absolute;top:0;right:0;bottom:0;width:min(460px,100vw);background:#060610;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;animation:adminIn .35s cubic-bezier(.2,.8,.2,1) both;}
+.friends-header{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.friends-search-wrap{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0;}
+.friends-search{width:100%;padding:9px 13px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:white;font-family:'Space Mono',monospace;font-size:12px;outline:none;transition:.2s;}
+.friends-search:focus{border-color:var(--sub);box-shadow:0 0 10px var(--glow);}
+.friends-search::placeholder{color:rgba(255,255,255,.18);font-size:9px;text-transform:uppercase;letter-spacing:2px;font-weight:800;}
+.friends-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.friends-tab{flex:1;padding:10px;background:transparent;border:none;color:rgba(255,255,255,.35);font-family:'Space Mono',monospace;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;}
+.friends-tab:hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.03);}
+.friends-tab.active{color:var(--sub);border-bottom-color:var(--sub);background:rgba(0,210,255,.03);}
+.friends-tab-badge{display:inline-flex;align-items:center;justify-content:center;background:#ff4b2b;color:#fff;font-size:7px;font-weight:900;min-width:14px;height:14px;border-radius:7px;padding:0 3px;margin-left:5px;box-shadow:0 0 6px rgba(255,75,43,.6);vertical-align:middle;}
+.friends-tab-content{flex:1;overflow-y:auto;padding:8px 10px 14px;}
+.friends-tab-content::-webkit-scrollbar{width:3px;}
+.friends-tab-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:2px;}
+.friends-empty{text-align:center;padding:40px 20px;color:rgba(255,255,255,.13);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;line-height:2.2;}
+.friend-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:11px;transition:.18s;}
+.friend-row:hover{background:rgba(255,255,255,.04);}
+.friend-av-wrap{position:relative;flex-shrink:0;}
+.friend-av{width:42px;height:42px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.1);}
+.friend-online-dot{position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#333;border:2px solid #060610;transition:.3s;}
+.friend-online-dot.online{background:#00ff41;box-shadow:0 0 6px #00ff41;}
+.friend-info{flex:1;min-width:0;}
+.friend-pseudo{font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.friend-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);margin-top:2px;}
+.friend-actions{display:flex;gap:5px;flex-shrink:0;}
+.friend-msg-btn{width:30px;height:30px;border-radius:8px;background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.18);color:var(--sub);font-size:14px;cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center;padding:0;}
+.friend-msg-btn:hover{background:rgba(0,210,255,.2);border-color:var(--sub);}
+.friend-del-btn{width:30px;height:30px;border-radius:8px;background:rgba(255,75,43,.05);border:1px solid rgba(255,75,43,.15);color:rgba(255,75,43,.45);font-size:14px;cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center;padding:0;}
+.friend-del-btn:hover{background:rgba(255,75,43,.18);color:#ff4b2b;border-color:#ff4b2b;}
+.req-in-row{display:flex;align-items:center;gap:10px;padding:10px;border-radius:11px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);margin-bottom:7px;transition:.18s;}
+.req-in-row:hover{border-color:rgba(0,210,255,.2);}
+.req-in-av{width:40px;height:40px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.07);flex-shrink:0;}
+.req-in-info{flex:1;min-width:0;}
+.req-in-pseudo{font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;}
+.req-in-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);margin-top:2px;}
+.req-in-actions{display:flex;gap:5px;flex-shrink:0;}
+.req-accept-btn{padding:5px 10px;border-radius:8px;background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.25);color:#00ff41;font-family:'Space Mono',monospace;font-size:9px;font-weight:800;cursor:pointer;transition:.18s;white-space:nowrap;}
+.req-accept-btn:hover{background:rgba(0,255,65,.2);border-color:#00ff41;}
+.req-decline-btn{padding:5px 10px;border-radius:8px;background:rgba(255,75,43,.07);border:1px solid rgba(255,75,43,.22);color:rgba(255,75,43,.6);font-family:'Space Mono',monospace;font-size:9px;font-weight:800;cursor:pointer;transition:.18s;white-space:nowrap;}
+.req-decline-btn:hover{background:rgba(255,75,43,.2);color:#ff4b2b;border-color:#ff4b2b;}
+.fsearch-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;transition:.18s;}
+.fsearch-row:hover{background:rgba(255,255,255,.04);}
+.fsearch-av{width:38px;height:38px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.07);flex-shrink:0;}
+.fsearch-info{flex:1;min-width:0;}
+.fsearch-pseudo{font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;}
+.fsearch-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);margin-top:2px;}
+.friend-add-btn{padding:5px 10px;border-radius:8px;background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.2);color:var(--sub);font-family:'Space Mono',monospace;font-size:9px;font-weight:800;cursor:pointer;transition:.18s;white-space:nowrap;flex-shrink:0;}
+.friend-add-btn:hover{background:rgba(0,210,255,.2);}
+.friend-add-btn:disabled{opacity:.38;cursor:default;}
+.fst-tag{padding:4px 9px;border-radius:8px;font-family:'Space Mono',monospace;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;flex-shrink:0;white-space:nowrap;}
+.fst-sent{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.35);}
+.fst-friend{background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.18);color:var(--sub);}
+.fst-incoming{background:rgba(0,255,65,.07);border:1px solid rgba(0,255,65,.2);color:#00ff41;}
+.friends-section-hdr{font-family:'Space Mono',monospace;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:rgba(255,255,255,.25);padding:10px 4px 6px;display:flex;align-items:center;gap:8px;}
+.friends-section-hdr::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06);}
 #privacyOverlay{position:fixed;inset:0;z-index:6500;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 #privacyOverlay.active{opacity:1;pointer-events:all;}
 #privacyBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.88);}
@@ -534,15 +549,12 @@ body.admin-mode .card-del-btn{display:block!important;}
 .pp-footer-note{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:2px;}
 .pp-footer-accept{padding:9px 22px;border-radius:10px;border:none;background:var(--sub);color:#000;font-family:'Space Mono',monospace;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.2s;}
 .pp-footer-accept:hover{filter:brightness(1.15);transform:scale(1.03);}
-
-/* ===== FOOTER ===== */
 #site-footer{width:100%;padding:28px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:10px;border-top:1px solid rgba(255,255,255,.04);position:relative;z-index:3;}
 .footer-links{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;}
 .footer-link{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.2s;background:none;border:none;padding:4px 8px;}
 .footer-link:hover{color:var(--sub);}
 .footer-sep{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.12);}
 .footer-copy{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.1);text-transform:uppercase;letter-spacing:3px;}
-
 @media(max-width:600px){
   .corp-title{font-size:44px;letter-spacing:6px;}
   #srvCardsArea{padding:12px 10px;gap:10px;}
@@ -552,7 +564,7 @@ body.admin-mode .card-del-btn{display:block!important;}
   #adminInner{width:100vw!important;}
   #adminNav{width:130px!important;}
   .mc-bubble{flex-wrap:wrap;justify-content:center;text-align:center;}
-  #profileInner,#msgInner{width:100vw!important;}
+  #profileInner,#msgInner,#friendsInner{width:100vw!important;}
   #privacyPanel{height:96vh;}
   .pp-topbar,.pp-body,.pp-footer-bar{padding-left:16px;padding-right:16px;}
   .adm-conv-detail-hdr{flex-wrap:wrap;}
@@ -561,332 +573,40 @@ body.admin-mode .card-del-btn{display:block!important;}
 </style>
 </head>
 <body>
-
-<!-- MAINTENANCE OVERLAY -->
-<div id="maintenanceOverlay">
-  <div class="maint-blob"></div><div class="maint-blob"></div>
-  <div class="maint-content">
-    <div class="maint-title">Maintenance</div>
-    <div class="maint-sub">Le site revient bientôt — DLM Team</div>
-    <div class="maint-bar-wrap"><div class="maint-bar"></div></div>
-    <div class="maint-dots"><div class="maint-dot"></div><div class="maint-dot"></div><div class="maint-dot"></div></div>
-  </div>
-  <span class="maint-hint" onclick="openPasswordModal()">admin</span>
-</div>
-
-<!-- EASTER EGGS -->
+<div id="maintenanceOverlay"><div class="maint-blob"></div><div class="maint-blob"></div><div class="maint-content"><div class="maint-title">Maintenance</div><div class="maint-sub">Le site revient bientôt — DLM Team</div><div class="maint-bar-wrap"><div class="maint-bar"></div></div><div class="maint-dots"><div class="maint-dot"></div><div class="maint-dot"></div><div class="maint-dot"></div></div></div><span class="maint-hint" onclick="openPasswordModal()">admin</span></div>
 <div id="ohhOverlay" onclick="closeOhh()"><div id="ohhBox"><span class="ohh-text">OHH I CANT MOVE!</span><span class="ohh-sub">Chromanticore — Producer DLM</span><span class="ohh-hint">clique pour fermer</span></div></div>
 <div id="kingfireOverlay" onclick="closeKingfire()"><div id="kingfireBox"><span class="ohh-text">BECAREFUL !</span><span class="ohh-sub">Kingfire — Co-Fondateur DLM</span><span class="ohh-hint">clique pour fermer</span></div></div>
-
-<!-- PASSWORD MODAL -->
-<div id="passwordOverlay">
-  <div class="pw-box" id="pwBox">
-    <button class="pw-close" onclick="closePwModal()">×</button>
-    <div class="pw-icon">⚡</div>
-    <div class="pw-title">Zone Admin</div>
-    <div class="pw-sub">Accès restreint — DLM Team</div>
-    <label class="pw-label">Mot de passe</label>
-    <input type="password" class="pw-input" id="adminPassword" placeholder="••••••••••" onkeydown="if(event.key==='Enter')checkPassword()">
-    <div class="pw-error" id="pwError"></div>
-    <button class="pw-btn" onclick="checkPassword()">Entrer →</button>
-  </div>
-</div>
-
-<!-- ADMIN PANEL -->
-<div id="adminPanel">
-  <div id="adminBackdrop" onclick="closeAdminPanel()"></div>
-  <div id="adminInner">
-    <div id="adminHeader">
-      <div style="display:flex;align-items:center;gap:12px;"><div class="adm-logo">⚡</div><div><div class="adm-htitle">DLM Admin</div><div class="adm-hsub">Panneau de gestion</div></div></div>
-      <button id="adminCloseBtn" onclick="closeAdminPanel()">×</button>
-    </div>
-    <div id="adminBody">
-      <nav id="adminNav">
-        <div class="anav-sep">Général</div>
-        <button class="anav-btn active" onclick="showPage('dashboard')"><span class="anav-ic">📊</span>Dashboard</button>
-        <button class="anav-btn" onclick="showPage('announce')"><span class="anav-ic">📢</span>Annonce</button>
-        <div class="anav-sep">Serveurs</div>
-        <button class="anav-btn" onclick="showPage('add')"><span class="anav-ic">➕</span>Ajouter</button>
-        <button class="anav-btn" onclick="showPage('manage')"><span class="anav-ic">🗂</span>Gérer</button>
-        <button class="anav-btn" onclick="showPage('base')"><span class="anav-ic">🔧</span>Base</button>
-        <div class="anav-sep">Communauté</div>
-        <button class="anav-btn" onclick="showPage('membres')"><span class="anav-ic">👥</span>Membres</button>
-        <button class="anav-btn" onclick="showPage('messages')"><span class="anav-ic">💬</span>Messages</button>
-        <button class="anav-btn" onclick="showPage('demandes')"><span class="anav-ic">📋</span>Demandes</button>
-        <div class="anav-sep">Site</div>
-        <button class="anav-btn" onclick="showPage('settings')"><span class="anav-ic">⚙️</span>Paramètres</button>
-        <div style="flex:1"></div>
-        <button class="anav-btn anav-danger" onclick="adminLogout()"><span class="anav-ic">🚪</span>Déco</button>
-      </nav>
-      <div id="adminContent">
-        <!-- Dashboard -->
-        <div class="apage active" id="apage-dashboard">
-          <div class="ap-title">Dashboard</div><div class="ap-sub">Vue d'ensemble</div>
-          <div class="a-pills">
-            <div class="a-pill"><div class="a-pill-v" id="adm-total">—</div><div class="a-pill-l">Membres Discord</div></div>
-            <div class="a-pill"><div class="a-pill-v" id="adm-online">—</div><div class="a-pill-l">En ligne</div></div>
-            <div class="a-pill"><div class="a-pill-v" id="adm-srv">—</div><div class="a-pill-l">Serveurs</div></div>
-            <div class="a-pill"><div class="a-pill-v" id="adm-accounts">—</div><div class="a-pill-l">Comptes</div></div>
-          </div>
-          <div class="a-card"><div class="a-card-t">🖥 Serveurs</div><div id="adm-srv-preview"></div></div>
-          <div class="a-card"><div class="a-card-t">📡 API Discord</div><div style="display:flex;align-items:center;gap:10px;"><div id="adm-api-dot" style="width:9px;height:9px;border-radius:50%;background:#555;transition:.3s;"></div><span id="adm-api-lbl" style="font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;">—</span><span id="adm-api-lat" style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);"></span></div></div>
-        </div>
-        <!-- Annonce -->
-        <div class="apage" id="apage-announce">
-          <div class="ap-title">Annonce</div><div class="ap-sub">Bannière visiteurs</div>
-          <div class="a-card"><div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl">Afficher</div><div class="a-ts">Active la bannière</div></div><div class="a-sw" id="bannerToggle" onclick="toggleBanner()"></div></div></div>
-          <div class="a-card"><div class="a-card-t">✏️ Texte</div><label class="a-label">Message (max 120)</label><input type="text" class="a-input" id="announceInput" maxlength="120" placeholder="Ex: Nouveau serveur !" oninput="document.getElementById('announce-preview').textContent=this.value||'—'"><button class="a-btn" onclick="saveBanner()">💾 Sauvegarder</button></div>
-          <div class="a-card" style="background:rgba(0,210,255,.03);border-color:rgba(0,210,255,.15);"><div class="a-card-t">👁 Aperçu</div><div id="announce-preview" style="background:rgba(0,0,0,.4);border:1px solid var(--sub);border-radius:8px;padding:9px 14px;font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:2px;text-align:center;">—</div></div>
-        </div>
-        <!-- Ajouter serveur -->
-        <div class="apage" id="apage-add">
-          <div class="ap-title">Ajouter</div><div class="ap-sub">Nouveau serveur Discord</div>
-          <div class="a-card"><div class="a-card-t">➕ Infos</div>
-            <label class="a-label">Nom *</label><input type="text" class="a-input" id="f-name" placeholder="Ex: DLM-Serv">
-            <label class="a-label">Lien Discord *</label><input type="text" class="a-input" id="f-invite" placeholder="https://discord.gg/XXXXXXXX">
-            <label class="a-label">Date (optionnel)</label><input type="text" class="a-input" id="f-date" placeholder="Ex: 7 avril 2024">
-            <div class="a-err" id="formError"></div>
-            <button class="a-btn" onclick="addServer()">➕ Ajouter</button>
-          </div>
-        </div>
-        <!-- Gérer serveurs -->
-        <div class="apage" id="apage-manage">
-          <div class="ap-title">Gérer</div><div class="ap-sub">Serveurs manuels</div>
-          <div id="manage-list"></div>
-          <div id="manage-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun serveur</div>
-        </div>
-        <!-- Base serveurs -->
-        <div class="apage" id="apage-base">
-          <div class="ap-title">Serveurs base</div><div class="ap-sub">Modifier JX, DLM, WYNS'Z</div>
-          <div id="baseList"></div>
-          <button class="a-btn" onclick="saveBaseServers()" style="margin-top:6px;">💾 Sauvegarder</button>
-        </div>
-        <!-- Membres -->
-        <div class="apage" id="apage-membres">
-          <div class="ap-title">Membres</div><div class="ap-sub">Comptes inscrits · Rôles</div>
-          <div id="membres-list"></div>
-          <div id="membres-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun membre inscrit</div>
-        </div>
-        <!-- Messages -->
-        <div class="apage" id="apage-messages">
-          <div class="ap-title">Messages</div>
-          <div class="ap-sub">Modération · Surveillance · Suppression</div>
-          <div class="adm-mod-stats" id="adm-mod-stats-bar" style="display:none;">
-            <div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-convs">0</div><div class="adm-mod-stat-l">Conversations</div></div>
-            <div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-msgs">0</div><div class="adm-mod-stat-l">Messages</div></div>
-            <div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-users">0</div><div class="adm-mod-stat-l">Utilisateurs</div></div>
-          </div>
-          <div class="a-card">
-            <div class="a-card-t" style="display:flex;align-items:center;justify-content:space-between;">
-              <span>💬 Conversations</span>
-              <button class="a-btn" style="padding:6px 12px;font-size:9px;" onclick="loadAdminMessages()">🔄 Rafraîchir</button>
-            </div>
-            <div class="adm-sync-bar">
-              <div class="adm-sync-dot"></div>
-              <span class="adm-sync-txt">Sync automatique · toutes les 8s</span>
-              <span class="adm-sync-ts" id="adm-sync-ts">—</span>
-            </div>
-            <div id="adm-convs-list">
-              <div style="font-size:10px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div>
-            </div>
-          </div>
-          <div id="adm-conv-detail">
-            <div class="adm-conv-detail-hdr">
-              <div id="adm-conv-detail-title">Historique</div>
-              <div class="adm-conv-detail-actions">
-                <select class="adm-filter-select" id="adm-msg-filter" onchange="_applyMsgFilter()">
-                  <option value="all">Tous</option>
-                  <option value="left">Participant 1</option>
-                  <option value="right">Participant 2</option>
-                </select>
-                <button class="adm-del-all-btn" onclick="_deleteAllMsgsInConv()" title="Supprimer tous les messages">🗑 Vider conv</button>
-                <button onclick="document.getElementById('adm-conv-detail').classList.remove('open')" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:18px;cursor:pointer;line-height:1;padding:0 2px;">×</button>
-              </div>
-            </div>
-            <div id="adm-conv-msgs"></div>
-          </div>
-        </div>
-        <!-- Demandes de suppression -->
-        <div class="apage" id="apage-demandes">
-          <div class="ap-title">Demandes de suppression</div><div class="ap-sub">Utilisateurs souhaitant effacer leurs données</div>
-          <div id="demandes-list"><div style="font-size:10px;color:rgba(255,255,255,.25);padding:4px;">Chargement…</div></div>
-        </div>
-        <!-- Paramètres -->
-        <div class="apage" id="apage-settings">
-          <div class="ap-title">Paramètres</div><div class="ap-sub">Configuration</div>
-          <div class="a-card" style="background:rgba(255,75,43,.04);border-color:rgba(255,75,43,.2);">
-            <div class="a-card-t" style="color:#ff9068;">⚠️ Zone dangereuse</div>
-            <div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl" style="color:#ff9068;">Mode Maintenance</div><div class="a-ts">Cache tout le site</div></div><div class="a-sw danger" id="maintToggle" onclick="toggleMaintenance()"></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROFIL -->
-<div id="profilePanel">
-  <div id="profileBackdrop" onclick="closeProfile()"></div>
-  <div id="profileInner">
-    <div class="prof-header">
-      <div><div class="adm-htitle">Mon Profil</div><div class="adm-hsub">Compte DLM</div></div>
-      <button class="prof-close" onclick="closeProfile()">×</button>
-    </div>
-    <div class="prof-identity">
-      <div class="prof-avatar-wrap"><img class="prof-avatar" id="profAvatar" src="" alt=""><span class="prof-role-badge role-membre" id="profRoleBadge">Membre</span></div>
-      <div class="prof-pseudo-wrap"><div class="prof-pseudo" id="profPseudo">—</div><button class="prof-edit-btn" onclick="openPseudoEditor()">✏️</button></div>
-      <div class="prof-google-email" id="profEmail"></div>
-      <div class="prof-editor" id="pseudoEditor">
-        <input type="text" class="prof-pseudo-input" id="pseudoInput" maxlength="20" placeholder="Nouveau pseudo..." onkeydown="if(event.key==='Enter')savePseudo()">
-        <div class="prof-editor-actions"><button class="prof-save-btn" onclick="savePseudo()">Sauvegarder</button><button class="prof-cancel-btn" onclick="closePseudoEditor()">Annuler</button></div>
-      </div>
-      <div class="prof-avatar-upload">
-        <label class="prof-avatar-label" for="customAvatarInput">📷 Changer avatar</label>
-        <input type="file" id="customAvatarInput" accept="image/jpeg,image/png,image/gif" style="display:none;" onchange="uploadCustomAvatar(this)">
-        <button class="prof-reset-avatar" onclick="resetAvatar()">↺ Réinitialiser</button>
-      </div>
-    </div>
-    <div class="prof-body">
-      <div class="prof-section-lbl">📝 Bio</div>
-      <textarea id="profDescription" class="prof-desc-textarea" maxlength="50" placeholder="Description (50 caractères max)"></textarea>
-      <div class="prof-section-lbl">🔗 Liens sociaux</div>
-      <input type="text" id="profYoutube" class="prof-social-input" placeholder="YouTube URL">
-      <input type="text" id="profTwitch" class="prof-social-input" placeholder="Twitch URL">
-      <input type="text" id="profSpotify" class="prof-social-input" placeholder="Spotify URL">
-      <input type="text" id="profTiktok" class="prof-social-input" placeholder="TikTok URL">
-      <button class="prof-update-btn" onclick="updateProfileData()">💾 Mettre à jour le profil</button>
-      <div class="prof-section-lbl">Historique d'activité</div>
-      <div class="prof-hist-list" id="profHistList"></div>
-      <button class="prof-delete-req-btn" onclick="requestAccountDeletion()">⚠️ Demander la suppression de mon compte</button>
-      <button class="prof-signout-btn" onclick="signOutUser()">🚪 Se déconnecter</button>
-    </div>
-  </div>
-</div>
-
-<!-- MESSAGERIE PRIVÉE -->
-<div id="msgPanel">
-  <div id="msgBackdrop" onclick="closeMsgPanel()"></div>
-  <div id="msgInner">
-    <div id="msgInboxView">
-      <div class="msg-top-bar"><div><div class="msg-top-title">Messages</div><div class="msg-top-sub">DLM · Messagerie privée</div></div><button class="msg-close-btn" onclick="closeMsgPanel()">×</button></div>
-      <button class="msg-new-conv-btn" onclick="showNewMsgView()">✉️  Nouvelle conversation</button>
-      <div id="convList"><div class="conv-empty">Chargement…</div></div>
-    </div>
-    <div id="msgChatView">
-      <div class="chat-top"><button class="chat-back" onclick="showInboxView()">←</button><img class="chat-peer-av" id="chatPeerAv" src="" alt=""><div><div class="chat-peer-name" id="chatPeerName">—</div><div class="chat-peer-hint">Discussion privée · DLM</div></div></div>
-      <div id="chatMessages"></div>
-      <div class="chat-input-row"><textarea id="chatInput" placeholder="Écrire un message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,78)+'px'"></textarea><button id="chatSendBtn" onclick="sendChatMsg()">➤</button></div>
-    </div>
-    <div id="msgNewView">
-      <div class="new-msg-top"><button class="chat-back" onclick="showInboxView()">←</button><input type="text" id="userSearchInput" placeholder="Rechercher un pseudo…" oninput="searchUsers(this.value)"></div>
-      <div id="userSearchResults"><div class="user-search-hint">Tapez un pseudo pour rechercher un membre</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- PRIVACY POLICY -->
-<div id="privacyOverlay">
-  <div id="privacyBackdrop" onclick="closePrivacy()"></div>
-  <div id="privacyPanel">
-    <div class="pp-drag-handle"><div class="pp-drag-bar"></div></div>
-    <div class="pp-topbar"><div class="pp-title-block"><div class="pp-icon">🔒</div><div><div class="pp-title">Politique de Confidentialité</div><div class="pp-sub">DLM-Corp · RGPD · Données personnelles</div></div></div><button class="pp-close-btn" onclick="closePrivacy()">×</button></div>
-    <div class="pp-body">
-      <div class="pp-section"><div class="pp-section-num">Article 01</div><div class="pp-section-title">Collecte des données personnelles</div><p class="pp-text">Lors de l'utilisation de la connexion via Google, nous collectons et stockons les informations suivantes dans notre base de données :</p><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Identité et Profil :&nbsp;</strong>Nom associé au compte Google, pseudonyme personnalisé, adresse e-mail et URL de la photo de profil.</li><li><strong style="color:rgba(255,255,255,.75);">Identifiants techniques :&nbsp;</strong>Identifiant unique (UID) permettant de lier votre profil à vos activités, et jetons d'authentification pour sécuriser vos sessions.</li><li><strong style="color:rgba(255,255,255,.75);">Données de gestion :&nbsp;</strong>Date de création du compte, rôle attribué (utilisateur, modérateur, etc.) et date de dernière connexion.</li></ul></div>
-      <div class="pp-section"><div class="pp-section-num">Article 02</div><div class="pp-section-title">Finalité du traitement</div><p class="pp-text">Ces données sont traitées pour les objectifs suivants :</p><ul class="pp-list"><li>Assurer l'authentification sécurisée des utilisateurs.</li><li>Gérer les comptes et les permissions au sein de la plateforme.</li><li>Assurer le suivi technique et la sécurité du service.</li></ul></div>
-      <div class="pp-section"><div class="pp-section-num">Article 03</div><div class="pp-section-title">Messagerie, Sécurité et Modération</div><p class="pp-text">Le site met à disposition un système de messagerie permettant aux utilisateurs d'échanger entre eux.</p><div class="pp-highlight"><span class="pp-highlight-icon">💾</span><div class="pp-highlight-text"><strong style="color:rgba(255,255,255,.8);">Stockage :&nbsp;</strong>Les messages sont enregistrés sur nos serveurs pour permettre leur consultation par les participants.</div></div><div class="pp-warning"><span style="font-size:18px;flex-shrink:0;margin-top:1px;">⚠️</span><div class="pp-warning-text"><strong style="color:rgba(255,255,255,.8);">Modération :&nbsp;</strong>Afin de garantir un environnement respectueux et conforme au règlement du site, l'équipe d'administration dispose d'un droit d'accès aux conversations. En cas de signalement ou de comportement inapproprié, nous nous réservons le droit de consulter, de bloquer ou de supprimer les messages et les comptes concernés sans préavis.</div></div></div>
-      <div class="pp-section"><div class="pp-section-num">Article 04</div><div class="pp-section-title">Partage et Confidentialité</div><div class="pp-highlight"><span class="pp-highlight-icon">🛡️</span><div class="pp-highlight-text">Vos données sont strictement personnelles. Elles ne sont jamais vendues, louées ou partagées avec des partenaires tiers à des fins commerciales. L'authentification étant gérée par Google, nous n'avons jamais accès à votre mot de passe Google.</div></div></div>
-      <div class="pp-section"><div class="pp-section-num">Article 05</div><div class="pp-section-title">Conservation et Suppression des données</div><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Conservation :&nbsp;</strong>Vos données sont conservées tant que votre compte est actif sur la plateforme.</li><li><strong style="color:rgba(255,255,255,.75);">Suppression :&nbsp;</strong>Vous pouvez demander la suppression de votre compte à tout moment. Cette action entraîne l'effacement définitif de votre profil, de vos accès et de vos messages stockés sous un délai de 30 jours.</li><li><strong style="color:rgba(255,255,255,.75);">Révocation :&nbsp;</strong>Vous pouvez également annuler l'autorisation d'accès de notre plateforme depuis les paramètres de sécurité de votre compte Google.</li></ul></div>
-      <div class="pp-section"><div class="pp-section-num">Article 06</div><div class="pp-section-title">Contact et Droits des utilisateurs</div><p class="pp-text">Conformément à la réglementation sur la protection des données (RGPD), vous disposez d'un droit d'accès, de rectification et d'effacement de vos informations.</p><p class="pp-text">Pour toute question relative à vos données ou pour exercer vos droits, vous pouvez nous contacter directement :</p><div class="pp-contact-block"><div><div class="pp-contact-lbl">Adresse e-mail de contact</div><a class="pp-contact-email" href="mailto:axell01020304@gmail.com">axell01020304@gmail.com</a></div></div></div>
-    </div>
-    <div class="pp-footer-bar"><div class="pp-footer-note">DLM-Corp · Dernière mise à jour 2026 </div><button class="pp-footer-accept" onclick="closePrivacy()">✓ J'ai compris</button></div>
-  </div>
-</div>
-
+<div id="passwordOverlay"><div class="pw-box" id="pwBox"><button class="pw-close" onclick="closePwModal()">×</button><div class="pw-icon">⚡</div><div class="pw-title">Zone Admin</div><div class="pw-sub">Accès restreint — DLM Team</div><label class="pw-label">Mot de passe</label><input type="password" class="pw-input" id="adminPassword" placeholder="••••••••••" onkeydown="if(event.key==='Enter')checkPassword()"><div class="pw-error" id="pwError"></div><button class="pw-btn" onclick="checkPassword()">Entrer →</button></div></div>
+<div id="adminPanel"><div id="adminBackdrop" onclick="closeAdminPanel()"></div><div id="adminInner"><div id="adminHeader"><div style="display:flex;align-items:center;gap:12px;"><div class="adm-logo">⚡</div><div><div class="adm-htitle">DLM Admin</div><div class="adm-hsub">Panneau de gestion</div></div></div><button id="adminCloseBtn" onclick="closeAdminPanel()">×</button></div><div id="adminBody"><nav id="adminNav"><div class="anav-sep">Général</div><button class="anav-btn active" onclick="showPage('dashboard')"><span class="anav-ic">📊</span>Dashboard</button><button class="anav-btn" onclick="showPage('announce')"><span class="anav-ic">📢</span>Annonce</button><div class="anav-sep">Serveurs</div><button class="anav-btn" onclick="showPage('add')"><span class="anav-ic">➕</span>Ajouter</button><button class="anav-btn" onclick="showPage('manage')"><span class="anav-ic">🗂</span>Gérer</button><button class="anav-btn" onclick="showPage('base')"><span class="anav-ic">🔧</span>Base</button><div class="anav-sep">Communauté</div><button class="anav-btn" onclick="showPage('membres')"><span class="anav-ic">👥</span>Membres</button><button class="anav-btn" onclick="showPage('messages')"><span class="anav-ic">💬</span>Messages</button><button class="anav-btn" onclick="showPage('demandes')"><span class="anav-ic">📋</span>Demandes</button><div class="anav-sep">Site</div><button class="anav-btn" onclick="showPage('settings')"><span class="anav-ic">⚙️</span>Paramètres</button><div style="flex:1"></div><button class="anav-btn anav-danger" onclick="adminLogout()"><span class="anav-ic">🚪</span>Déco</button></nav><div id="adminContent"><div class="apage active" id="apage-dashboard"><div class="ap-title">Dashboard</div><div class="ap-sub">Vue d'ensemble</div><div class="a-pills"><div class="a-pill"><div class="a-pill-v" id="adm-total">—</div><div class="a-pill-l">Membres Discord</div></div><div class="a-pill"><div class="a-pill-v" id="adm-online">—</div><div class="a-pill-l">En ligne</div></div><div class="a-pill"><div class="a-pill-v" id="adm-srv">—</div><div class="a-pill-l">Serveurs</div></div><div class="a-pill"><div class="a-pill-v" id="adm-accounts">—</div><div class="a-pill-l">Comptes</div></div></div><div class="a-card"><div class="a-card-t">🖥 Serveurs</div><div id="adm-srv-preview"></div></div><div class="a-card"><div class="a-card-t">📡 API Discord</div><div style="display:flex;align-items:center;gap:10px;"><div id="adm-api-dot" style="width:9px;height:9px;border-radius:50%;background:#555;transition:.3s;"></div><span id="adm-api-lbl" style="font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;">—</span><span id="adm-api-lat" style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);"></span></div></div></div><div class="apage" id="apage-announce"><div class="ap-title">Annonce</div><div class="ap-sub">Bannière visiteurs</div><div class="a-card"><div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl">Afficher</div><div class="a-ts">Active la bannière</div></div><div class="a-sw" id="bannerToggle" onclick="toggleBanner()"></div></div></div><div class="a-card"><div class="a-card-t">✏️ Texte</div><label class="a-label">Message (max 120)</label><input type="text" class="a-input" id="announceInput" maxlength="120" placeholder="Ex: Nouveau serveur !" oninput="document.getElementById('announce-preview').textContent=this.value||'—'"><button class="a-btn" onclick="saveBanner()">💾 Sauvegarder</button></div><div class="a-card" style="background:rgba(0,210,255,.03);border-color:rgba(0,210,255,.15);"><div class="a-card-t">👁 Aperçu</div><div id="announce-preview" style="background:rgba(0,0,0,.4);border:1px solid var(--sub);border-radius:8px;padding:9px 14px;font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:2px;text-align:center;">—</div></div></div><div class="apage" id="apage-add"><div class="ap-title">Ajouter</div><div class="ap-sub">Nouveau serveur Discord</div><div class="a-card"><div class="a-card-t">➕ Infos</div><label class="a-label">Nom *</label><input type="text" class="a-input" id="f-name" placeholder="Ex: DLM-Serv"><label class="a-label">Lien Discord *</label><input type="text" class="a-input" id="f-invite" placeholder="https://discord.gg/XXXXXXXX"><label class="a-label">Date (optionnel)</label><input type="text" class="a-input" id="f-date" placeholder="Ex: 7 avril 2024"><div class="a-err" id="formError"></div><button class="a-btn" onclick="addServer()">➕ Ajouter</button></div></div><div class="apage" id="apage-manage"><div class="ap-title">Gérer</div><div class="ap-sub">Serveurs manuels</div><div id="manage-list"></div><div id="manage-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun serveur</div></div><div class="apage" id="apage-base"><div class="ap-title">Serveurs base</div><div class="ap-sub">Modifier JX, DLM, WYNS'Z</div><div id="baseList"></div><button class="a-btn" onclick="saveBaseServers()" style="margin-top:6px;">💾 Sauvegarder</button></div><div class="apage" id="apage-membres"><div class="ap-title">Membres</div><div class="ap-sub">Comptes inscrits · Rôles</div><div id="membres-list"></div><div id="membres-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun membre inscrit</div></div><div class="apage" id="apage-messages"><div class="ap-title">Messages</div><div class="ap-sub">Modération · Surveillance · Suppression</div><div class="adm-mod-stats" id="adm-mod-stats-bar" style="display:none;"><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-convs">0</div><div class="adm-mod-stat-l">Conversations</div></div><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-msgs">0</div><div class="adm-mod-stat-l">Messages</div></div><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-users">0</div><div class="adm-mod-stat-l">Utilisateurs</div></div></div><div class="a-card"><div class="a-card-t" style="display:flex;align-items:center;justify-content:space-between;"><span>💬 Conversations</span><button class="a-btn" style="padding:6px 12px;font-size:9px;" onclick="loadAdminMessages()">🔄 Rafraîchir</button></div><div class="adm-sync-bar"><div class="adm-sync-dot"></div><span class="adm-sync-txt">Sync automatique · toutes les 8s</span><span class="adm-sync-ts" id="adm-sync-ts">—</span></div><div id="adm-convs-list"><div style="font-size:10px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div></div></div><div id="adm-conv-detail"><div class="adm-conv-detail-hdr"><div id="adm-conv-detail-title">Historique</div><div class="adm-conv-detail-actions"><select class="adm-filter-select" id="adm-msg-filter" onchange="_applyMsgFilter()"><option value="all">Tous</option><option value="left">Participant 1</option><option value="right">Participant 2</option></select><button class="adm-del-all-btn" onclick="_deleteAllMsgsInConv()">🗑 Vider conv</button><button onclick="document.getElementById('adm-conv-detail').classList.remove('open')" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:18px;cursor:pointer;line-height:1;padding:0 2px;">×</button></div></div><div id="adm-conv-msgs"></div></div></div><div class="apage" id="apage-demandes"><div class="ap-title">Demandes de suppression</div><div class="ap-sub">Utilisateurs souhaitant effacer leurs données</div><div id="demandes-list"><div style="font-size:10px;color:rgba(255,255,255,.25);padding:4px;">Chargement…</div></div></div><div class="apage" id="apage-settings"><div class="ap-title">Paramètres</div><div class="ap-sub">Configuration</div><div class="a-card" style="background:rgba(255,75,43,.04);border-color:rgba(255,75,43,.2);"><div class="a-card-t" style="color:#ff9068;">⚠️ Zone dangereuse</div><div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl" style="color:#ff9068;">Mode Maintenance</div><div class="a-ts">Cache tout le site</div></div><div class="a-sw danger" id="maintToggle" onclick="toggleMaintenance()"></div></div></div></div></div></div></div></div>
+<div id="profilePanel"><div id="profileBackdrop" onclick="closeProfile()"></div><div id="profileInner"><div class="prof-header"><div><div class="adm-htitle">Mon Profil</div><div class="adm-hsub">Compte DLM</div></div><button class="prof-close" onclick="closeProfile()">×</button></div><div class="prof-identity"><div class="prof-avatar-wrap"><img class="prof-avatar" id="profAvatar" src="" alt=""><span class="prof-role-badge role-membre" id="profRoleBadge">Membre</span></div><div class="prof-pseudo-wrap"><div class="prof-pseudo" id="profPseudo">—</div><button class="prof-edit-btn" onclick="openPseudoEditor()">✏️</button></div><div class="prof-google-email" id="profEmail"></div><div class="prof-editor" id="pseudoEditor"><input type="text" class="prof-pseudo-input" id="pseudoInput" maxlength="20" placeholder="Nouveau pseudo..." onkeydown="if(event.key==='Enter')savePseudo()"><div class="prof-editor-actions"><button class="prof-save-btn" onclick="savePseudo()">Sauvegarder</button><button class="prof-cancel-btn" onclick="closePseudoEditor()">Annuler</button></div></div><div class="prof-avatar-upload"><label class="prof-avatar-label" for="customAvatarInput">📷 Changer avatar</label><input type="file" id="customAvatarInput" accept="image/jpeg,image/png,image/gif" style="display:none;" onchange="uploadCustomAvatar(this)"><button class="prof-reset-avatar" onclick="resetAvatar()">↺ Réinitialiser</button></div></div><div class="prof-body"><div class="prof-section-lbl">📝 Bio</div><textarea id="profDescription" class="prof-desc-textarea" maxlength="50" placeholder="Description (50 caractères max)"></textarea><div class="prof-section-lbl">🔗 Liens sociaux</div><input type="text" id="profYoutube" class="prof-social-input" placeholder="YouTube URL"><input type="text" id="profTwitch" class="prof-social-input" placeholder="Twitch URL"><input type="text" id="profSpotify" class="prof-social-input" placeholder="Spotify URL"><input type="text" id="profTiktok" class="prof-social-input" placeholder="TikTok URL"><button class="prof-update-btn" onclick="updateProfileData()">💾 Mettre à jour le profil</button><div class="prof-section-lbl">Historique d'activité</div><div class="prof-hist-list" id="profHistList"></div><button class="prof-delete-req-btn" onclick="requestAccountDeletion()">⚠️ Demander la suppression de mon compte</button><button class="prof-signout-btn" onclick="signOutUser()">🚪 Se déconnecter</button></div></div></div>
+<div id="msgPanel"><div id="msgBackdrop" onclick="closeMsgPanel()"></div><div id="msgInner"><div id="msgInboxView"><div class="msg-top-bar"><div><div class="msg-top-title">Messages</div><div class="msg-top-sub">DLM · Messagerie privée</div></div><button class="msg-close-btn" onclick="closeMsgPanel()">×</button></div><button class="msg-new-conv-btn" onclick="showNewMsgView()">✉️  Nouvelle conversation</button><div id="convList"><div class="conv-empty">Chargement…</div></div></div><div id="msgChatView"><div class="chat-top"><button class="chat-back" onclick="showInboxView()">←</button><img class="chat-peer-av" id="chatPeerAv" src="" alt=""><div><div class="chat-peer-name" id="chatPeerName">—</div><div class="chat-peer-hint">Discussion privée · DLM</div></div></div><div id="chatMessages"></div><div class="chat-input-row"><textarea id="chatInput" placeholder="Écrire un message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,78)+'px'"></textarea><button id="chatSendBtn" onclick="sendChatMsg()">➤</button></div></div><div id="msgNewView"><div class="new-msg-top"><button class="chat-back" onclick="showInboxView()">←</button><input type="text" id="userSearchInput" placeholder="Rechercher un pseudo…" oninput="searchUsers(this.value)"></div><div id="userSearchResults"><div class="user-search-hint">Tapez un pseudo pour rechercher un membre</div></div></div></div></div>
+<div id="friendsPanel"><div id="friendsBackdrop" onclick="closeFriendsPanel()"></div><div id="friendsInner"><div class="friends-header"><div><div class="adm-htitle">Amis</div><div class="adm-hsub">Communauté DLM · Réseau</div></div><button class="prof-close" onclick="closeFriendsPanel()">×</button></div><div class="friends-search-wrap"><input type="text" class="friends-search" id="friendSearchInput" placeholder="Rechercher un membre…" oninput="onFriendSearch(this.value)"></div><div class="friends-tabs"><button class="friends-tab active" id="ftab-friends" onclick="switchFriendsTab('friends')">👥 Amis <span id="friends-count-lbl" style="opacity:.4;font-size:8px;margin-left:4px;">0</span></button><button class="friends-tab" id="ftab-requests" onclick="switchFriendsTab('requests')">📩 Demandes <span class="friends-tab-badge" id="freq-badge" style="display:none;">0</span></button></div><div class="friends-tab-content" id="ftab-content-friends"><div id="friends-list-container"><div class="friends-empty">Chargement…</div></div></div><div class="friends-tab-content" id="ftab-content-requests" style="display:none;"><div id="friends-req-container"><div class="friends-empty">Chargement…</div></div></div></div></div>
+<div id="privacyOverlay"><div id="privacyBackdrop" onclick="closePrivacy()"></div><div id="privacyPanel"><div class="pp-drag-handle"><div class="pp-drag-bar"></div></div><div class="pp-topbar"><div class="pp-title-block"><div class="pp-icon">🔒</div><div><div class="pp-title">Politique de Confidentialité</div><div class="pp-sub">DLM-Corp · RGPD · Données personnelles</div></div></div><button class="pp-close-btn" onclick="closePrivacy()">×</button></div><div class="pp-body"><div class="pp-section"><div class="pp-section-num">Article 01</div><div class="pp-section-title">Collecte des données personnelles</div><p class="pp-text">Lors de l'utilisation de la connexion via Google, nous collectons et stockons les informations suivantes dans notre base de données :</p><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Identité et Profil :&nbsp;</strong>Nom associé au compte Google, pseudonyme personnalisé, adresse e-mail et URL de la photo de profil.</li><li><strong style="color:rgba(255,255,255,.75);">Identifiants techniques :&nbsp;</strong>Identifiant unique (UID) permettant de lier votre profil à vos activités, et jetons d'authentification pour sécuriser vos sessions.</li><li><strong style="color:rgba(255,255,255,.75);">Données de gestion :&nbsp;</strong>Date de création du compte, rôle attribué et date de dernière connexion.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 02</div><div class="pp-section-title">Finalité du traitement</div><p class="pp-text">Ces données sont traitées pour les objectifs suivants :</p><ul class="pp-list"><li>Assurer l'authentification sécurisée des utilisateurs.</li><li>Gérer les comptes et les permissions au sein de la plateforme.</li><li>Assurer le suivi technique et la sécurité du service.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 03</div><div class="pp-section-title">Messagerie, Sécurité et Modération</div><p class="pp-text">Le site met à disposition un système de messagerie permettant aux utilisateurs d'échanger entre eux.</p><div class="pp-highlight"><span class="pp-highlight-icon">💾</span><div class="pp-highlight-text"><strong style="color:rgba(255,255,255,.8);">Stockage :&nbsp;</strong>Les messages sont enregistrés sur nos serveurs pour permettre leur consultation par les participants.</div></div><div class="pp-warning"><span style="font-size:18px;flex-shrink:0;margin-top:1px;">⚠️</span><div class="pp-warning-text"><strong style="color:rgba(255,255,255,.8);">Modération :&nbsp;</strong>L'équipe d'administration dispose d'un droit d'accès aux conversations en cas de comportement inapproprié.</div></div></div><div class="pp-section"><div class="pp-section-num">Article 04</div><div class="pp-section-title">Partage et Confidentialité</div><div class="pp-highlight"><span class="pp-highlight-icon">🛡️</span><div class="pp-highlight-text">Vos données sont strictement personnelles. Elles ne sont jamais vendues, louées ou partagées avec des partenaires tiers à des fins commerciales.</div></div></div><div class="pp-section"><div class="pp-section-num">Article 05</div><div class="pp-section-title">Conservation et Suppression des données</div><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Conservation :&nbsp;</strong>Vos données sont conservées tant que votre compte est actif sur la plateforme.</li><li><strong style="color:rgba(255,255,255,.75);">Suppression :&nbsp;</strong>Vous pouvez demander la suppression de votre compte à tout moment. Cette action entraîne l'effacement définitif sous 30 jours.</li><li><strong style="color:rgba(255,255,255,.75);">Révocation :&nbsp;</strong>Vous pouvez annuler l'autorisation depuis les paramètres de sécurité de votre compte Google.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 06</div><div class="pp-section-title">Contact et Droits des utilisateurs</div><p class="pp-text">Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et d'effacement de vos informations.</p><div class="pp-contact-block"><div><div class="pp-contact-lbl">Adresse e-mail de contact</div><a class="pp-contact-email" href="mailto:axell01020304@gmail.com">axell01020304@gmail.com</a></div></div></div></div><div class="pp-footer-bar"><div class="pp-footer-note">DLM-Corp · Dernière mise à jour 2026</div><button class="pp-footer-accept" onclick="closePrivacy()">✓ J'ai compris</button></div></div></div>
 <div id="saveToast"></div>
 <div id="announceBanner"><span id="announceText"></span><button id="announceBannerClose" onclick="dismissBanner()">×</button></div>
 <button id="muteBtn" onclick="toggleMute()">🔊</button>
 <button id="adminBtn" onclick="openPasswordModal()">⚙ Admin</button>
-<div id="aurora"><div class="aurora-blob"></div><div class="aurora-blob"></div></div>
+<div id="aurora"></div>
 <canvas id="particleCanvas"></canvas>
-
-<!-- SERVEURS PARTENAIRES -->
-<div id="serversOverlay">
-  <div id="serversBackdrop" onclick="closeServers()"></div>
-  <div id="serversPanel">
-    <div id="srvTopBar"><div><div class="srv-tb-title">Serveurs Partenaires</div><div class="srv-tb-sub">DLM · Serveurs Partenaires</div></div><button class="srv-close-btn" onclick="closeServers()">×</button></div>
-    <div id="srvStatsBar">
-      <div class="stat-chip"><div class="stat-dot"></div><span class="stat-val" id="global-members">0</span><span class="stat-lbl">Membres</span></div>
-      <div class="stat-chip"><div class="stat-dot" style="background:#00ff41;animation-delay:.5s;"></div><span class="stat-val" id="global-online" style="color:#00ff41;">0</span><span class="stat-lbl">En ligne</span></div>
-      <div class="stat-chip"><div class="stat-dot" style="animation-delay:1s;"></div><span class="stat-val" id="server-count">0</span><span class="stat-lbl">Serveurs</span></div>
-      <div class="refresh-pill"><svg class="rring" viewBox="0 0 36 36"><circle class="rring-track" cx="18" cy="18" r="14"></circle><circle class="rring-fill" cx="18" cy="18" r="14" id="refreshArc"></circle></svg><span class="rnum" id="countdown">20</span><span class="rlbl">refresh</span></div>
-    </div>
-    <div id="srvSearch"><input type="text" id="srvSearchInput" placeholder="Rechercher..." oninput="filterSrvCards()"></div>
-    <div id="srvCardsArea"><div id="srvNoResult">Aucun serveur trouvé</div></div>
-  </div>
-</div>
-
-<!-- TOPBAR -->
-<div id="topbar">
-  <div class="tb-brand">DLM</div>
-  <div class="tb-right">
-    <div class="api-pill"><div class="api-dot s-check" id="apiDot"></div><span id="apiLabel">Discord API</span><span id="apiLatency" style="margin-left:3px;font-size:8px;color:rgba(255,255,255,.2);font-family:'Space Mono',monospace;"></span></div>
-    <button class="auth-btn" id="loginBtn" onclick="signInGoogle()" style="display:none;"><span>🔐</span> Connexion</button>
-    <button class="auth-btn" id="profileBtn" onclick="openProfile()" style="display:none;"><img class="auth-avatar-tb" id="topbarAvatar" src="" alt=""><span id="topbarPseudo">—</span></button>
-    <button class="auth-btn" id="msgBtn" onclick="openMsgPanel()" style="display:none;"><span>💬</span><span id="msgBtnLabel">Messages</span><span class="msg-unread-badge" id="msgBadge" style="display:none;">0</span></button>
-    <button class="theme-btn" onclick="toggleThemeMenu()">THEME</button>
-  </div>
-</div>
-<div id="themeMenu" class="theme-panel">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;"><div class="theme-opt" onclick="setTheme('')">Violet</div><div class="theme-opt" onclick="setTheme('theme-red')">Rouge</div><div class="theme-opt" onclick="setTheme('theme-green')">Vert</div><div class="theme-opt" onclick="setTheme('theme-gold')">Or</div><div class="theme-opt" onclick="setTheme('theme-ocean')">Océan</div><div class="theme-opt" onclick="setTheme('theme-neon')">Néon</div><div class="theme-opt" onclick="setTheme('theme-amethyst')">Améthyste</div><div class="theme-opt" onclick="setTheme('theme-magma')">Magma</div><div class="theme-opt" onclick="setTheme('theme-mint')">Menthe</div><div class="theme-opt" onclick="setTheme('theme-cyber')">Cyber</div><div class="theme-opt" onclick="setTheme('theme-quartz')">Quartz</div><div class="theme-opt" onclick="setTheme('theme-crimson')">Crimson</div></div>
-  <div class="color-picker-wrapper"><span style="color:white;font-size:9px;font-weight:800;text-transform:uppercase;font-family:'Space Mono',monospace;">Custom:</span><input type="color" id="customColor" oninput="applyCustomColor(this.value)"></div>
-  <button class="save-btn" onclick="saveCurrentTheme()">Sauvegarder</button>
-</div>
-
-<!-- PAGE PRINCIPALE -->
-<div id="page">
-  <section id="hero">
-    <div class="corp-eyebrow" id="eyebrow">Communauté Française</div>
-    <h1 class="corp-title" id="corpTitle">DLM-Corp</h1>
-    <div class="corp-line" id="corpLine"></div>
-    <div class="corp-sub" id="corpSub">Discord · Musique · Communauté</div>
-    <div class="cta-zone" id="ctaZone"><button class="servers-btn" onclick="openServers()"><span class="servers-btn-icon">🌐</span><div class="servers-btn-text"><span class="servers-btn-label">Serveurs Partenaires</span><span class="servers-btn-sub">Découvrir nos serveurs partenaires</span></div><span class="servers-btn-badge" id="srv-btn-count">—</span></button></div>
-  </section>
-  <div id="mc-bubble-section"><div class="mc-bubble"><span class="mc-bubble-icon">⛏️</span><div class="mc-bubble-text"><span class="mc-bubble-title">Serveur Minecraft</span><span class="mc-bubble-sub">Prochainement disponible</span></div><span class="mc-bubble-badge">🔜 Bientôt</span></div></div>
-  <div id="shop-bubble-section" style="width:100%;display:flex;justify-content:center;padding:0 24px 36px;"><div class="mc-bubble"><span class="mc-bubble-icon">🛒</span><div class="mc-bubble-text"><span class="mc-bubble-title">DLM-SHOP</span><span class="mc-bubble-sub">Prochainement disponible</span></div><span class="mc-bubble-badge">🔜 Bientôt</span></div></div>
-  <section id="team-section">
-    <div class="section-label">DLM-Team</div>
-    <div class="team-grid">
-      <a href="https://www.tiktok.com/@dieudlm" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Fondateur</span><div class="team-name">DieuDLM</div></div></a>
-      <a href="https://www.tiktok.com/@_iwilldiehere_?lang=fr" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Co-Fondateur</span><div class="team-name">IwillDieHere</div></div></a>
-      <a href="https://www.tiktok.com/@kingfire30030?lang=fr" target="_blank" class="team-link" id="kingfireLink"><div class="team-card"><span class="team-role">Co-Fondateur</span><div class="team-name">Kingfire</div></div></a>
-      <a href="https://open.spotify.com/intl-fr/artist/5Mv7qvXXpQK0BPnYnaF1Z9" target="_blank" class="team-link" id="chromaLink"><div class="team-card"><span class="team-role">Producer</span><div class="team-name">Chromanticore</div></div></a>
-      <a href="https://www.tiktok.com/@___alpha07_?lang=fr" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">Alpha</div></div></a>
-      <a href="https://www.tiktok.com/@jonix2139live" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">JoniX2139</div></div></a>
-      <a href="#" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">Insidious</div></div></a>
-    </div>
-  </section>
-  <section id="bot-section"><div class="bot-banner"><div><h4 style="margin:0;font-size:19px;font-weight:800;color:white;">DLM-Bot <span style="color:var(--sub);">OFFICIEL</span></h4><div class="bot-tags"><span class="bot-tag">Logs</span><span class="bot-tag">Modération</span><span class="bot-tag">Sécurité</span></div></div><a href="https://discord.com/oauth2/authorize?client_id=1469360313408159985" target="_blank" class="bot-add-btn">Ajouter</a></div></section>
-  <footer id="site-footer"><div class="footer-links"><button class="footer-link" onclick="openPrivacy()">🔒 Politique de Confidentialité</button><div class="footer-sep"></div><button class="footer-link" onclick="openPrivacy()">RGPD</button><div class="footer-sep"></div><a href="mailto:axell01020304@gmail.com" class="footer-link" style="text-decoration:none;">Contact</a></div><div class="footer-copy">© 2024–2026 DLM-Corp · Tous droits réservés</div></footer>
-</div>
-
+<div id="serversOverlay"><div id="serversBackdrop" onclick="closeServers()"></div><div id="serversPanel"><div id="srvTopBar"><div><div class="srv-tb-title">Serveurs Partenaires</div><div class="srv-tb-sub">DLM · Serveurs Partenaires</div></div><button class="srv-close-btn" onclick="closeServers()">×</button></div><div id="srvStatsBar"><div class="stat-chip"><div class="stat-dot"></div><span class="stat-val" id="global-members">0</span><span class="stat-lbl">Membres</span></div><div class="stat-chip"><div class="stat-dot" style="background:#00ff41;animation-delay:.5s;"></div><span class="stat-val" id="global-online" style="color:#00ff41;">0</span><span class="stat-lbl">En ligne</span></div><div class="stat-chip"><div class="stat-dot" style="animation-delay:1s;"></div><span class="stat-val" id="server-count">0</span><span class="stat-lbl">Serveurs</span></div><div class="refresh-pill"><svg class="rring" viewBox="0 0 36 36"><circle class="rring-track" cx="18" cy="18" r="14"></circle><circle class="rring-fill" cx="18" cy="18" r="14" id="refreshArc"></circle></svg><span class="rnum" id="countdown">20</span><span class="rlbl">refresh</span></div></div><div id="srvSearch"><input type="text" id="srvSearchInput" placeholder="Rechercher..." oninput="filterSrvCards()"></div><div id="srvCardsArea"><div id="srvNoResult">Aucun serveur trouvé</div></div></div></div>
+<div id="topbar"><div class="tb-brand">DLM</div><div class="tb-right"><div class="api-pill"><div class="api-dot s-check" id="apiDot"></div><span id="apiLabel">Discord API</span><span id="apiLatency" style="margin-left:3px;font-size:8px;color:rgba(255,255,255,.2);font-family:'Space Mono',monospace;"></span></div><button class="auth-btn" id="loginBtn" onclick="signInGoogle()" style="display:none;"><span>🔐</span> Connexion</button><button class="auth-btn" id="profileBtn" onclick="openProfile()" style="display:none;"><img class="auth-avatar-tb" id="topbarAvatar" src="" alt=""><span id="topbarPseudo">—</span></button><button class="auth-btn" id="friendsBtn" onclick="openFriendsPanel()" style="display:none;"><span>👥</span><span>Amis</span><span class="msg-unread-badge" id="friendsBadge" style="display:none;background:#00cc33;box-shadow:0 0 8px rgba(0,204,51,.7);">0</span></button><button class="auth-btn" id="msgBtn" onclick="openMsgPanel()" style="display:none;"><span>💬</span><span id="msgBtnLabel">Messages</span><span class="msg-unread-badge" id="msgBadge" style="display:none;">0</span></button><button class="theme-btn" onclick="toggleThemeMenu()">THEME</button></div></div>
+<div id="themeMenu" class="theme-panel"><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;"><div class="theme-opt" onclick="setTheme('')">Violet</div><div class="theme-opt" onclick="setTheme('theme-red')">Rouge</div><div class="theme-opt" onclick="setTheme('theme-green')">Vert</div><div class="theme-opt" onclick="setTheme('theme-gold')">Or</div><div class="theme-opt" onclick="setTheme('theme-ocean')">Océan</div><div class="theme-opt" onclick="setTheme('theme-neon')">Néon</div><div class="theme-opt" onclick="setTheme('theme-amethyst')">Améthyste</div><div class="theme-opt" onclick="setTheme('theme-magma')">Magma</div><div class="theme-opt" onclick="setTheme('theme-mint')">Menthe</div><div class="theme-opt" onclick="setTheme('theme-cyber')">Cyber</div><div class="theme-opt" onclick="setTheme('theme-quartz')">Quartz</div><div class="theme-opt" onclick="setTheme('theme-crimson')">Crimson</div></div><div class="color-picker-wrapper"><span style="color:white;font-size:9px;font-weight:800;text-transform:uppercase;font-family:'Space Mono',monospace;">Custom:</span><input type="color" id="customColor" oninput="applyCustomColor(this.value)"></div><button class="save-btn" onclick="saveCurrentTheme()">Sauvegarder</button></div>
+<div id="page"><section id="hero"><div class="corp-eyebrow" id="eyebrow">Communauté Française</div><h1 class="corp-title" id="corpTitle">DLM-Corp</h1><div class="corp-line" id="corpLine"></div><div class="corp-sub" id="corpSub">Discord · Musique · Communauté</div><div class="cta-zone" id="ctaZone"><button class="servers-btn" onclick="openServers()"><span class="servers-btn-icon">🌐</span><div class="servers-btn-text"><span class="servers-btn-label">Serveurs Partenaires</span><span class="servers-btn-sub">Découvrir nos serveurs partenaires</span></div><span class="servers-btn-badge" id="srv-btn-count">—</span></button></div></section><div id="mc-bubble-section"><div class="mc-bubble"><span class="mc-bubble-icon">⛏️</span><div class="mc-bubble-text"><span class="mc-bubble-title">Serveur Minecraft</span><span class="mc-bubble-sub">Prochainement disponible</span></div><span class="mc-bubble-badge">🔜 Bientôt</span></div></div><div id="shop-bubble-section" style="width:100%;display:flex;justify-content:center;padding:0 24px 36px;"><div class="mc-bubble"><span class="mc-bubble-icon">🛒</span><div class="mc-bubble-text"><span class="mc-bubble-title">DLM-SHOP</span><span class="mc-bubble-sub">Prochainement disponible</span></div><span class="mc-bubble-badge">🔜 Bientôt</span></div></div><section id="team-section"><div class="section-label">DLM-Team</div><div class="team-grid"><a href="https://www.tiktok.com/@dieudlm" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Fondateur</span><div class="team-name">DieuDLM</div></div></a><a href="https://www.tiktok.com/@_iwilldiehere_?lang=fr" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Co-Fondateur</span><div class="team-name">IwillDieHere</div></div></a><a href="https://www.tiktok.com/@kingfire30030?lang=fr" target="_blank" class="team-link" id="kingfireLink"><div class="team-card"><span class="team-role">Co-Fondateur</span><div class="team-name">Kingfire</div></div></a><a href="https://open.spotify.com/intl-fr/artist/5Mv7qvXXpQK0BPnYnaF1Z9" target="_blank" class="team-link" id="chromaLink"><div class="team-card"><span class="team-role">Producer</span><div class="team-name">Chromanticore</div></div></a><a href="https://www.tiktok.com/@___alpha07_?lang=fr" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">Alpha</div></div></a><a href="https://www.tiktok.com/@jonix2139live" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">JoniX2139</div></div></a><a href="#" target="_blank" class="team-link"><div class="team-card"><span class="team-role">Pôle Sécurité</span><div class="team-name">Insidious</div></div></a></div></section><section id="bot-section"><div class="bot-banner"><div><h4 style="margin:0;font-size:19px;font-weight:800;color:white;">DLM-Bot <span style="color:var(--sub);">OFFICIEL</span></h4><div class="bot-tags"><span class="bot-tag">Logs</span><span class="bot-tag">Modération</span><span class="bot-tag">Sécurité</span></div></div><a href="https://discord.com/oauth2/authorize?client_id=1469360313408159985" target="_blank" class="bot-add-btn">Ajouter</a></div></section><footer id="site-footer"><div class="footer-links"><button class="footer-link" onclick="openPrivacy()">🔒 Politique de Confidentialité</button><div class="footer-sep"></div><button class="footer-link" onclick="openPrivacy()">RGPD</button><div class="footer-sep"></div><a href="mailto:axell01020304@gmail.com" class="footer-link" style="text-decoration:none;">Contact</a></div><div class="footer-copy">© 2024–2026 DLM-Corp · Tous droits réservés</div></footer></div>
 <script>
 'use strict';
 const FB_API_KEY     = 'AIzaSyBKJ1IQInYOeVrUx_O02-tVBuspc_mq7hc';
 const FB_ADMIN_EMAIL = 'axell01020304@gmail.com';
 const FB             = 'https://dlm-realtime-default-rtdb.firebaseio.com';
 let _authToken = null;
-
 const BASE_SERVERS = [
   {id:'jx',  name:'JX-Serv',     invite:'https://discord.gg/9p2E828uz4',  date:'Créé le 7 avril 2024',     base:true},
   {id:'dlm', name:'DLM-Serv',    invite:'https://discord.gg/SbdduH93mj',  date:'Créé le 20 novembre 2021', base:true},
   {id:'wyn', name:"WYNS'Z-Serv", invite:'https://discord.gg/TdwBKYFSua',  date:'Créé le 16 février 2026',  base:true}
 ];
-
 const CACHE_TTL   = 20000;
 const _statsCache = new Map();
 const getCached   = id => { const c=_statsCache.get(id); if(c&&Date.now()-c.ts<CACHE_TTL)return c; return null; };
 const setCache    = (id,data,ping) => _statsCache.set(id,{data,ping,ts:Date.now()});
-
 const LS = {
   _c:{},
   async _g(k){ try{const r=await fetch(`${FB}/${k}.json`);if(!r.ok)return null;return await r.json();}catch{return null;} },
@@ -909,15 +629,12 @@ const LS = {
     }catch{ this._c.extras=[];this._c.ov={};this._c.banner={active:false,text:''};this._c.maint=false; }
   }
 };
-
 const getAllServers = () => {
   const ov=LS.getOv();
   return [...BASE_SERVERS.map(s=>ov[s.id]?{...s,...ov[s.id]}:s), ...LS.getExtras()];
 };
 const slugify    = n => n.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,10)+'_'+Date.now().toString(36).slice(-4);
 const extractCode= url => { const m=url.match(/discord\.gg\/([a-zA-Z0-9]+)/); return m?m[1]:url.trim(); };
-
-/* PARTICLES */
 const canvas=document.getElementById('particleCanvas');
 const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
 let particles=[];
@@ -943,16 +660,12 @@ const animate=ts=>{
 };
 const stopCanvas =()=>{if(_rafId){cancelAnimationFrame(_rafId);_rafId=null;}};
 const startCanvas=()=>{if(!_rafId)_rafId=requestAnimationFrame(animate);};
-
-/* AUDIO */
 let _ac=null,_muted=localStorage.getItem('dlm_muted')==='1',_lastHover=0;
 const getAC=()=>{if(!_ac){_ac=new(window.AudioContext||window.webkitAudioContext)();}return _ac;};
 const playSfx=(f,t,d,v)=>{if(_muted)return;try{const ac=getAC();if(ac.state==='suspended')ac.resume();const o=ac.createOscillator(),g=ac.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d);}catch{}};
 const sfx={hover:()=>{const now=Date.now();if(now-_lastHover<80)return;_lastHover=now;playSfx(800,'sine',.08,.005);},click:()=>playSfx(400,'square',.1,.008),save:()=>playSfx(1200,'sine',.2,.01),open:()=>playSfx(600,'triangle',.15,.007)};
 function toggleMute(){_muted=!_muted;localStorage.setItem('dlm_muted',_muted?'1':'0');const b=document.getElementById('muteBtn');b.textContent=_muted?'🔇':'🔊';b.classList.toggle('muted',_muted);}
 const showToast=(msg,d=2400)=>{const t=document.getElementById('saveToast');t.textContent=msg;t.style.display='block';clearTimeout(t._tid);t._tid=setTimeout(()=>t.style.display='none',d);};
-
-/* THEMES */
 const THEMES=['theme-red','theme-green','theme-gold','theme-ocean','theme-neon','theme-amethyst','theme-magma','theme-mint','theme-cyber','theme-quartz','theme-crimson'];
 let _acc=null;
 const toggleThemeMenu=()=>document.getElementById('themeMenu').classList.toggle('active');
@@ -960,15 +673,11 @@ const setTheme=n=>{THEMES.forEach(t=>document.body.classList.remove(t));document
 const applyCustomColor=hex=>{THEMES.forEach(t=>document.body.classList.remove(t));['--sub','--accent'].forEach(p=>document.body.style.setProperty(p,hex));document.body.style.setProperty('--glow',hex+'80');document.body.style.setProperty('--bg-grad-2',hex+'40');_acc=hex;};
 const saveCurrentTheme=()=>{const cls=Array.from(document.body.classList).find(x=>x.startsWith('theme-'));localStorage.setItem('dlm_user_theme',JSON.stringify({className:cls||'',customColor:_acc}));document.getElementById('themeMenu').classList.remove('active');showToast('Thème sauvegardé !');};
 const loadSavedTheme=()=>{const s=localStorage.getItem('dlm_user_theme');if(s){const d=JSON.parse(s);if(d.className)setTheme(d.className);if(d.customColor)applyCustomColor(d.customColor);}};
-
-/* BOOT */
 function startBoot(){
   loadSavedTheme();
   [['eyebrow',0],['corpTitle',90],['corpLine',200],['corpSub',280],['ctaZone',370]].forEach(([id,delay])=>{setTimeout(()=>document.getElementById(id)?.classList.add('reveal'),delay);});
   if(_muted){const b=document.getElementById('muteBtn');b.textContent='🔇';b.classList.add('muted');}
 }
-
-/* COUNT ANIMATION */
 const _countQueue=new Map();let _countRafId=null;
 function _runCounters(now){
   _countRafId=null;let hasMore=false;
@@ -986,19 +695,8 @@ function animateCount(id,target){
   _countQueue.set(id,{t0:performance.now(),dur:600,start:current,target});
   if(!_countRafId)_countRafId=requestAnimationFrame(_runCounters);
 }
-
-/* SERVEURS */
 let _overlayOpen=false;
-function openServers(){
-  sfx.open();
-  _overlayOpen = true;
-  stopCanvas();
-  document.getElementById('serversOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-  renderServerCards();   // ← Correction : toujours recréer les cartes
-  updateStats();
-  checkDiscordAPI();
-}
+function openServers(){sfx.open();_overlayOpen=true;stopCanvas();document.getElementById('serversOverlay').classList.add('active');document.body.style.overflow='hidden';renderServerCards();updateStats();checkDiscordAPI();}
 function closeServers(){_overlayOpen=false;startCanvas();document.getElementById('serversOverlay').classList.remove('active');document.body.style.overflow='';}
 let _sft;
 function filterSrvCards(){clearTimeout(_sft);_sft=setTimeout(()=>{const v=document.getElementById('srvSearchInput').value.toLowerCase();let n=0;document.querySelectorAll('.glass-card').forEach(c=>{const ok=c.getAttribute('data-name').toLowerCase().includes(v);c.classList.toggle('hidden',!ok);if(ok)n++;});document.getElementById('srvNoResult').style.display=(n===0&&v.length>0)?'block':'none';},150);}
@@ -1068,15 +766,9 @@ const _upPill=()=>{const arc=document.getElementById('refreshArc'),num=document.
 let _cnt=20;const _TOT=20;
 setInterval(()=>{if(!_overlayOpen)return;_cnt--;if(_cnt<=0){_cnt=_TOT;_upPill();refreshAll();}else{_upPill();}},1000);
 _upPill();
-
-/* PRIVACY */
 function openPrivacy(){sfx.open();document.getElementById('privacyOverlay').classList.add('active');document.body.style.overflow='hidden';}
 function closePrivacy(){document.getElementById('privacyOverlay').classList.remove('active');document.body.style.overflow='';}
-
-/* KEYBOARD */
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePwModal();closeAdminPanel();closeOhh();closeKingfire();closeServers();closeProfile();closeMsgPanel();closePrivacy();document.getElementById('themeMenu').classList.remove('active');}});
-
-/* PASSWORD / ADMIN */
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePwModal();closeAdminPanel();closeOhh();closeKingfire();closeServers();closeProfile();closeMsgPanel();closeFriendsPanel();closePrivacy();document.getElementById('themeMenu').classList.remove('active');}});
 const openPasswordModal=()=>{document.getElementById('adminPassword').value='';document.getElementById('pwError').textContent='';document.getElementById('passwordOverlay').classList.add('active');setTimeout(()=>document.getElementById('adminPassword').focus(),120);};
 const closePwModal=()=>document.getElementById('passwordOverlay').classList.remove('active');
 async function checkPassword(){
@@ -1101,13 +793,9 @@ document.getElementById('passwordOverlay').addEventListener('click',function(e){
 const openAdminPanel=()=>{document.getElementById('adminPanel').classList.add('active');document.body.classList.add('admin-mode');showPage('dashboard');if(LS.getMaint())document.getElementById('maintenanceOverlay').classList.remove('active');};
 const closeAdminPanel=()=>{_stopAdmMsgPolling();document.getElementById('adminPanel').classList.remove('active');document.body.classList.remove('admin-mode');};
 const adminLogout=()=>{_authToken=null;closeAdminPanel();};
-
-/* ADMIN MSG POLLING */
 let _admMsgTimer=null;
 function _startAdmMsgPolling(){_stopAdmMsgPolling();_admMsgTimer=setInterval(()=>loadAdminMessages(true),8000);}
 function _stopAdmMsgPolling(){clearInterval(_admMsgTimer);_admMsgTimer=null;}
-
-/* ADMIN PAGES */
 function showPage(name){
   _stopAdmMsgPolling();
   document.querySelectorAll('.apage').forEach(p=>p.classList.remove('active'));
@@ -1179,20 +867,14 @@ function saveBaseServers(){
   });
   LS.setOv(ov);renderServerCards();refreshAll();showToast('Serveurs mis à jour !');
 }
-
-/* BANNER */
 const applyBanner=()=>{const d=LS.getBanner(),b=document.getElementById('announceBanner'),t=document.getElementById('announceText');if(!b)return;if(d.active&&d.text){t.textContent=d.text;b.classList.add('active');}else b.classList.remove('active');};
 const dismissBanner=()=>document.getElementById('announceBanner').classList.remove('active');
 const loadBannerForm=()=>{const d=LS.getBanner(),inp=document.getElementById('announceInput'),tog=document.getElementById('bannerToggle'),prev=document.getElementById('announce-preview');if(inp)inp.value=d.text||'';if(tog)tog.classList.toggle('on',!!d.active);if(prev)prev.textContent=d.text||'—';};
 const toggleBanner=()=>{const d=LS.getBanner();d.active=!d.active;LS.setBanner(d);document.getElementById('bannerToggle')?.classList.toggle('on',d.active);applyBanner();};
 const saveBanner=()=>{const text=document.getElementById('announceInput')?.value.trim();if(!text){showToast('Texte vide !');return;}const d=LS.getBanner();d.text=text;LS.setBanner(d);applyBanner();document.getElementById('announce-preview').textContent=text;showToast('Bannière mise à jour !');};
-
-/* MAINTENANCE */
 const applyMaintenance=()=>document.getElementById('maintenanceOverlay').classList.toggle('active',LS.getMaint());
 const toggleMaintenance=()=>{const v=!LS.getMaint();LS.setMaint(v);document.getElementById('maintToggle')?.classList.toggle('on',v);applyMaintenance();if(v){closeAdminPanel();document.body.classList.remove('admin-mode');}showToast(v?'🔴 Maintenance activée !':'✅ Désactivée !');};
 const loadSettingsForm=()=>document.getElementById('maintToggle')?.classList.toggle('on',LS.getMaint());
-
-/* EASTER EGGS */
 let _chromaT=null;
 function setupChromaEgg(){const link=document.getElementById('chromaLink');if(!link)return;link.addEventListener('mouseenter',()=>{clearTimeout(_chromaT);_chromaT=setTimeout(openOhh,10000);});link.addEventListener('mouseleave',()=>{clearTimeout(_chromaT);_chromaT=null;});link.addEventListener('click',e=>{if(document.getElementById('ohhOverlay').classList.contains('active'))e.preventDefault();});}
 const openOhh=()=>{document.getElementById('ohhOverlay').classList.add('active');sfx.save();if(navigator.vibrate)navigator.vibrate([80,40,80,40,180]);};
@@ -1201,8 +883,6 @@ let _kingfireT=null;
 function setupKingfireEgg(){const link=document.getElementById('kingfireLink');if(!link)return;link.addEventListener('mouseenter',()=>{clearTimeout(_kingfireT);_kingfireT=setTimeout(openKingfire,5000);});link.addEventListener('mouseleave',()=>{clearTimeout(_kingfireT);_kingfireT=null;});link.addEventListener('click',e=>{if(document.getElementById('kingfireOverlay').classList.contains('active'))e.preventDefault();});}
 const openKingfire=()=>{document.getElementById('kingfireOverlay').classList.add('active');sfx.save();if(navigator.vibrate)navigator.vibrate([100,50,200,50,100]);};
 const closeKingfire=()=>document.getElementById('kingfireOverlay').classList.remove('active');
-
-/* FIREBASE AUTH */
 const FB_AUTH_DOMAIN = 'dlm-realtime.firebaseapp.com';
 const FB_PROJECT_ID  = 'dlm-realtime';
 firebase.initializeApp({apiKey:FB_API_KEY,authDomain:FB_AUTH_DOMAIN,databaseURL:FB,projectId:FB_PROJECT_ID});
@@ -1210,71 +890,65 @@ const fbAuth    = firebase.auth();
 const gProvider = new firebase.auth.GoogleAuthProvider();
 let _curUser    = null;
 let _curProfile = null;
-
 fbAuth.onAuthStateChanged(async user=>{
   _curUser=user;
-  const loginBtn   = document.getElementById('loginBtn');
-  const profileBtn = document.getElementById('profileBtn');
-  const msgBtn     = document.getElementById('msgBtn');
+  const loginBtn=document.getElementById('loginBtn');
+  const profileBtn=document.getElementById('profileBtn');
+  const msgBtn=document.getElementById('msgBtn');
+  const friendsBtn=document.getElementById('friendsBtn');
   if(!loginBtn||!profileBtn) return;
   if(user){
     loginBtn.style.display='none';
     profileBtn.style.display='flex';
     if(msgBtn) msgBtn.style.display='flex';
+    if(friendsBtn) friendsBtn.style.display='flex';
     _curProfile = await loadOrCreateProfile(user);
     updateTopbarProfile();
     await _syncPubUser(user, _curProfile);
     _startInboxPolling();
+    _startFriendsPolling();
+    _startHeartbeat();
   }else{
     _curUser=null; _curProfile=null;
     loginBtn.style.display='flex';
     profileBtn.style.display='none';
     if(msgBtn) msgBtn.style.display='none';
+    if(friendsBtn) friendsBtn.style.display='none';
     _updateBadge(0);
+    _updateFriendsBadge(0);
     _stopInboxPolling();
+    _stopFriendsPolling();
+    _stopHeartbeat();
   }
 });
-
 async function loadOrCreateProfile(user){
-  const idToken = await user.getIdToken();
-  let profile = null;
-  try{
-    const res = await fetch(`${FB}/users/${user.uid}.json?auth=${idToken}`);
-    profile = res.ok ? await res.json() : null;
-  }catch{ profile=null; }
+  const idToken=await user.getIdToken();
+  let profile=null;
+  try{const res=await fetch(`${FB}/users/${user.uid}.json?auth=${idToken}`);profile=res.ok?await res.json():null;}catch{profile=null;}
   if(profile&&profile.uid){
     await fetch(`${FB}/users/${user.uid}/lastSeen.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(Date.now())});
-    profile = await pushHistory(user, idToken, profile, '🔗 Connexion au site');
+    profile=await pushHistory(user,idToken,profile,'🔗 Connexion au site');
     if(profile.description===undefined) profile.description='';
     if(!profile.socialLinks) profile.socialLinks={};
     if(profile.customPhoto===undefined) profile.customPhoto=null;
     return profile;
   }else{
-    const newProfile={
-      uid:user.uid, googleName:user.displayName||'User', photoURL:user.photoURL||'', email:user.email||'',
-      pseudo:sanitizePseudo(user.displayName||'User'), role:'Membre', createdAt:Date.now(), lastSeen:Date.now(),
-      history:[{action:'🎉 Compte créé',ts:Date.now()}],
-      description:'', socialLinks:{}, customPhoto:null
-    };
+    const newProfile={uid:user.uid,googleName:user.displayName||'User',photoURL:user.photoURL||'',email:user.email||'',pseudo:sanitizePseudo(user.displayName||'User'),role:'Membre',createdAt:Date.now(),lastSeen:Date.now(),history:[{action:'🎉 Compte créé',ts:Date.now()}],description:'',socialLinks:{},customPhoto:null};
     await fetch(`${FB}/users/${user.uid}.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(newProfile)});
     showToast('Bienvenue sur DLM-Corp ! 🎉');
     return newProfile;
   }
 }
-
-async function pushHistory(user, idToken, profile, action){
+async function pushHistory(user,idToken,profile,action){
   const entry={action,ts:Date.now()};
   const hist=Array.isArray(profile.history)?profile.history:[];
   hist.unshift(entry);const trimmed=hist.slice(0,20);
   await fetch(`${FB}/users/${user.uid}/history.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(trimmed)});
   profile.history=trimmed;return profile;
 }
-
 const formatTs=ts=>new Date(ts).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
 async function signInGoogle(){try{sfx.click();await fbAuth.signInWithPopup(gProvider);}catch(e){if(e.code!=='auth/popup-closed-by-user')showToast('Erreur de connexion Google !');}}
 async function signOutUser(){await fbAuth.signOut();closeProfile();showToast('Déconnecté !');}
-
 function updateTopbarProfile(){
   if(!_curProfile) return;
   const av=document.getElementById('topbarAvatar'),ps=document.getElementById('topbarPseudo');
@@ -1282,24 +956,18 @@ function updateTopbarProfile(){
   if(ps) ps.textContent=_curProfile.pseudo||'—';
 }
 function getDisplayAvatar(){
-  if(_curProfile.customPhoto) return _curProfile.customPhoto;
-  return _curProfile.photoURL||'';
+  if(_curProfile?.customPhoto) return _curProfile.customPhoto;
+  return _curProfile?.photoURL||'';
 }
-
 function openProfile(){if(!_curProfile)return;sfx.open();document.getElementById('profilePanel').classList.add('active');renderProfilePanel();}
 function closeProfile(){document.getElementById('profilePanel').classList.remove('active');closePseudoEditor();}
-
 function renderProfilePanel(){
   if(!_curProfile) return;
   const av=document.getElementById('profAvatar'),ps=document.getElementById('profPseudo'),em=document.getElementById('profEmail'),badge=document.getElementById('profRoleBadge');
   if(av) av.src=getDisplayAvatar();
   if(ps) ps.textContent=_curProfile.pseudo||'—';
   if(em) em.textContent=_curProfile.email||'';
-  if(badge){
-    const role=_curProfile.role||'Membre';
-    badge.textContent=role;
-    badge.className='prof-role-badge role-'+role.toLowerCase().replace(/[^a-z]/g,'-');
-  }
+  if(badge){const role=_curProfile.role||'Membre';badge.textContent=role;badge.className='prof-role-badge role-'+role.toLowerCase().replace(/[^a-z]/g,'-');}
   document.getElementById('profDescription').value=_curProfile.description||'';
   document.getElementById('profYoutube').value=_curProfile.socialLinks?.youtube||'';
   document.getElementById('profTwitch').value=_curProfile.socialLinks?.twitch||'';
@@ -1324,31 +992,23 @@ async function savePseudo(){
   await fetch(`${FB}/users/${_curUser.uid}/pseudo.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(val)});
   _curProfile.pseudo=val;
   await fetch(`${FB}/publicUsers/${_curUser.uid}/pseudo.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(val)});
-  _curProfile = await pushHistory(_curUser, idToken, _curProfile, `✏️ Pseudo : ${old} → ${val}`);
+  _curProfile=await pushHistory(_curUser,idToken,_curProfile,`✏️ Pseudo : ${old} → ${val}`);
   closePseudoEditor();renderProfilePanel();updateTopbarProfile();showToast('Pseudo mis à jour !');sfx.save();
 }
 const sanitizePseudo=name=>(name||'User').split(' ')[0].replace(/[^a-zA-Z0-9_\-.]/g,'').slice(0,20)||'User';
-
 async function updateProfileData(){
   if(!_curUser||!_curProfile) return;
   const desc=document.getElementById('profDescription').value.trim().slice(0,50);
-  const youtube=document.getElementById('profYoutube').value.trim();
-  const twitch=document.getElementById('profTwitch').value.trim();
-  const spotify=document.getElementById('profSpotify').value.trim();
-  const tiktok=document.getElementById('profTiktok').value.trim();
-  const socialLinks={youtube,twitch,spotify,tiktok};
+  const socialLinks={youtube:document.getElementById('profYoutube').value.trim(),twitch:document.getElementById('profTwitch').value.trim(),spotify:document.getElementById('profSpotify').value.trim(),tiktok:document.getElementById('profTiktok').value.trim()};
   const idToken=await _curUser.getIdToken();
   await fetch(`${FB}/users/${_curUser.uid}/description.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(desc)});
   await fetch(`${FB}/users/${_curUser.uid}/socialLinks.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(socialLinks)});
-  _curProfile.description=desc;
-  _curProfile.socialLinks=socialLinks;
-  _curProfile = await pushHistory(_curUser, idToken, _curProfile, '✏️ Profil mis à jour (bio/liens)');
-  showToast('Profil mis à jour !');
-  renderProfilePanel();
+  _curProfile.description=desc;_curProfile.socialLinks=socialLinks;
+  _curProfile=await pushHistory(_curUser,idToken,_curProfile,'✏️ Profil mis à jour (bio/liens)');
+  showToast('Profil mis à jour !');renderProfilePanel();
 }
 function uploadCustomAvatar(input){
-  const file=input.files[0];
-  if(!file) return;
+  const file=input.files[0];if(!file) return;
   const reader=new FileReader();
   reader.onload=async e=>{
     const base64=e.target.result;
@@ -1356,8 +1016,8 @@ function uploadCustomAvatar(input){
     const idToken=await _curUser.getIdToken();
     await fetch(`${FB}/users/${_curUser.uid}/customPhoto.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(base64)});
     _curProfile.customPhoto=base64;
-    _curProfile = await pushHistory(_curUser, idToken, _curProfile, '🖼️ Avatar personnalisé uploadé');
-    renderProfilePanel(); updateTopbarProfile(); showToast('Avatar mis à jour !');
+    _curProfile=await pushHistory(_curUser,idToken,_curProfile,'🖼️ Avatar personnalisé uploadé');
+    renderProfilePanel();updateTopbarProfile();showToast('Avatar mis à jour !');
   };
   reader.readAsDataURL(file);
 }
@@ -1366,19 +1026,16 @@ async function resetAvatar(){
   const idToken=await _curUser.getIdToken();
   await fetch(`${FB}/users/${_curUser.uid}/customPhoto.json?auth=${idToken}`,{method:'DELETE'});
   _curProfile.customPhoto=null;
-  _curProfile = await pushHistory(_curUser, idToken, _curProfile, '🖼️ Réinitialisation avatar');
-  renderProfilePanel(); updateTopbarProfile(); showToast('Avatar réinitialisé');
+  _curProfile=await pushHistory(_curUser,idToken,_curProfile,'🖼️ Réinitialisation avatar');
+  renderProfilePanel();updateTopbarProfile();showToast('Avatar réinitialisé');
 }
 async function requestAccountDeletion(){
-  if(!confirm('⚠️ Demander la suppression définitive de votre compte et de toutes vos données ? Un administrateur traitera votre demande.')) return;
+  if(!confirm('⚠️ Demander la suppression définitive de votre compte et de toutes vos données ?')) return;
   const idToken=await _curUser.getIdToken();
-  const req={uid:_curUser.uid, pseudo:_curProfile.pseudo, email:_curProfile.email, ts:Date.now()};
-  await fetch(`${FB}/deletionRequests/${_curUser.uid}.json?auth=${_authToken || idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(req)});
-  showToast('Demande envoyée à l\'administration. Vous serez notifié.');
-  sfx.save();
+  const req={uid:_curUser.uid,pseudo:_curProfile.pseudo,email:_curProfile.email,ts:Date.now()};
+  await fetch(`${FB}/deletionRequests/${_curUser.uid}.json?auth=${_authToken||idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(req)});
+  showToast('Demande envoyée à l\'administration.');sfx.save();
 }
-
-/* MEMBRES ADMIN */
 async function loadMembres(){
   if(!_authToken){showToast('Connexion admin requise !');return;}
   const list=document.getElementById('membres-list'),empty=document.getElementById('membres-empty');
@@ -1399,16 +1056,10 @@ async function loadMembres(){
     });
   }catch{list.innerHTML='<div style="color:#ff4b2b;font-size:10px;font-family:Space Mono,monospace;text-transform:uppercase;letter-spacing:1px;padding:10px;">Erreur de chargement</div>';}
 }
-async function setMemberRole(uid, role){
+async function setMemberRole(uid,role){
   if(!_authToken){showToast('Non autorisé !');return;}
-  try{
-    const res=await fetch(`${FB}/users/${uid}/role.json?auth=${_authToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(role)});
-    if(res.ok) showToast(`Rôle → ${role} ✓`);
-    else showToast('Erreur Firebase !');
-  }catch{showToast('Erreur réseau !');}
+  try{const res=await fetch(`${FB}/users/${uid}/role.json?auth=${_authToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(role)});if(res.ok)showToast(`Rôle → ${role} ✓`);else showToast('Erreur Firebase !');}catch{showToast('Erreur réseau !');}
 }
-
-/* DEMANDES SUPPRESSION */
 async function loadDeletionRequests(){
   if(!_authToken){showToast('Admin requis');return;}
   const container=document.getElementById('demandes-list');
@@ -1416,10 +1067,7 @@ async function loadDeletionRequests(){
   try{
     const res=await fetch(`${FB}/deletionRequests.json?auth=${_authToken}`);
     const data=res.ok?await res.json():null;
-    if(!data||!Object.keys(data).length){
-      container.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.2);padding:4px;">Aucune demande en attente</div>';
-      return;
-    }
+    if(!data||!Object.keys(data).length){container.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.2);padding:4px;">Aucune demande en attente</div>';return;}
     const requests=Object.values(data).sort((a,b)=>b.ts-a.ts);
     container.innerHTML='';
     requests.forEach(req=>{
@@ -1427,51 +1075,38 @@ async function loadDeletionRequests(){
       row.innerHTML=`<div class="req-info"><div class="req-pseudo">${req.pseudo}</div><div class="req-email">${req.email}</div><div class="req-date">Demandé le ${formatTs(req.ts)}</div></div><div class="req-actions"><button class="req-delete-btn" onclick="approveDeletion('${req.uid}')">🗑 Supprimer compte</button><button class="req-ignore-btn" onclick="ignoreDeletion('${req.uid}')">Ignorer</button></div>`;
       container.appendChild(row);
     });
-  }catch(err){container.innerHTML='<div style="color:#ff4b2b;font-size:10px;">Erreur</div>';}
+  }catch{container.innerHTML='<div style="color:#ff4b2b;font-size:10px;">Erreur</div>';}
 }
 async function approveDeletion(uid){
-  if(!confirm(`⚠️ Supprimer définitivement l'utilisateur ${uid} ? Toutes ses données et conversations seront effacées.`)) return;
+  if(!confirm(`⚠️ Supprimer définitivement l'utilisateur ${uid} ?`)) return;
   try{
     await fetch(`${FB}/users/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
     await fetch(`${FB}/publicUsers/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
     const convsRes=await fetch(`${FB}/userConvs/${uid}.json?auth=${_authToken}`);
     const convs=convsRes.ok?await convsRes.json():null;
-    if(convs){
-      for(const cid in convs){
-        const convData=await (await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`)).json();
-        if(convData&&convData.participants){
-          for(const puid in convData.participants){
-            if(puid!==uid) await fetch(`${FB}/userConvs/${puid}/${cid}.json?auth=${_authToken}`,{method:'DELETE'});
-          }
-        }
-        await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`,{method:'DELETE'});
-      }
-    }
+    if(convs){for(const cid in convs){const convData=await(await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`)).json();if(convData&&convData.participants){for(const puid in convData.participants){if(puid!==uid)await fetch(`${FB}/userConvs/${puid}/${cid}.json?auth=${_authToken}`,{method:'DELETE'});}}await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`,{method:'DELETE'});}}
     await fetch(`${FB}/userConvs/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
+    await fetch(`${FB}/friends/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
+    await fetch(`${FB}/friendRequests/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
     await fetch(`${FB}/deletionRequests/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
-    showToast(`Utilisateur ${uid} supprimé.`);
-    loadDeletionRequests();
-    loadMembres();
-  }catch(e){showToast('Erreur suppression');}
+    showToast(`Utilisateur ${uid} supprimé.`);loadDeletionRequests();loadMembres();
+  }catch{showToast('Erreur suppression');}
 }
 async function ignoreDeletion(uid){
   if(!confirm('Ignorer cette demande ?')) return;
   await fetch(`${FB}/deletionRequests/${uid}.json?auth=${_authToken}`,{method:'DELETE'});
-  showToast('Demande ignorée');
-  loadDeletionRequests();
+  showToast('Demande ignorée');loadDeletionRequests();
 }
-
-/* MESSAGERIE PRIVÉE */
-const _esc   = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const _cid   = (a,b) => [a,b].sort().join('_');
-const _tsShort = ts => {const d=new Date(ts),n=new Date();return d.toDateString()===n.toDateString()?d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});};
-const _tsLong = ts => new Date(ts).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-const _tsDay  = ts => new Date(ts).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
-const _fbReq = async (path, opts={}) => {let url=`${FB}/${path}.json`;if(_curUser){const tok=await _curUser.getIdToken();url+=`?auth=${tok}`;}return fetch(url, opts);};
-const _fbAdm = (path, opts={}) => {if(!_authToken) return Promise.resolve(null);return fetch(`${FB}/${path}.json?auth=${_authToken}`, opts);};
+const _esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const _cid=(a,b)=>[a,b].sort().join('_');
+const _tsShort=ts=>{const d=new Date(ts),n=new Date();return d.toDateString()===n.toDateString()?d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});};
+const _tsLong=ts=>new Date(ts).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+const _tsDay=ts=>new Date(ts).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+const _fbReq=async(path,opts={})=>{let url=`${FB}/${path}.json`;if(_curUser){const tok=await _curUser.getIdToken();url+=`?auth=${tok}`;}return fetch(url,opts);};
+const _fbAdm=(path,opts={})=>{if(!_authToken)return Promise.resolve(null);return fetch(`${FB}/${path}.json?auth=${_authToken}`,opts);};
 let _activePeerUid=null,_activeCid=null,_chatPollTimer=null,_inboxPollTimer=null,_lastMsgTs=0,_pubUsers={};
 let _admCurrentCid=null,_admCurrentConvData=null,_admCurrentParticipants=[];
-async function _syncPubUser(user, profile){if(!user||!profile)return;try{const tok=await user.getIdToken();await fetch(`${FB}/publicUsers/${user.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:user.uid,pseudo:profile.pseudo,photoURL:getDisplayAvatar()})});}catch{}}
+async function _syncPubUser(user,profile){if(!user||!profile)return;try{const tok=await user.getIdToken();await fetch(`${FB}/publicUsers/${user.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:user.uid,pseudo:profile.pseudo,photoURL:getDisplayAvatar(),lastActive:Date.now()})});}catch{}}
 async function _fetchPubUsers(){if(!_curUser)return;try{const tok=await _curUser.getIdToken();const r=await fetch(`${FB}/publicUsers.json?auth=${tok}`);if(r.ok){const d=await r.json();_pubUsers=d||{};}}catch{}}
 function _updateBadge(n){const b=document.getElementById('msgBadge');if(!b)return;if(n>0){b.textContent=n>99?'99+':n;b.style.display='flex';}else b.style.display='none';}
 function _startInboxPolling(){_loadInbox(true);_stopInboxPolling();_inboxPollTimer=setInterval(()=>_loadInbox(true),12000);}
@@ -1493,16 +1128,14 @@ async function _loadInbox(silent=false){
     list.innerHTML=convs.map(conv=>{
       const pseudos=conv.pseudos||{},photos=conv.photos||{};
       const peerUid=Object.keys(conv.participants||{}).find(u=>u!==_curUser.uid)||'';
-      const pPseudo=pseudos[peerUid]||'Utilisateur';
-      const pPhoto=photos[peerUid]||'';
-      const unread=conv[`unread_${_curUser.uid}`]||0;
-      totalUnread+=unread;
+      const pPseudo=pseudos[peerUid]||'Utilisateur';const pPhoto=photos[peerUid]||'';
+      const unread=conv[`unread_${_curUser.uid}`]||0;totalUnread+=unread;
       return `<div class="conv-item" onclick="openChat('${peerUid}','${_esc(pPseudo)}','${_esc(pPhoto)}')"><img class="conv-avatar" src="${_esc(pPhoto)}" alt="" onerror="this.style.background='#333'"><div class="conv-info"><div class="conv-pseudo">${_esc(pPseudo)}</div><div class="conv-last">${_esc(conv.lastText||'—')}</div></div><div class="conv-meta"><div class="conv-ts">${conv.lastTs?_tsShort(conv.lastTs):''}</div>${unread>0?`<div class="conv-unread-dot">${unread}</div>`:''}</div></div>`;
     }).join('');
     _updateBadge(totalUnread);
-  }catch(err){if(!silent)list.innerHTML='<div class="conv-empty" style="color:#ff4b2b;">Erreur de chargement</div>';}
+  }catch{if(!silent)list.innerHTML='<div class="conv-empty" style="color:#ff4b2b;">Erreur de chargement</div>';}
 }
-async function openChat(peerUid, peerPseudo, peerPhoto){
+async function openChat(peerUid,peerPseudo,peerPhoto){
   if(!_curUser)return;_activePeerUid=peerUid;_activeCid=_cid(_curUser.uid,peerUid);_lastMsgTs=0;
   document.getElementById('chatPeerName').textContent=peerPseudo;document.getElementById('chatPeerAv').src=peerPhoto;
   document.getElementById('chatMessages').innerHTML='<div style="text-align:center;padding:24px;font-family:\'Space Mono\',monospace;font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:2px;">Chargement…</div>';
@@ -1530,91 +1163,344 @@ async function sendChatMsg(){
     await fetch(`${FB}/convs/${_activeCid}/msgs/${msgId}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:_curUser.uid,pseudo:_curProfile.pseudo,text,ts:Date.now()})});
     const ur=await fetch(`${FB}/convs/${_activeCid}/unread_${_activePeerUid}.json?auth=${tok}`);const uCount=ur.ok?((await ur.json())||0):0;
     const peer=_pubUsers[_activePeerUid]||{};
-    await fetch(`${FB}/convs/${_activeCid}.json?auth=${tok}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({participants:{[_curUser.uid]:true,[_activePeerUid]:true},pseudos:{[_curUser.uid]:_curProfile.pseudo,[_activePeerUid]:peer.pseudo||'User'},photos:{[_curUser.uid]:getDisplayAvatar(),[_activePeerUid]:peer.photoURL||''},lastText:text.slice(0,80),lastTs:Date.now(),[`unread_${_activePeerUid}`]:uCount+1,[`unread_${_curUser.uid}`]:0})});
-    await Promise.all([fetch(`${FB}/userConvs/${_curUser.uid}/${_activeCid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'true'}),fetch(`${FB}/userConvs/${_activePeerUid}/${_activeCid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'true'})]);
-    await _loadChatMsgs();
-  }catch{showToast('Erreur envoi !');inp.value=text;}finally{if(btn)btn.disabled=false;}
-}
-function _stopChatPoll(){clearInterval(_chatPollTimer);_chatPollTimer=null;}
-let _searchTimer=null;
-function searchUsers(q){clearTimeout(_searchTimer);_searchTimer=setTimeout(async()=>{const res=document.getElementById('userSearchResults');if(!res)return;await _fetchPubUsers();const term=q.trim().toLowerCase();const users=Object.values(_pubUsers).filter(u=>{if(!_curUser||u.uid===_curUser.uid)return false;return !term||u.pseudo.toLowerCase().includes(term);});if(!users.length){res.innerHTML=`<div class="user-search-hint">${term?'Aucun résultat pour "'+_esc(term)+'"':'Tapez un pseudo pour rechercher'}</div>`;return;}res.innerHTML=users.map(u=>`<div class="user-res-item" onclick="openChat('${u.uid}','${_esc(u.pseudo)}','${_esc(u.photoURL||'')}')"><img class="user-res-av" src="${_esc(u.photoURL||'')}" alt="" onerror="this.style.background='#333'"><div><div class="user-res-pseudo">${_esc(u.pseudo)}</div><div class="user-res-lbl">Membre DLM-Corp</div></div></div>`).join('');},280);}
-
-/* ADMIN MESSAGES MODÉRATION */
-async function loadAdminMessages(silent=false){
-  if(!_authToken){if(!silent)showToast('Admin requis !');return;}
-  const list=document.getElementById('adm-convs-list'),syncTs=document.getElementById('adm-sync-ts'),statsBar=document.getElementById('adm-mod-stats-bar');if(!list)return;
-  if(!silent){document.getElementById('adm-conv-detail').classList.remove('open');document.getElementById('adm-conv-msgs').innerHTML='';_admCurrentCid=null;_admCurrentConvData=null;list.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.25);font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div>';}
-  try{
-    const r=await _fbAdm('convs');if(!r){list.innerHTML='<div style="color:#ff4b2b;font-size:10px;font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:1px;padding:4px;">Token admin invalide</div>';return;}
-    if(!r.ok){list.innerHTML=`<div style="color:#ff4b2b;font-size:10px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;padding:4px;">Erreur Firebase ${r.status}</div>`;return;}
-    const data=await r.json();if(syncTs)syncTs.textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    if(!data||!Object.keys(data).length){if(!silent){list.innerHTML='<div style="font-size:10px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Aucune conversation</div>';if(statsBar)statsBar.style.display='none';}return;}
-    const convEntries=Object.entries(data).sort((a,b)=>(b[1].lastTs||0)-(a[1].lastTs||0));
-    let totalMsgs=0;const uniqueUsers=new Set();
-    convEntries.forEach(([,conv])=>{const msgCount=conv.msgs?Object.keys(conv.msgs).length:0;totalMsgs+=msgCount;Object.keys(conv.participants||{}).forEach(u=>uniqueUsers.add(u));});
-    if(statsBar){statsBar.style.display='flex';const sc=document.getElementById('adm-stat-convs'),sm=document.getElementById('adm-stat-msgs'),su=document.getElementById('adm-stat-users');if(sc)sc.textContent=convEntries.length;if(sm)sm.textContent=totalMsgs;if(su)su.textContent=uniqueUsers.size;}
-    const prevCount=list.querySelectorAll('.adm-conv-row').length;
-    if(silent&&prevCount===convEntries.length){if(_admCurrentCid){const found=convEntries.find(([cid])=>cid===_admCurrentCid);if(found)_renderAdmConvDetail(_admCurrentCid,found[1]);}return;}
-    list.innerHTML='';
-    convEntries.forEach(([cid,conv])=>{
-      const pseudos=Object.values(conv.pseudos||{});const photos=Object.values(conv.photos||{});const names=pseudos.join(' ↔ ')||cid;const msgCount=conv.msgs?Object.keys(conv.msgs).length:0;const participants=Object.keys(conv.participants||{});
-      const row=document.createElement('div');row.className='adm-conv-row';row.dataset.cid=cid;
-      const avHtml=photos.slice(0,2).map(p=>`<img src="${_esc(p)}" alt="" onerror="this.style.background='#333'">`).join('');
-      row.innerHTML=`<div class="adm-conv-avs">${avHtml}</div><div class="adm-conv-clickable" onclick="_openAdmConv('${cid}', this)"><div class="adm-conv-name">${_esc(names)}</div><div class="adm-conv-preview">${_esc(conv.lastText||'—')}</div></div><div class="adm-conv-meta"><div class="adm-conv-ts">${conv.lastTs?_tsShort(conv.lastTs):''}</div><div class="adm-conv-count">${msgCount} msg</div></div><button class="adm-del-conv-btn" onclick="_deleteAdminConv('${cid}',[${participants.map(p=>"'"+p+"'").join(',')}],event)" title="Supprimer toute la conversation">🗑 Supprimer</button>`;
-      list.appendChild(row);
+    await fetch(`${FB}/convs/${_activeCid}.json?auth=${tok}`,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        [`pseudos/${_curUser.uid}`]: _curProfile.pseudo,
+        [`photos/${_curUser.uid}`]: getDisplayAvatar(),
+        [`pseudos/${_activePeerUid}`]: peer.pseudo || _activePeerUid,
+        [`photos/${_activePeerUid}`]: peer.photoURL || '',
+        lastText: text,
+        lastTs: Date.now(),
+        [`unread_${_activePeerUid}`]: (uCount || 0) + 1
+      })
     });
-    if(_admCurrentCid){const found=convEntries.find(([cid])=>cid===_admCurrentCid);if(found)_renderAdmConvDetail(_admCurrentCid,found[1]);}
-  }catch(e){if(!silent)list.innerHTML=`<div style="color:#ff4b2b;font-size:10px;font-family:'Space Mono',monospace;padding:4px;">Erreur : ${e.message||'inconnue'}</div>`;}
+    await fetch(`${FB}/userConvs/${_curUser.uid}/${_activeCid}.json?auth=${tok}`,{method:'PUT',body:'true'});
+    await fetch(`${FB}/userConvs/${_activePeerUid}/${_activeCid}.json?auth=${tok}`,{method:'PUT',body:'true'});
+    _loadChatMsgs();
+  } catch(e) { console.warn(e); }
+  finally { if(btn) btn.disabled = false; }
 }
-async function _openAdmConv(cid,clickedEl){if(!_authToken)return;document.querySelectorAll('.adm-conv-row').forEach(r=>r.style.background='');const row=clickedEl?.closest('.adm-conv-row');if(row)row.style.background='rgba(0,210,255,.05)';_admCurrentCid=cid;const detail=document.getElementById('adm-conv-detail');detail.classList.add('open');const r=await _fbAdm(`convs/${cid}`);const conv=r&&r.ok?await r.json():null;if(!conv){showToast('Erreur chargement conv !');return;}_admCurrentConvData=conv;_renderAdmConvDetail(cid,conv);detail.scrollIntoView({behavior:'smooth',block:'nearest'});}
-function _renderAdmConvDetail(cid,conv){
-  const titleEl=document.getElementById('adm-conv-detail-title');const msgsEl=document.getElementById('adm-conv-msgs');if(!msgsEl)return;
-  const pseudos=Object.values(conv.pseudos||{});const parts=Object.keys(conv.participants||{});_admCurrentParticipants=parts;
-  if(titleEl)titleEl.textContent=(pseudos.join(' ↔ ')||cid)+' · '+((conv.msgs?Object.keys(conv.msgs).length:0))+' messages';
-  if(!conv.msgs){msgsEl.innerHTML='<div style="font-size:9px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;padding:6px;text-align:center;">Aucun message</div>';return;}
-  const leftUid=parts[0]||'';const filter=document.getElementById('adm-msg-filter')?.value||'all';
-  const allMsgs=Object.entries(conv.msgs).sort((a,b)=>a[1].ts-b[1].ts);
-  const filtered=allMsgs.filter(([,m])=>{if(filter==='all')return true;if(filter==='left')return m.uid===leftUid;return m.uid!==leftUid;});
-  msgsEl.innerHTML='';let lastDay='';
-  filtered.forEach(([msgId,m])=>{
-    const d=_tsDay(m.ts);
-    if(d!==lastDay){const sep=document.createElement('div');sep.style.cssText='text-align:center;font-family:Space Mono,monospace;font-size:7px;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:2px;background:rgba(255,255,255,.03);padding:3px 10px;border-radius:20px;margin:5px auto;width:fit-content;';sep.textContent=d;msgsEl.appendChild(sep);lastDay=d;}
-    const isLeft=m.uid===leftUid;
-    const wrap=document.createElement('div');wrap.className='adm-bubble-wrap '+(isLeft?'':'right-wrap');
-    const delBtn=document.createElement('button');delBtn.className='adm-msg-del-btn';delBtn.title='Supprimer ce message';delBtn.textContent='🗑';delBtn.onclick=()=>_deleteAdminMsg(cid,msgId,m.pseudo||'?');
-    const inner=document.createElement('div');inner.className='adm-bubble-inner';
-    const bubble=document.createElement('div');bubble.className='adm-bubble '+(isLeft?'left':'right');bubble.textContent=m.text;
-    const meta=document.createElement('div');meta.className='adm-bubble-meta'+(isLeft?'':' right-meta');meta.textContent=`${m.pseudo||'?'} · ${_tsLong(m.ts)}`;
-    inner.appendChild(bubble);inner.appendChild(meta);
-    if(isLeft){wrap.appendChild(delBtn);wrap.appendChild(inner);}else{wrap.appendChild(inner);wrap.appendChild(delBtn);}
-    msgsEl.appendChild(wrap);
+function _stopChatPoll() { clearInterval(_chatPollTimer); _chatPollTimer = null; }
+async function searchUsers(q) {
+  const container = document.getElementById('userSearchResults');
+  if(!container) return;
+  if(!_curUser) { container.innerHTML = '<div class="user-search-hint">Connectez-vous</div>'; return; }
+  if(!q) { container.innerHTML = '<div class="user-search-hint">Tapez un pseudo pour rechercher un membre</div>'; return; }
+  container.innerHTML = '<div class="user-search-hint">Recherche…</div>';
+  try {
+    await _fetchPubUsers();
+    const lowerQ = q.toLowerCase();
+    const results = Object.values(_pubUsers).filter(u => u.uid !== _curUser.uid && (u.pseudo||'').toLowerCase().includes(lowerQ));
+    if(!results.length) { container.innerHTML = '<div class="user-search-hint">Aucun résultat</div>'; return; }
+    container.innerHTML = results.map(u => `
+      <div class="user-res-item" onclick="startConversation('${u.uid}','${_esc(u.pseudo)}','${_esc(u.photoURL||'')}')">
+        <img class="user-res-av" src="${_esc(u.photoURL||'')}" onerror="this.style.background='#333'">
+        <div style="flex:1"><div class="user-res-pseudo">${_esc(u.pseudo)}</div></div>
+      </div>
+    `).join('');
+  } catch { container.innerHTML = '<div class="user-search-hint">Erreur</div>'; }
+}
+async function startConversation(peerUid, peerPseudo, peerPhoto) {
+  if(!_curUser) return;
+  showInboxView();
+  openChat(peerUid, peerPseudo, peerPhoto);
+  document.getElementById('chatInput')?.focus();
+}
+let _admMsgsPollTimer = null;
+async function loadAdminMessages(silent = false) {
+  if(!_authToken) return;
+  const convsList = document.getElementById('adm-convs-list');
+  if(!convsList) return;
+  if(!silent) convsList.innerHTML = '<div style="font-size:10px;color:rgba(255,255,255,.25);">Chargement…</div>';
+  try {
+    const r = await fetch(`${FB}/convs.json?auth=${_authToken}`);
+    const convs = r.ok ? await r.json() : {};
+    if(!convs || !Object.keys(convs).length) {
+      convsList.innerHTML = '<div style="font-size:10px;color:rgba(255,255,255,.2);">Aucune conversation</div>';
+      return;
+    }
+    const arr = Object.entries(convs).map(([cid, data]) => ({cid, ...data})).sort((a,b) => (b.lastTs||0) - (a.lastTs||0));
+    convsList.innerHTML = arr.map(conv => {
+      const participants = conv.participants || {};
+      const pseudos = conv.pseudos || {};
+      const photos = conv.photos || {};
+      const uids = Object.keys(participants);
+      const preview = (conv.lastText || '').substring(0, 30);
+      const name = uids.map(uid => pseudos[uid] || uid.substring(0,6)).join(' & ');
+      const avatars = uids.map(uid => photos[uid] || '').filter(Boolean);
+      const avHtml = avatars.length ? avatars.map(src => `<img src="${_esc(src)}" onerror="this.style.display='none'">`).join('') : '<span style="font-size:20px;">👤</span>';
+      return `<div class="adm-conv-row">
+        <div class="adm-conv-avs">${avHtml}</div>
+        <div class="adm-conv-clickable" onclick="adminViewConv('${conv.cid}')">
+          <div class="adm-conv-name">${_esc(name)}</div>
+          <div class="adm-conv-preview">${_esc(preview)}</div>
+        </div>
+        <div class="adm-conv-meta">
+          <div class="adm-conv-ts">${conv.lastTs ? _tsShort(conv.lastTs) : ''}</div>
+          <div class="adm-conv-count">${Object.keys(conv.msgs||{}).length} msg</div>
+        </div>
+        <button class="adm-del-conv-btn" onclick="event.stopPropagation();adminDeleteConv('${conv.cid}')">🗑 Supprimer</button>
+      </div>`;
+    }).join('');
+    document.getElementById('adm-sync-ts').textContent = new Date().toLocaleTimeString();
+  } catch(e) { convsList.innerHTML = '<div style="color:#ff4b2b;">Erreur</div>'; }
+}
+async function adminViewConv(cid) {
+  if(!_authToken) return;
+  _admCurrentCid = cid;
+  const detailDiv = document.getElementById('adm-conv-detail');
+  const title = document.getElementById('adm-conv-detail-title');
+  const msgsDiv = document.getElementById('adm-conv-msgs');
+  try {
+    const r = await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`);
+    const data = r.ok ? await r.json() : null;
+    if(!data) return;
+    _admCurrentConvData = data;
+    _admCurrentParticipants = Object.keys(data.participants||{});
+    title.textContent = `Conversation · ${_admCurrentParticipants.map(uid => data.pseudos?.[uid] || uid).join(' & ')}`;
+    _applyMsgFilter();
+    detailDiv.classList.add('open');
+  } catch(e) {}
+}
+function _applyMsgFilter() {
+  if(!_admCurrentConvData) return;
+  const filter = document.getElementById('adm-msg-filter')?.value || 'all';
+  const msgsDiv = document.getElementById('adm-conv-msgs');
+  const msgs = Object.values(_admCurrentConvData.msgs||{}).sort((a,b) => a.ts - b.ts);
+  const filtered = msgs.filter(m => {
+    if(filter === 'all') return true;
+    const idx = _admCurrentParticipants.indexOf(m.uid);
+    if(filter === 'left' && idx === 0) return true;
+    if(filter === 'right' && idx === 1) return true;
+    return false;
   });
-  if(!filtered.length){msgsEl.innerHTML='<div style="font-size:9px;color:rgba(255,255,255,.2);font-family:\'Space Mono\',monospace;padding:6px;text-align:center;">Aucun message pour ce filtre</div>';}
-  msgsEl.scrollTop=msgsEl.scrollHeight;
+  msgsDiv.innerHTML = filtered.map(m => {
+    const isRight = _admCurrentParticipants.indexOf(m.uid) === 1;
+    return `<div class="adm-bubble-wrap ${isRight?'right-wrap':''}">
+      <div class="adm-bubble-inner">
+        <div class="adm-bubble ${isRight?'right':'left'}">${_esc(m.text)}</div>
+        <div class="adm-bubble-meta ${isRight?'right-meta':''}">${m.pseudo} · ${_tsLong(m.ts)}</div>
+      </div>
+      <button class="adm-msg-del-btn" onclick="adminDeleteMsg('${_admCurrentCid}','${m.ts}')">🗑</button>
+    </div>`;
+  }).join('');
 }
-function _applyMsgFilter(){if(_admCurrentCid&&_admCurrentConvData){_renderAdmConvDetail(_admCurrentCid,_admCurrentConvData);}}
-async function _deleteAdminMsg(cid,msgId,pseudo){if(!_authToken)return;if(!confirm(`Supprimer ce message de ${pseudo} ?`))return;try{const r=await _fbAdm(`convs/${cid}/msgs/${msgId}`,{method:'DELETE'});if(r&&r.ok){showToast('✓ Message supprimé');if(_admCurrentConvData?.msgs)delete _admCurrentConvData.msgs[msgId];if(_admCurrentCid===cid)_renderAdmConvDetail(cid,_admCurrentConvData);_refreshConvMeta(cid);}else{showToast('Erreur suppression !');}}catch{showToast('Erreur réseau !');}}
-async function _refreshConvMeta(cid){if(!_authToken)return;try{const r=await _fbAdm(`convs/${cid}/msgs`);if(!r||!r.ok)return;const msgs=await r.json();if(!msgs){await _fbAdm(`convs/${cid}/lastText`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify('')});await _fbAdm(`convs/${cid}/lastTs`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(0)});return;}const sorted=Object.values(msgs).sort((a,b)=>b.ts-a.ts);const last=sorted[0];await _fbAdm(`convs/${cid}.json`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({lastText:(last.text||'').slice(0,80),lastTs:last.ts})});}catch{}}
-async function _deleteAllMsgsInConv(){if(!_authToken||!_admCurrentCid)return;const convData=_admCurrentConvData;const count=convData?.msgs?Object.keys(convData.msgs).length:0;if(!count){showToast('Aucun message à supprimer');return;}if(!confirm(`Supprimer les ${count} messages de cette conversation ? Cette action est irréversible.`))return;try{const r=await _fbAdm(`convs/${_admCurrentCid}/msgs`,{method:'DELETE'});if(r&&r.ok){await _fbAdm(`convs/${_admCurrentCid}.json`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({lastText:'',lastTs:0})});showToast(`✓ ${count} messages supprimés`);if(_admCurrentConvData)_admCurrentConvData.msgs={};_renderAdmConvDetail(_admCurrentCid,_admCurrentConvData||{});loadAdminMessages(true);}else{showToast('Erreur suppression !');}}catch{showToast('Erreur réseau !');}}
-async function _deleteAdminConv(cid,participantUids,event){if(event)event.stopPropagation();if(!_authToken)return;if(!confirm('Supprimer TOUTE la conversation et ses messages ? Cette action est irréversible.'))return;try{await _fbAdm(`convs/${cid}`,{method:'DELETE'});await Promise.all(participantUids.map(uid=>_fbAdm(`userConvs/${uid}/${cid}`,{method:'DELETE'})));showToast('✓ Conversation supprimée');if(_admCurrentCid===cid){_admCurrentCid=null;_admCurrentConvData=null;document.getElementById('adm-conv-detail').classList.remove('open');}const row=document.querySelector(`.adm-conv-row[data-cid="${cid}"]`);if(row)row.remove();loadAdminMessages(true);}catch{showToast('Erreur suppression !');}}
-
-/* INIT */
-window.addEventListener('load',async()=>{
-  resize();initParticles();startCanvas();
+async function adminDeleteMsg(cid, msgTs) {
+  if(!confirm('Supprimer ce message ?')) return;
+  try {
+    await fetch(`${FB}/convs/${cid}/msgs/${msgTs}.json?auth=${_authToken}`, {method:'DELETE'});
+    adminViewConv(cid);
+  } catch(e) {}
+}
+async function _deleteAllMsgsInConv() {
+  if(!_admCurrentCid || !confirm('⚠️ Supprimer TOUS les messages de cette conversation ?')) return;
+  try {
+    await fetch(`${FB}/convs/${_admCurrentCid}/msgs.json?auth=${_authToken}`, {method:'DELETE'});
+    await fetch(`${FB}/convs/${_admCurrentCid}.json?auth=${_authToken}`, {method:'PATCH', body:JSON.stringify({lastText:'',lastTs:0})});
+    adminViewConv(_admCurrentCid);
+    loadAdminMessages();
+  } catch(e) {}
+}
+async function adminDeleteConv(cid) {
+  if(!confirm('Supprimer définitivement cette conversation ?')) return;
+  try {
+    const data = (await (await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`)).json()) || {};
+    for(const uid in data.participants||{}) {
+      await fetch(`${FB}/userConvs/${uid}/${cid}.json?auth=${_authToken}`, {method:'DELETE'});
+    }
+    await fetch(`${FB}/convs/${cid}.json?auth=${_authToken}`, {method:'DELETE'});
+    document.getElementById('adm-conv-detail')?.classList.remove('open');
+    loadAdminMessages();
+  } catch(e) {}
+}
+let _friendsPollTimer = null;
+let _myFriends = new Map();
+let _incomingRequests = new Map();
+let _sentRequestsSet = new Set();
+function _startFriendsPolling() { _loadFriendsAndRequests(); _stopFriendsPolling(); _friendsPollTimer = setInterval(() => _loadFriendsAndRequests(true), 15000); }
+function _stopFriendsPolling() { clearInterval(_friendsPollTimer); _friendsPollTimer = null; }
+function _updateFriendsBadge(n) {
+  const b = document.getElementById('friendsBadge');
+  if(b) { if(n>0) { b.textContent = n>99?'99+':n; b.style.display='flex'; } else b.style.display='none'; }
+}
+async function _loadFriendsAndRequests(silent = false) {
+  if(!_curUser) return;
+  try {
+    const tok = await _curUser.getIdToken();
+    const fRes = await fetch(`${FB}/friends/${_curUser.uid}.json?auth=${tok}`);
+    const friends = fRes.ok ? await fRes.json() : {};
+    _myFriends.clear();
+    if(friends) Object.entries(friends).forEach(([uid, data]) => _myFriends.set(uid, data));
+    const rRes = await fetch(`${FB}/friendRequests/${_curUser.uid}.json?auth=${tok}`);
+    const reqs = rRes.ok ? await rRes.json() : {};
+    _incomingRequests.clear();
+    if(reqs) Object.entries(reqs).forEach(([uid, data]) => { if(data.status === 'pending') _incomingRequests.set(uid, data); });
+    const cnt = _incomingRequests.size;
+    _updateFriendsBadge(cnt);
+    const badge = document.getElementById('freq-badge');
+    if(badge) { if(cnt>0) { badge.textContent = cnt; badge.style.display = 'inline-flex'; } else badge.style.display = 'none'; }
+    document.getElementById('friends-count-lbl').textContent = _myFriends.size;
+    if(document.getElementById('friendsPanel').classList.contains('active')) {
+      if(document.getElementById('ftab-content-friends').style.display !== 'none') renderFriendsList();
+      else renderRequestsList();
+    }
+  } catch(e) {}
+}
+function openFriendsPanel() {
+  if(!_curUser) return;
+  sfx.open();
+  document.getElementById('friendsPanel').classList.add('active');
+  _loadFriendsAndRequests();
+  switchFriendsTab('friends');
+  document.getElementById('friendSearchInput').value = '';
+}
+function closeFriendsPanel() { document.getElementById('friendsPanel').classList.remove('active'); }
+function switchFriendsTab(tab) {
+  const tabs = document.querySelectorAll('.friends-tab');
+  const contentFriends = document.getElementById('ftab-content-friends');
+  const contentReqs = document.getElementById('ftab-content-requests');
+  tabs.forEach(t => t.classList.remove('active'));
+  if(tab === 'friends') {
+    document.getElementById('ftab-friends').classList.add('active');
+    contentFriends.style.display = 'block';
+    contentReqs.style.display = 'none';
+    renderFriendsList();
+  } else {
+    document.getElementById('ftab-requests').classList.add('active');
+    contentFriends.style.display = 'none';
+    contentReqs.style.display = 'block';
+    renderRequestsList();
+  }
+}
+function renderFriendsList() {
+  const cont = document.getElementById('friends-list-container');
+  if(!cont) return;
+  if(_myFriends.size === 0) { cont.innerHTML = '<div class="friends-empty">Aucun ami pour le moment</div>'; return; }
+  const sorted = Array.from(_myFriends.entries()).sort((a,b) => (a[1].pseudo||'').localeCompare(b[1].pseudo||''));
+  const onlineNow = new Set();
+  cont.innerHTML = sorted.map(([uid, data]) => {
+    const online = (Date.now() - (data.lastActive||0)) < 5*60*1000;
+    return `<div class="friend-row">
+      <div class="friend-av-wrap"><img class="friend-av" src="${_esc(data.photoURL||'')}" onerror="this.style.background='#333'"><div class="friend-online-dot ${online?'online':''}"></div></div>
+      <div class="friend-info"><div class="friend-pseudo">${_esc(data.pseudo||uid)}</div></div>
+      <div class="friend-actions">
+        <button class="friend-msg-btn" onclick="quickMessage('${uid}','${_esc(data.pseudo)}','${_esc(data.photoURL||'')}')">💬</button>
+        <button class="friend-del-btn" onclick="unfriend('${uid}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function renderRequestsList() {
+  const cont = document.getElementById('friends-req-container');
+  if(!cont) return;
+  if(_incomingRequests.size === 0) { cont.innerHTML = '<div class="friends-empty">Aucune demande en attente</div>'; return; }
+  cont.innerHTML = Array.from(_incomingRequests.entries()).map(([uid, data]) => `
+    <div class="req-in-row">
+      <img class="req-in-av" src="${_esc(data.photoURL||'')}" onerror="this.style.background='#333'">
+      <div class="req-in-info"><div class="req-in-pseudo">${_esc(data.pseudo||uid)}</div></div>
+      <div class="req-in-actions">
+        <button class="req-accept-btn" onclick="acceptFriendRequest('${uid}')">✓ Accepter</button>
+        <button class="req-decline-btn" onclick="declineFriendRequest('${uid}')">✕ Refuser</button>
+      </div>
+    </div>
+  `).join('');
+}
+async function onFriendSearch(q) {
+  const container = document.getElementById('friends-list-container');
+  if(!container) return;
+  if(!q || q.length < 2) { renderFriendsList(); return; }
+  container.innerHTML = '<div class="friends-empty">Recherche…</div>';
+  try {
+    await _fetchPubUsers();
+    const lowerQ = q.toLowerCase();
+    const results = Object.values(_pubUsers).filter(u => u.uid !== _curUser.uid && (u.pseudo||'').toLowerCase().includes(lowerQ));
+    container.innerHTML = results.map(u => {
+      const isFriend = _myFriends.has(u.uid);
+      const isIncoming = _incomingRequests.has(u.uid);
+      const isSent = _sentRequestsSet.has(u.uid);
+      let actionBtn = '';
+      if(isFriend) actionBtn = '<span class="fst-tag fst-friend">✓ Ami</span>';
+      else if(isIncoming) actionBtn = '<span class="fst-tag fst-incoming">Demande reçue</span>';
+      else if(isSent) actionBtn = '<span class="fst-tag fst-sent">Envoyée</span>';
+      else actionBtn = `<button class="friend-add-btn" onclick="sendFriendRequest('${u.uid}')">➕ Ajouter</button>`;
+      return `<div class="fsearch-row">
+        <img class="fsearch-av" src="${_esc(u.photoURL||'')}" onerror="this.style.background='#333'">
+        <div class="fsearch-info"><div class="fsearch-pseudo">${_esc(u.pseudo||u.uid)}</div></div>
+        ${actionBtn}
+      </div>`;
+    }).join('');
+  } catch { container.innerHTML = '<div class="friends-empty">Erreur</div>'; }
+}
+async function sendFriendRequest(toUid) {
+  if(!_curUser) return;
+  const tok = await _curUser.getIdToken();
+  const myData = { pseudo: _curProfile.pseudo, photoURL: getDisplayAvatar(), ts: Date.now(), status: 'pending' };
+  await fetch(`${FB}/friendRequests/${toUid}/${_curUser.uid}.json?auth=${tok}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(myData) });
+  _sentRequestsSet.add(toUid);
+  showToast('Demande envoyée !');
+  if(document.getElementById('friendsPanel').classList.contains('active')) onFriendSearch(document.getElementById('friendSearchInput').value);
+}
+async function acceptFriendRequest(fromUid) {
+  if(!_curUser) return;
+  const tok = await _curUser.getIdToken();
+  const reqData = _incomingRequests.get(fromUid);
+  await fetch(`${FB}/friends/${_curUser.uid}/${fromUid}.json?auth=${tok}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pseudo: reqData.pseudo, photoURL: reqData.photoURL, ts: Date.now()}) });
+  await fetch(`${FB}/friends/${fromUid}/${_curUser.uid}.json?auth=${tok}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pseudo: _curProfile.pseudo, photoURL: getDisplayAvatar(), ts: Date.now()}) });
+  await fetch(`${FB}/friendRequests/${_curUser.uid}/${fromUid}.json?auth=${tok}`, { method:'DELETE' });
+  _incomingRequests.delete(fromUid);
+  _myFriends.set(fromUid, {pseudo: reqData.pseudo, photoURL: reqData.photoURL});
+  _loadFriendsAndRequests();
+  showToast('Ami ajouté !');
+}
+async function declineFriendRequest(fromUid) {
+  if(!_curUser) return;
+  const tok = await _curUser.getIdToken();
+  await fetch(`${FB}/friendRequests/${_curUser.uid}/${fromUid}.json?auth=${tok}`, { method:'DELETE' });
+  _incomingRequests.delete(fromUid);
+  _loadFriendsAndRequests();
+}
+async function unfriend(friendUid) {
+  if(!confirm('Retirer cet ami ?')) return;
+  const tok = await _curUser.getIdToken();
+  await fetch(`${FB}/friends/${_curUser.uid}/${friendUid}.json?auth=${tok}`, { method:'DELETE' });
+  await fetch(`${FB}/friends/${friendUid}/${_curUser.uid}.json?auth=${tok}`, { method:'DELETE' });
+  _myFriends.delete(friendUid);
+  renderFriendsList();
+  showToast('Ami retiré');
+}
+function quickMessage(peerUid, peerPseudo, peerPhoto) {
+  closeFriendsPanel();
+  openMsgPanel();
+  openChat(peerUid, peerPseudo, peerPhoto);
+}
+let _heartbeatTimer = null;
+function _startHeartbeat() {
+  _stopHeartbeat();
+  _heartbeatTimer = setInterval(async () => {
+    if(!_curUser) return;
+    try {
+      const tok = await _curUser.getIdToken();
+      await fetch(`${FB}/publicUsers/${_curUser.uid}/lastActive.json?auth=${tok}`, { method:'PUT', body:JSON.stringify(Date.now()) });
+    } catch(e) {}
+  }, 120000);
+}
+function _stopHeartbeat() { clearInterval(_heartbeatTimer); _heartbeatTimer = null; }
+window.onload = async () => {
+  resize();
+  initParticles();
+  startCanvas();
   await LS.loadAll();
-  const cnt=getAllServers().length;
-  const bc=document.getElementById('srv-btn-count');if(bc)bc.textContent=cnt;
-  animateCount('server-count',cnt);
-  setTimeout(startBoot,300);
-  refreshAll();
-  setupChromaEgg();setupKingfireEgg();
-  applyBanner();applyMaintenance();
-  document.querySelectorAll('.team-link,.bot-add-btn,.theme-opt').forEach(el=>{el.addEventListener('mouseenter',sfx.hover,{passive:true});el.addEventListener('click',sfx.click,{passive:true});});
-});
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){stopCanvas();document.querySelectorAll('.aurora-blob,.maint-dot,.maint-bar,.mc-bubble,.corp-title').forEach(el=>el.style.animationPlayState='paused');}
-  else{if(!_overlayOpen)startCanvas();document.querySelectorAll('.aurora-blob,.maint-dot,.maint-bar,.mc-bubble,.corp-title').forEach(el=>el.style.animationPlayState='running');}
-});
+  applyBanner();
+  applyMaintenance();
+  startBoot();
+  setupChromaEgg();
+  setupKingfireEgg();
+  setInterval(refreshAll, 45000);
+  checkDiscordAPI();
+  if(fbAuth.currentUser) _fetchPubUsers();
+};
 </script>
 </body>
 </html>
