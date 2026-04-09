@@ -314,62 +314,115 @@ body.admin-mode .card-del-btn{display:block!important;}
 .adm-bubble-meta.right-meta{text-align:right;}
 .adm-msg-del-btn{width:26px;height:26px;border-radius:7px;background:rgba(255,75,43,.08);border:1px solid rgba(255,75,43,.2);color:rgba(255,75,43,.45);font-size:12px;cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:5px;padding:0;}
 .adm-msg-del-btn:hover{background:rgba(255,75,43,.22);color:#ff4b2b;border-color:#ff4b2b;}
-.prof-social-input{width:100%;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;transition:.2s;}
-.prof-social-input:focus{border-color:var(--sub);box-shadow:0 0 8px var(--glow);}
-.prof-desc-textarea{width:100%;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;margin-bottom:8px;resize:vertical;min-height:60px;}
-.prof-desc-textarea:focus{border-color:var(--sub);box-shadow:0 0 8px var(--glow);}
-.prof-avatar-upload{display:flex;gap:10px;margin:10px 0;flex-wrap:wrap;}
-.prof-avatar-label{background:rgba(255,255,255,.05);border:1px dashed var(--sub);padding:6px 12px;border-radius:20px;font-size:9px;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:5px;}
+.prof-social-input{width:100%;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;transition:.2s;}
+.prof-social-input:focus{border-color:var(--sub);box-shadow:0 0 14px var(--glow);}
+.prof-desc-textarea{width:100%;padding:13px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:white;font-family:'Space Mono',monospace;font-size:11px;outline:none;resize:vertical;min-height:96px;transition:.2s;}
+.prof-desc-textarea:focus{border-color:var(--sub);box-shadow:0 0 14px var(--glow);}
+.prof-avatar-upload{display:flex;gap:10px;flex-wrap:wrap;}
+.prof-avatar-label{background:rgba(255,255,255,.05);border:1px dashed var(--sub);padding:8px 14px;border-radius:999px;font-size:9px;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:1px;}
 .prof-avatar-label:hover{background:var(--sub);color:#000;}
 #customAvatarInput{display:none;}
-.prof-reset-avatar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:20px;font-size:9px;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;color:rgba(255,255,255,.5);}
+.prof-reset-avatar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:8px 14px;border-radius:999px;font-size:9px;font-family:'Space Mono',monospace;cursor:pointer;transition:.2s;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:1px;}
 .prof-reset-avatar:hover{border-color:#ff4b2b;color:#ff4b2b;}
-.prof-update-btn{background:var(--sub);color:#000;border:none;padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;margin-bottom:10px;}
-.prof-update-btn:hover{filter:brightness(1.15);transform:scale(1.02);}
-.prof-delete-req-btn{background:rgba(255,75,43,.1);border:1px solid rgba(255,75,43,.28);color:#ff4b2b;padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
+.prof-update-btn{background:var(--sub);color:#000;border:none;padding:12px 16px;border-radius:14px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
+.prof-update-btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.prof-delete-req-btn{background:rgba(255,75,43,.1);border:1px solid rgba(255,75,43,.28);color:#ff4b2b;padding:12px 14px;border-radius:14px;font-size:10px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
 .prof-delete-req-btn:hover{background:rgba(255,75,43,.22);border-color:#ff4b2b;}
-.prof-signout-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);padding:10px 14px;border-radius:10px;font-size:11px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;margin-top:9px;}
+.prof-signout-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);padding:12px 14px;border-radius:14px;font-size:10px;font-weight:800;font-family:'Space Mono',monospace;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
 .prof-signout-btn:hover{border-color:#ff4b2b;color:#ff4b2b;background:rgba(255,75,43,.07);}
-#profilePanel{position:fixed;inset:0;z-index:7000;display:none;}
-#profilePanel.active{display:flex!important;}
-#profileBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
-#profileInner{position:absolute;top:0;right:0;bottom:0;width:min(460px,100vw);background:#060610;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;animation:adminIn .35s cubic-bezier(.2,.8,.2,1) both;}
-.prof-header{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.prof-close{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:19px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;}
+#profilePanel,#publicProfilePanel{position:fixed;inset:0;display:none;}
+#profilePanel{z-index:7000;}
+#publicProfilePanel{z-index:7400;}
+#profilePanel.active,#publicProfilePanel.active{display:flex!important;}
+#profileBackdrop,#publicProfileBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
+#profileInner,#publicProfileInner{position:absolute;top:0;right:0;bottom:0;width:min(500px,100vw);background:#060610;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;animation:adminIn .35s cubic-bezier(.2,.8,.2,1) both;}
+#publicProfileInner{width:min(470px,100vw);z-index:1;}
+.prof-header{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:rgba(6,6,16,.94);backdrop-filter:blur(18px);}
+.prof-close{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:19px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;}
 .prof-close:hover{background:rgba(255,75,43,.15);border-color:#ff4b2b;color:#ff4b2b;}
-.prof-identity{display:flex;flex-direction:column;align-items:center;padding:26px 22px 20px;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0;}
-.prof-avatar-wrap{position:relative;margin-bottom:14px;}
-.prof-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2.5px solid var(--sub);box-shadow:0 0 22px var(--glow);}
-.prof-role-badge{position:absolute;bottom:-2px;right:-4px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:20px;white-space:nowrap;font-family:'Space Mono',monospace;}
+.prof-body,.pub-prof-body{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px;}
+.prof-body::-webkit-scrollbar,.pub-prof-body::-webkit-scrollbar{width:4px;}
+.prof-body::-webkit-scrollbar-thumb,.pub-prof-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:999px;}
+.prof-hero-card,.prof-card,.pub-prof-card,.pub-prof-state{border-radius:24px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));box-shadow:0 16px 50px rgba(0,0,0,.24);}
+.prof-hero-card{padding:22px;display:flex;flex-direction:column;gap:18px;position:relative;overflow:hidden;}
+.prof-hero-card::before,.pub-prof-card::before{content:'';position:absolute;inset:auto auto -60px -40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(0,210,255,.22),transparent 70%);pointer-events:none;}
+.prof-hero-top,.pub-prof-top{display:flex;align-items:center;gap:16px;}
+.prof-hero-copy,.pub-prof-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;}
+.prof-kicker,.pub-prof-kicker{font-family:'Space Mono',monospace;font-size:8px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--sub);}
+.prof-avatar-wrap,.pub-prof-avatar-wrap{position:relative;flex-shrink:0;}
+.prof-avatar,.pub-prof-avatar{width:96px;height:96px;border-radius:28px;object-fit:cover;border:2px solid rgba(255,255,255,.08);box-shadow:0 0 28px var(--glow);background:rgba(255,255,255,.05);}
+.pub-prof-avatar{width:88px;height:88px;}
+.prof-role-badge,.pub-prof-role{position:absolute;bottom:-6px;right:-6px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px;padding:4px 8px;border-radius:999px;white-space:nowrap;font-family:'Space Mono',monospace;}
 .role-membre{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);}
 .role-vip{background:linear-gradient(135deg,#d4af37,#ffd700);color:#000;}
 .role-modo{background:linear-gradient(135deg,#0077be,#00e5ff);color:#000;}
 .role-staff{background:linear-gradient(135deg,var(--accent),var(--sub));color:#000;}
 .role-co-fondateur{background:linear-gradient(135deg,#ff6b00,#ffb347);color:#000;}
 .role-fondateur{background:linear-gradient(135deg,#6a0dad,#00d2ff);color:#fff;}
-.prof-pseudo-wrap{display:flex;align-items:center;gap:9px;margin-bottom:5px;}
-.prof-pseudo{font-size:17px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:2px;}
-.prof-edit-btn{background:none;border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.35);border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;transition:.2s;font-family:'Space Mono',monospace;flex-shrink:0;}
+.prof-pseudo-wrap,.pub-prof-name-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.prof-pseudo,.pub-prof-pseudo{font-size:22px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:2px;line-height:1;}
+.prof-edit-btn{background:none;border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.45);border-radius:999px;padding:6px 10px;font-size:9px;cursor:pointer;transition:.2s;font-family:'Space Mono',monospace;flex-shrink:0;text-transform:uppercase;letter-spacing:1px;}
 .prof-edit-btn:hover{border-color:var(--sub);color:var(--sub);}
-.prof-google-email{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:1px;}
-.prof-editor{display:none;flex-direction:column;align-items:center;gap:9px;margin-top:12px;width:100%;}
+.prof-google-email,.pub-prof-meta,.prof-visibility-pill,.prof-toggle-desc,.prof-card-sub,.prof-summary-label,.pub-prof-status,.user-res-meta,.fsearch-meta{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;}
+.prof-visibility-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);width:max-content;}
+.prof-visibility-pill.is-hidden{color:#ff9068;border-color:rgba(255,75,43,.25);background:rgba(255,75,43,.08);}
+.prof-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.prof-summary-card{padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);}
+.prof-summary-value{font-size:18px;font-weight:900;color:white;margin-top:6px;}
+.prof-card,.pub-prof-card,.pub-prof-state{padding:18px;}
+.prof-card-header,.pub-prof-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.prof-card-title,.pub-prof-title{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:white;}
+.prof-fields{display:flex;flex-direction:column;gap:10px;}
+.prof-fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.prof-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);}
+.prof-toggle-copy{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;}
+.prof-toggle-title{font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;}
+.prof-toggle-btn,.prof-preview-btn,.user-res-profile-btn,.chat-profile-btn{border:none;border-radius:999px;padding:9px 14px;font-family:'Space Mono',monospace;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:.18s;white-space:nowrap;}
+.prof-toggle-btn{background:rgba(255,255,255,.08);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.12);}
+.prof-toggle-btn.on{background:var(--sub);border-color:var(--sub);color:#000;box-shadow:0 0 18px var(--glow);}
+.prof-preview-btn{margin-top:12px;width:100%;background:rgba(255,255,255,.04);color:white;border:1px solid rgba(255,255,255,.1);}
+.prof-preview-btn:hover,.user-res-profile-btn:hover,.chat-profile-btn:hover{border-color:var(--sub);box-shadow:0 0 14px rgba(0,210,255,.14);}
+.prof-actions-row{display:flex;flex-direction:column;gap:10px;}
+.prof-editor{display:none;flex-direction:column;align-items:stretch;gap:9px;width:100%;}
 .prof-editor.open{display:flex;}
-.prof-pseudo-input{width:100%;max-width:260px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--sub);color:white;font-family:'Space Mono',monospace;font-size:13px;text-align:center;outline:none;box-sizing:border-box;box-shadow:0 0 10px var(--glow);}
+.prof-pseudo-input{width:100%;padding:11px 14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--sub);color:white;font-family:'Space Mono',monospace;font-size:13px;text-align:center;outline:none;box-sizing:border-box;box-shadow:0 0 10px var(--glow);}
 .prof-editor-actions{display:flex;gap:8px;}
-.prof-save-btn{padding:8px 18px;border-radius:8px;border:none;background:var(--sub);color:#000;font-family:'Space Mono',monospace;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:.2s;}
-.prof-save-btn:hover{filter:brightness(1.14);transform:scale(1.03);}
-.prof-cancel-btn{padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.38);font-family:'Space Mono',monospace;font-size:10px;font-weight:800;cursor:pointer;transition:.2s;}
-.prof-body{flex:1;overflow-y:auto;padding:20px 22px;}
-.prof-body::-webkit-scrollbar{width:3px;}
-.prof-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:2px;}
-.prof-section-lbl{font-family:'Space Mono',monospace;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:4px;color:var(--sub);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.prof-save-btn{padding:10px 18px;border-radius:12px;border:none;background:var(--sub);color:#000;font-family:'Space Mono',monospace;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:.2s;flex:1;}
+.prof-save-btn:hover{filter:brightness(1.08);}
+.prof-cancel-btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.38);font-family:'Space Mono',monospace;font-size:10px;font-weight:800;cursor:pointer;transition:.2s;}
+.prof-section-lbl{font-family:'Space Mono',monospace;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:4px;color:var(--sub);margin-bottom:2px;display:flex;align-items:center;gap:8px;}
 .prof-section-lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--sub),transparent);}
-.prof-hist-list{display:flex;flex-direction:column;gap:7px;margin-bottom:22px;}
-.prof-hist-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.055);}
-.prof-hist-dot{width:6px;height:6px;border-radius:50%;background:var(--sub);box-shadow:0 0 6px var(--glow);flex-shrink:0;margin-top:4px;}
+.prof-hist-list{display:flex;flex-direction:column;gap:8px;}
+.prof-hist-item{display:flex;align-items:flex-start;gap:10px;padding:12px 13px;border-radius:16px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.055);}
+.prof-hist-dot{width:6px;height:6px;border-radius:50%;background:var(--sub);box-shadow:0 0 6px var(--glow);flex-shrink:0;margin-top:5px;}
 .prof-hist-action{font-size:11px;font-weight:700;color:rgba(255,255,255,.78);line-height:1.4;}
-.prof-hist-ts{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);margin-top:2px;}
-.prof-hist-empty{text-align:center;padding:22px 0;color:rgba(255,255,255,.12);font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;}
+.prof-hist-ts{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);margin-top:3px;}
+.prof-hist-empty,.pub-prof-empty{padding:18px;border-radius:16px;background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.08);text-align:center;color:rgba(255,255,255,.18);font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;}
+.pub-prof-card{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:16px;}
+.pub-prof-bio{font-size:13px;line-height:1.7;color:rgba(255,255,255,.78);}
+.pub-prof-links{display:flex;flex-direction:column;gap:10px;}
+.pub-prof-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:white;text-decoration:none;transition:.2s;}
+.pub-prof-link:hover{border-color:var(--sub);transform:translateY(-1px);}
+.pub-prof-link-name{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;}
+.pub-prof-link-url{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.35);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;text-align:right;}
+.pub-prof-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.pub-prof-primary{background:var(--sub);color:#000;border:1px solid var(--sub);}
+.pub-prof-secondary{background:rgba(255,255,255,.04);color:white;border:1px solid rgba(255,255,255,.1);}
+.pub-prof-state{display:flex;flex-direction:column;gap:10px;justify-content:center;min-height:240px;}
+.pub-prof-state-title{font-size:18px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:2px;}
+.pub-prof-state-text{font-size:13px;line-height:1.7;color:rgba(255,255,255,.62);}
+.user-res-item,.fsearch-row,.friend-row{display:flex;align-items:center;gap:10px;padding:11px 10px;border-radius:14px;transition:.18s;}
+.user-res-item:hover,.fsearch-row:hover,.friend-row:hover{background:rgba(255,255,255,.04);}
+.user-res-av{width:40px;height:40px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.07);flex-shrink:0;}
+.user-res-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.user-res-profile-btn{background:rgba(255,255,255,.05);color:white;border:1px solid rgba(255,255,255,.1);}
+.user-res-profile-btn.primary,.chat-profile-btn{background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.24);color:var(--sub);}
+.friend-profile-btn{width:auto!important;padding:0 10px!important;font-size:9px!important;font-family:'Space Mono',monospace!important;text-transform:uppercase;letter-spacing:1px;background:rgba(255,255,255,.05)!important;border-color:rgba(255,255,255,.12)!important;color:white!important;}
+.fsearch-meta{margin-top:3px;}
+.chat-top{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;}
+.chat-top-main{display:flex;align-items:center;gap:10px;min-width:0;}
+.chat-top-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.chat-profile-btn{display:inline-flex;align-items:center;justify-content:center;}
 .member-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);margin-bottom:7px;}
 .member-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.06);flex-shrink:0;}
 .member-info{flex:1;min-width:0;}
@@ -564,7 +617,11 @@ body.admin-mode .card-del-btn{display:block!important;}
   #adminInner{width:100vw!important;}
   #adminNav{width:130px!important;}
   .mc-bubble{flex-wrap:wrap;justify-content:center;text-align:center;}
-  #profileInner,#msgInner,#friendsInner{width:100vw!important;}
+  #profileInner,#publicProfileInner,#msgInner,#friendsInner{width:100vw!important;}
+  .prof-summary-grid,.prof-fields-grid{grid-template-columns:1fr;}
+  .prof-hero-top,.pub-prof-top,.prof-toggle-row{align-items:flex-start;flex-direction:column;}
+  .user-res-item,.fsearch-row,.friend-row{flex-wrap:wrap;}
+  .user-res-actions{width:100%;justify-content:flex-end;}
   #privacyPanel{height:96vh;}
   .pp-topbar,.pp-body,.pp-footer-bar{padding-left:16px;padding-right:16px;}
   .adm-conv-detail-hdr{flex-wrap:wrap;}
@@ -578,8 +635,9 @@ body.admin-mode .card-del-btn{display:block!important;}
 <div id="kingfireOverlay" onclick="closeKingfire()"><div id="kingfireBox"><span class="ohh-text">BECAREFUL !</span><span class="ohh-sub">Kingfire — Co-Fondateur DLM</span><span class="ohh-hint">clique pour fermer</span></div></div>
 <div id="passwordOverlay"><div class="pw-box" id="pwBox"><button class="pw-close" onclick="closePwModal()">×</button><div class="pw-icon">⚡</div><div class="pw-title">Zone Admin</div><div class="pw-sub">Accès restreint — DLM Team</div><label class="pw-label">Mot de passe</label><input type="password" class="pw-input" id="adminPassword" placeholder="••••••••••" onkeydown="if(event.key==='Enter')checkPassword()"><div class="pw-error" id="pwError"></div><button class="pw-btn" onclick="checkPassword()">Entrer →</button></div></div>
 <div id="adminPanel"><div id="adminBackdrop" onclick="closeAdminPanel()"></div><div id="adminInner"><div id="adminHeader"><div style="display:flex;align-items:center;gap:12px;"><div class="adm-logo">⚡</div><div><div class="adm-htitle">DLM Admin</div><div class="adm-hsub">Panneau de gestion</div></div></div><button id="adminCloseBtn" onclick="closeAdminPanel()">×</button></div><div id="adminBody"><nav id="adminNav"><div class="anav-sep">Général</div><button class="anav-btn active" onclick="showPage('dashboard')"><span class="anav-ic">📊</span>Dashboard</button><button class="anav-btn" onclick="showPage('announce')"><span class="anav-ic">📢</span>Annonce</button><div class="anav-sep">Serveurs</div><button class="anav-btn" onclick="showPage('add')"><span class="anav-ic">➕</span>Ajouter</button><button class="anav-btn" onclick="showPage('manage')"><span class="anav-ic">🗂</span>Gérer</button><button class="anav-btn" onclick="showPage('base')"><span class="anav-ic">🔧</span>Base</button><div class="anav-sep">Communauté</div><button class="anav-btn" onclick="showPage('membres')"><span class="anav-ic">👥</span>Membres</button><button class="anav-btn" onclick="showPage('messages')"><span class="anav-ic">💬</span>Messages</button><button class="anav-btn" onclick="showPage('demandes')"><span class="anav-ic">📋</span>Demandes</button><div class="anav-sep">Site</div><button class="anav-btn" onclick="showPage('settings')"><span class="anav-ic">⚙️</span>Paramètres</button><div style="flex:1"></div><button class="anav-btn anav-danger" onclick="adminLogout()"><span class="anav-ic">🚪</span>Déco</button></nav><div id="adminContent"><div class="apage active" id="apage-dashboard"><div class="ap-title">Dashboard</div><div class="ap-sub">Vue d'ensemble</div><div class="a-pills"><div class="a-pill"><div class="a-pill-v" id="adm-total">—</div><div class="a-pill-l">Membres Discord</div></div><div class="a-pill"><div class="a-pill-v" id="adm-online">—</div><div class="a-pill-l">En ligne</div></div><div class="a-pill"><div class="a-pill-v" id="adm-srv">—</div><div class="a-pill-l">Serveurs</div></div><div class="a-pill"><div class="a-pill-v" id="adm-accounts">—</div><div class="a-pill-l">Comptes</div></div></div><div class="a-card"><div class="a-card-t">🖥 Serveurs</div><div id="adm-srv-preview"></div></div><div class="a-card"><div class="a-card-t">📡 API Discord</div><div style="display:flex;align-items:center;gap:10px;"><div id="adm-api-dot" style="width:9px;height:9px;border-radius:50%;background:#555;transition:.3s;"></div><span id="adm-api-lbl" style="font-size:12px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;">—</span><span id="adm-api-lat" style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);"></span></div></div></div><div class="apage" id="apage-announce"><div class="ap-title">Annonce</div><div class="ap-sub">Bannière visiteurs</div><div class="a-card"><div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl">Afficher</div><div class="a-ts">Active la bannière</div></div><div class="a-sw" id="bannerToggle" onclick="toggleBanner()"></div></div></div><div class="a-card"><div class="a-card-t">✏️ Texte</div><label class="a-label">Message (max 120)</label><input type="text" class="a-input" id="announceInput" maxlength="120" placeholder="Ex: Nouveau serveur !" oninput="document.getElementById('announce-preview').textContent=this.value||'—'"><button class="a-btn" onclick="saveBanner()">💾 Sauvegarder</button></div><div class="a-card" style="background:rgba(0,210,255,.03);border-color:rgba(0,210,255,.15);"><div class="a-card-t">👁 Aperçu</div><div id="announce-preview" style="background:rgba(0,0,0,.4);border:1px solid var(--sub);border-radius:8px;padding:9px 14px;font-size:11px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:2px;text-align:center;">—</div></div></div><div class="apage" id="apage-add"><div class="ap-title">Ajouter</div><div class="ap-sub">Nouveau serveur Discord</div><div class="a-card"><div class="a-card-t">➕ Infos</div><label class="a-label">Nom *</label><input type="text" class="a-input" id="f-name" placeholder="Ex: DLM-Serv"><label class="a-label">Lien Discord *</label><input type="text" class="a-input" id="f-invite" placeholder="https://discord.gg/XXXXXXXX"><label class="a-label">Date (optionnel)</label><input type="text" class="a-input" id="f-date" placeholder="Ex: 7 avril 2024"><div class="a-err" id="formError"></div><button class="a-btn" onclick="addServer()">➕ Ajouter</button></div></div><div class="apage" id="apage-manage"><div class="ap-title">Gérer</div><div class="ap-sub">Serveurs manuels</div><div id="manage-list"></div><div id="manage-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun serveur</div></div><div class="apage" id="apage-base"><div class="ap-title">Serveurs base</div><div class="ap-sub">Modifier JX, DLM, WYNS'Z</div><div id="baseList"></div><button class="a-btn" onclick="saveBaseServers()" style="margin-top:6px;">💾 Sauvegarder</button></div><div class="apage" id="apage-membres"><div class="ap-title">Membres</div><div class="ap-sub">Comptes inscrits · Rôles</div><div id="membres-list"></div><div id="membres-empty" style="display:none;text-align:center;padding:36px 0;color:rgba(255,255,255,.16);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;">Aucun membre inscrit</div></div><div class="apage" id="apage-messages"><div class="ap-title">Messages</div><div class="ap-sub">Modération · Surveillance · Suppression</div><div class="adm-mod-stats" id="adm-mod-stats-bar" style="display:none;"><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-convs">0</div><div class="adm-mod-stat-l">Conversations</div></div><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-msgs">0</div><div class="adm-mod-stat-l">Messages</div></div><div class="adm-mod-stat"><div class="adm-mod-stat-v" id="adm-stat-users">0</div><div class="adm-mod-stat-l">Utilisateurs</div></div></div><div class="a-card"><div class="a-card-t" style="display:flex;align-items:center;justify-content:space-between;"><span>💬 Conversations</span><button class="a-btn" style="padding:6px 12px;font-size:9px;" onclick="loadAdminMessages()">🔄 Rafraîchir</button></div><div class="adm-sync-bar"><div class="adm-sync-dot"></div><span class="adm-sync-txt">Sync automatique · toutes les 8s</span><span class="adm-sync-ts" id="adm-sync-ts">—</span></div><div id="adm-convs-list"><div style="font-size:10px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:2px;padding:4px;">Chargement…</div></div></div><div id="adm-conv-detail"><div class="adm-conv-detail-hdr"><div id="adm-conv-detail-title">Historique</div><div class="adm-conv-detail-actions"><select class="adm-filter-select" id="adm-msg-filter" onchange="_applyMsgFilter()"><option value="all">Tous</option><option value="left">Participant 1</option><option value="right">Participant 2</option></select><button class="adm-del-all-btn" onclick="_deleteAllMsgsInConv()">🗑 Vider conv</button><button onclick="document.getElementById('adm-conv-detail').classList.remove('open')" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:18px;cursor:pointer;line-height:1;padding:0 2px;">×</button></div></div><div id="adm-conv-msgs"></div></div></div><div class="apage" id="apage-demandes"><div class="ap-title">Demandes de suppression</div><div class="ap-sub">Utilisateurs souhaitant effacer leurs données</div><div id="demandes-list"><div style="font-size:10px;color:rgba(255,255,255,.25);padding:4px;">Chargement…</div></div></div><div class="apage" id="apage-settings"><div class="ap-title">Paramètres</div><div class="ap-sub">Configuration</div><div class="a-card" style="background:rgba(255,75,43,.04);border-color:rgba(255,75,43,.2);"><div class="a-card-t" style="color:#ff9068;">⚠️ Zone dangereuse</div><div class="a-trow" style="padding-top:0;"><div class="a-tinfo"><div class="a-tl" style="color:#ff9068;">Mode Maintenance</div><div class="a-ts">Cache tout le site</div></div><div class="a-sw danger" id="maintToggle" onclick="toggleMaintenance()"></div></div></div></div></div></div></div></div>
-<div id="profilePanel"><div id="profileBackdrop" onclick="closeProfile()"></div><div id="profileInner"><div class="prof-header"><div><div class="adm-htitle">Mon Profil</div><div class="adm-hsub">Compte DLM</div></div><button class="prof-close" onclick="closeProfile()">×</button></div><div class="prof-identity"><div class="prof-avatar-wrap"><img class="prof-avatar" id="profAvatar" src="" alt=""><span class="prof-role-badge role-membre" id="profRoleBadge">Membre</span></div><div class="prof-pseudo-wrap"><div class="prof-pseudo" id="profPseudo">—</div><button class="prof-edit-btn" onclick="openPseudoEditor()">✏️</button></div><div class="prof-google-email" id="profEmail"></div><div class="prof-editor" id="pseudoEditor"><input type="text" class="prof-pseudo-input" id="pseudoInput" maxlength="20" placeholder="Nouveau pseudo..." onkeydown="if(event.key==='Enter')savePseudo()"><div class="prof-editor-actions"><button class="prof-save-btn" onclick="savePseudo()">Sauvegarder</button><button class="prof-cancel-btn" onclick="closePseudoEditor()">Annuler</button></div></div><div class="prof-avatar-upload"><label class="prof-avatar-label" for="customAvatarInput">📷 Changer avatar</label><input type="file" id="customAvatarInput" accept="image/jpeg,image/png,image/gif" style="display:none;" onchange="uploadCustomAvatar(this)"><button class="prof-reset-avatar" onclick="resetAvatar()">↺ Réinitialiser</button></div></div><div class="prof-body"><div class="prof-section-lbl">📝 Bio</div><textarea id="profDescription" class="prof-desc-textarea" maxlength="50" placeholder="Description (50 caractères max)"></textarea><div class="prof-section-lbl">🔗 Liens sociaux</div><input type="text" id="profYoutube" class="prof-social-input" placeholder="YouTube URL"><input type="text" id="profTwitch" class="prof-social-input" placeholder="Twitch URL"><input type="text" id="profSpotify" class="prof-social-input" placeholder="Spotify URL"><input type="text" id="profTiktok" class="prof-social-input" placeholder="TikTok URL"><button class="prof-update-btn" onclick="updateProfileData()">💾 Mettre à jour le profil</button><div class="prof-section-lbl">Historique d'activité</div><div class="prof-hist-list" id="profHistList"></div><button class="prof-delete-req-btn" onclick="requestAccountDeletion()">⚠️ Demander la suppression de mon compte</button><button class="prof-signout-btn" onclick="signOutUser()">🚪 Se déconnecter</button></div></div></div>
-<div id="msgPanel"><div id="msgBackdrop" onclick="closeMsgPanel()"></div><div id="msgInner"><div id="msgInboxView"><div class="msg-top-bar"><div><div class="msg-top-title">Messages</div><div class="msg-top-sub">DLM · Messagerie privée</div></div><button class="msg-close-btn" onclick="closeMsgPanel()">×</button></div><button class="msg-new-conv-btn" onclick="showNewMsgView()">✉️  Nouvelle conversation</button><div id="convList"><div class="conv-empty">Chargement…</div></div></div><div id="msgChatView"><div class="chat-top"><button class="chat-back" onclick="showInboxView()">←</button><img class="chat-peer-av" id="chatPeerAv" src="" alt=""><div><div class="chat-peer-name" id="chatPeerName">—</div><div class="chat-peer-hint">Discussion privée · DLM</div></div></div><div id="chatMessages"></div><div class="chat-input-row"><textarea id="chatInput" placeholder="Écrire un message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,78)+'px'"></textarea><button id="chatSendBtn" onclick="sendChatMsg()">➤</button></div></div><div id="msgNewView"><div class="new-msg-top"><button class="chat-back" onclick="showInboxView()">←</button><input type="text" id="userSearchInput" placeholder="Rechercher un pseudo…" oninput="searchUsers(this.value)"></div><div id="userSearchResults"><div class="user-search-hint">Tapez un pseudo pour rechercher un membre</div></div></div></div></div>
+<div id="profilePanel"><div id="profileBackdrop" onclick="closeProfile()"></div><div id="profileInner"><div class="prof-header"><div><div class="adm-htitle">Mon Profil</div><div class="adm-hsub">Compte DLM</div></div><button class="prof-close" onclick="closeProfile()">×</button></div><div class="prof-body"><div class="prof-hero-card"><div class="prof-hero-top"><div class="prof-avatar-wrap"><img class="prof-avatar" id="profAvatar" src="" alt=""><span class="prof-role-badge role-membre" id="profRoleBadge">Membre</span></div><div class="prof-hero-copy"><div class="prof-kicker">Compte membre</div><div class="prof-pseudo-wrap"><div class="prof-pseudo" id="profPseudo">—</div><button class="prof-edit-btn" onclick="openPseudoEditor()">Pseudo</button></div><div class="prof-google-email" id="profEmail"></div><div class="prof-visibility-pill" id="profVisibilityBadge">Profil visible</div></div></div><div class="prof-editor" id="pseudoEditor"><input type="text" class="prof-pseudo-input" id="pseudoInput" maxlength="20" placeholder="Nouveau pseudo..." onkeydown="if(event.key==='Enter')savePseudo()"><div class="prof-editor-actions"><button class="prof-save-btn" onclick="savePseudo()">Sauvegarder</button><button class="prof-cancel-btn" onclick="closePseudoEditor()">Annuler</button></div></div><div class="prof-avatar-upload"><label class="prof-avatar-label" for="customAvatarInput">Changer avatar</label><input type="file" id="customAvatarInput" accept="image/jpeg,image/png,image/gif" style="display:none;" onchange="uploadCustomAvatar(this)"><button class="prof-reset-avatar" onclick="resetAvatar()">Reinitialiser</button></div><div class="prof-summary-grid"><div class="prof-summary-card"><div class="prof-summary-label">Liens actifs</div><div class="prof-summary-value" id="profLinksCount">0</div></div><div class="prof-summary-card"><div class="prof-summary-label">Activites</div><div class="prof-summary-value" id="profHistoryCount">0</div></div><div class="prof-summary-card"><div class="prof-summary-label">Visibilite</div><div class="prof-summary-value" id="profVisibilityValue">Public</div></div></div></div><div class="prof-card"><div class="prof-card-header"><div><div class="prof-card-title">Confidentialite</div><div class="prof-card-sub">Controle qui peut ouvrir ton profil</div></div></div><div class="prof-toggle-row"><div class="prof-toggle-copy"><div class="prof-toggle-title">Profil consultable</div><div class="prof-toggle-desc" id="profVisibilityText">Les autres membres peuvent ouvrir ton profil public.</div></div><button class="prof-toggle-btn on" id="profVisibilityToggle" onclick="toggleProfileVisibility()">Visible</button></div><button class="prof-preview-btn" id="profPreviewBtn" onclick="openOwnPublicPreview()">Apercu public</button></div><div class="prof-card"><div class="prof-card-header"><div><div class="prof-card-title">Presentation</div><div class="prof-card-sub">Bio, plateformes et liens</div></div></div><div class="prof-fields"><div class="prof-section-lbl">Bio</div><textarea id="profDescription" class="prof-desc-textarea" maxlength="50" placeholder="Description (50 caracteres max)"></textarea><div class="prof-section-lbl">Liens sociaux</div><div class="prof-fields-grid"><input type="text" id="profYoutube" class="prof-social-input" placeholder="YouTube URL"><input type="text" id="profTwitch" class="prof-social-input" placeholder="Twitch URL"><input type="text" id="profSpotify" class="prof-social-input" placeholder="Spotify URL"><input type="text" id="profTiktok" class="prof-social-input" placeholder="TikTok URL"></div><button class="prof-update-btn" onclick="updateProfileData()">Enregistrer le profil</button></div></div><div class="prof-card"><div class="prof-card-header"><div><div class="prof-card-title">Historique</div><div class="prof-card-sub">Dernieres actions sur ton compte</div></div></div><div class="prof-hist-list" id="profHistList"></div></div><div class="prof-actions-row"><button class="prof-delete-req-btn" onclick="requestAccountDeletion()">Demander la suppression du compte</button><button class="prof-signout-btn" onclick="signOutUser()">Se deconnecter</button></div></div></div></div>
+<div id="publicProfilePanel"><div id="publicProfileBackdrop" onclick="closePublicProfile()"></div><div id="publicProfileInner"><div class="prof-header"><div><div class="adm-htitle">Profil Public</div><div class="adm-hsub" id="publicProfileSub">Communaute DLM</div></div><button class="prof-close" onclick="closePublicProfile()">×</button></div><div class="pub-prof-body" id="publicProfileBody"><div class="pub-prof-state"><div class="pub-prof-state-title">Chargement</div><div class="pub-prof-state-text">Recuperation du profil membre...</div></div></div></div></div>
+<div id="msgPanel"><div id="msgBackdrop" onclick="closeMsgPanel()"></div><div id="msgInner"><div id="msgInboxView"><div class="msg-top-bar"><div><div class="msg-top-title">Messages</div><div class="msg-top-sub">DLM · Messagerie privée</div></div><button class="msg-close-btn" onclick="closeMsgPanel()">×</button></div><button class="msg-new-conv-btn" onclick="showNewMsgView()">✉️  Nouvelle conversation</button><div id="convList"><div class="conv-empty">Chargement…</div></div></div><div id="msgChatView"><div class="chat-top"><div class="chat-top-main"><button class="chat-back" onclick="showInboxView()">←</button><img class="chat-peer-av" id="chatPeerAv" src="" alt=""><div><div class="chat-peer-name" id="chatPeerName">—</div><div class="chat-peer-hint" id="chatPeerHint">Discussion privee · DLM</div></div></div><div class="chat-top-actions"><button class="chat-profile-btn" id="chatProfileBtn" onclick="openActiveChatProfile()" style="display:none;">Profil</button></div></div><div id="chatMessages"></div><div class="chat-input-row"><textarea id="chatInput" placeholder="Écrire un message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,78)+'px'"></textarea><button id="chatSendBtn" onclick="sendChatMsg()">➤</button></div></div><div id="msgNewView"><div class="new-msg-top"><button class="chat-back" onclick="showInboxView()">←</button><input type="text" id="userSearchInput" placeholder="Rechercher un pseudo…" oninput="searchUsers(this.value)"></div><div id="userSearchResults"><div class="user-search-hint">Tapez un pseudo pour rechercher un membre</div></div></div></div></div>
 <div id="friendsPanel"><div id="friendsBackdrop" onclick="closeFriendsPanel()"></div><div id="friendsInner"><div class="friends-header"><div><div class="adm-htitle">Amis</div><div class="adm-hsub">Communauté DLM · Réseau</div></div><button class="prof-close" onclick="closeFriendsPanel()">×</button></div><div class="friends-search-wrap"><input type="text" class="friends-search" id="friendSearchInput" placeholder="Rechercher un membre…" oninput="onFriendSearch(this.value)"></div><div class="friends-tabs"><button class="friends-tab active" id="ftab-friends" onclick="switchFriendsTab('friends')">👥 Amis <span id="friends-count-lbl" style="opacity:.4;font-size:8px;margin-left:4px;">0</span></button><button class="friends-tab" id="ftab-requests" onclick="switchFriendsTab('requests')">📩 Demandes <span class="friends-tab-badge" id="freq-badge" style="display:none;">0</span></button></div><div class="friends-tab-content" id="ftab-content-friends"><div id="friends-list-container"><div class="friends-empty">Chargement…</div></div></div><div class="friends-tab-content" id="ftab-content-requests" style="display:none;"><div id="friends-req-container"><div class="friends-empty">Chargement…</div></div></div></div></div>
 <div id="privacyOverlay"><div id="privacyBackdrop" onclick="closePrivacy()"></div><div id="privacyPanel"><div class="pp-drag-handle"><div class="pp-drag-bar"></div></div><div class="pp-topbar"><div class="pp-title-block"><div class="pp-icon">🔒</div><div><div class="pp-title">Politique de Confidentialité</div><div class="pp-sub">DLM-Corp · RGPD · Données personnelles</div></div></div><button class="pp-close-btn" onclick="closePrivacy()">×</button></div><div class="pp-body"><div class="pp-section"><div class="pp-section-num">Article 01</div><div class="pp-section-title">Collecte des données personnelles</div><p class="pp-text">Lors de l'utilisation de la connexion via Google, nous collectons et stockons les informations suivantes dans notre base de données :</p><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Identité et Profil :&nbsp;</strong>Nom associé au compte Google, pseudonyme personnalisé, adresse e-mail et URL de la photo de profil.</li><li><strong style="color:rgba(255,255,255,.75);">Identifiants techniques :&nbsp;</strong>Identifiant unique (UID) permettant de lier votre profil à vos activités, et jetons d'authentification pour sécuriser vos sessions.</li><li><strong style="color:rgba(255,255,255,.75);">Données de gestion :&nbsp;</strong>Date de création du compte, rôle attribué et date de dernière connexion.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 02</div><div class="pp-section-title">Finalité du traitement</div><p class="pp-text">Ces données sont traitées pour les objectifs suivants :</p><ul class="pp-list"><li>Assurer l'authentification sécurisée des utilisateurs.</li><li>Gérer les comptes et les permissions au sein de la plateforme.</li><li>Assurer le suivi technique et la sécurité du service.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 03</div><div class="pp-section-title">Messagerie, Sécurité et Modération</div><p class="pp-text">Le site met à disposition un système de messagerie permettant aux utilisateurs d'échanger entre eux.</p><div class="pp-highlight"><span class="pp-highlight-icon">💾</span><div class="pp-highlight-text"><strong style="color:rgba(255,255,255,.8);">Stockage :&nbsp;</strong>Les messages sont enregistrés sur nos serveurs pour permettre leur consultation par les participants.</div></div><div class="pp-warning"><span style="font-size:18px;flex-shrink:0;margin-top:1px;">⚠️</span><div class="pp-warning-text"><strong style="color:rgba(255,255,255,.8);">Modération :&nbsp;</strong>L'équipe d'administration dispose d'un droit d'accès aux conversations en cas de comportement inapproprié.</div></div></div><div class="pp-section"><div class="pp-section-num">Article 04</div><div class="pp-section-title">Partage et Confidentialité</div><div class="pp-highlight"><span class="pp-highlight-icon">🛡️</span><div class="pp-highlight-text">Vos données sont strictement personnelles. Elles ne sont jamais vendues, louées ou partagées avec des partenaires tiers à des fins commerciales.</div></div></div><div class="pp-section"><div class="pp-section-num">Article 05</div><div class="pp-section-title">Conservation et Suppression des données</div><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Conservation :&nbsp;</strong>Vos données sont conservées tant que votre compte est actif sur la plateforme.</li><li><strong style="color:rgba(255,255,255,.75);">Suppression :&nbsp;</strong>Vous pouvez demander la suppression de votre compte à tout moment. Cette action entraîne l'effacement définitif sous 30 jours.</li><li><strong style="color:rgba(255,255,255,.75);">Révocation :&nbsp;</strong>Vous pouvez annuler l'autorisation depuis les paramètres de sécurité de votre compte Google.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 06</div><div class="pp-section-title">Contact et Droits des utilisateurs</div><p class="pp-text">Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et d'effacement de vos informations.</p><div class="pp-contact-block"><div><div class="pp-contact-lbl">Adresse e-mail de contact</div><a class="pp-contact-email" href="/cdn-cgi/l/email-protection#2a4b524f46461a1b1a181a191a1e6a4d474b434604494547"><span class="__cf_email__" data-cfemail="117069747d7d212021232122212551767c70787d3f727e7c">[email&#160;protected]</span></a></div></div></div></div><div class="pp-footer-bar"><div class="pp-footer-note">DLM-Corp · Dernière mise à jour 2026</div><button class="pp-footer-accept" onclick="closePrivacy()">✓ J'ai compris</button></div></div></div>
 <div id="saveToast"></div>
@@ -696,7 +754,7 @@ function animateCount(id,target){
   if(!_countRafId)_countRafId=requestAnimationFrame(_runCounters);
 }
 let _overlayOpen=false;
-function openServers(){sfx.open();_overlayOpen=true;stopCanvas();document.getElementById('serversOverlay').classList.add('active');document.body.style.overflow='hidden';renderServerCards();updateStats();checkDiscordAPI();}
+function openServers(){sfx.open();_overlayOpen=true;stopCanvas();document.getElementById('serversOverlay').classList.add('active');document.body.style.overflow='hidden';renderServerCards();_upPill();refreshAll(true);}
 function closeServers(){_overlayOpen=false;startCanvas();document.getElementById('serversOverlay').classList.remove('active');document.body.style.overflow='';}
 let _sft;
 function filterSrvCards(){clearTimeout(_sft);_sft=setTimeout(()=>{const v=document.getElementById('srvSearchInput').value.toLowerCase();let n=0;document.querySelectorAll('.glass-card').forEach(c=>{const ok=c.getAttribute('data-name').toLowerCase().includes(v);c.classList.toggle('hidden',!ok);if(ok)n++;});document.getElementById('srvNoResult').style.display=(n===0&&v.length>0)?'block':'none';},150);}
@@ -760,15 +818,41 @@ async function checkDiscordAPI(){
   const adot=document.getElementById('adm-api-dot'),alat=document.getElementById('adm-api-lat');
   if(adot&&dot){const cl=dot.className;adot.style.background=cl.includes('online')?'#00ff41':cl.includes('degraded')?'#ffd700':'#ff4b2b';if(alat)alat.textContent=document.getElementById('apiLatency').textContent;}
 }
-const refreshAll=()=>{if(!document.hidden){updateStats();checkDiscordAPI();}};
+const REFRESH_INTERVAL_MS=45000;
 const _CIRC=2*Math.PI*14;
-const _upPill=()=>{const arc=document.getElementById('refreshArc'),num=document.getElementById('countdown');if(!arc||!num)return;arc.style.strokeDashoffset=_CIRC*(1-_cnt/_TOT);num.textContent=_cnt;num.classList.toggle('urgent',_cnt<=5);};
-let _cnt=20;const _TOT=20;
-setInterval(()=>{if(!_overlayOpen)return;_cnt--;if(_cnt<=0){_cnt=_TOT;_upPill();refreshAll();}else{_upPill();}},1000);
-_upPill();
+let _refreshBusy=false,_refreshNextAt=Date.now()+REFRESH_INTERVAL_MS;
+const _setRefreshDeadline=(offset=REFRESH_INTERVAL_MS)=>{_refreshNextAt=Date.now()+offset;_upPill();};
+const _upPill=()=>{
+  const arc=document.getElementById('refreshArc'),num=document.getElementById('countdown');
+  if(!arc||!num)return;
+  const remainMs=Math.max(0,_refreshNextAt-Date.now());
+  const remainSec=Math.max(0,Math.ceil(remainMs/1000));
+  const progress=1-Math.min(remainMs/REFRESH_INTERVAL_MS,1);
+  arc.style.strokeDashoffset=_CIRC*(1-progress);
+  num.textContent=remainSec;
+  num.classList.toggle('urgent',remainSec<=5);
+};
+async function refreshAll(force=false){
+  if(_refreshBusy) return;
+  if(document.hidden&&!force) return;
+  _refreshBusy=true;
+  try{
+    await Promise.allSettled([updateStats(),checkDiscordAPI(),_curUser?_fetchPubUsers():Promise.resolve(null)]);
+  }finally{
+    _refreshBusy=false;
+    _setRefreshDeadline();
+  }
+}
+setInterval(()=>{
+  if(document.hidden) return;
+  if(Date.now()>=_refreshNextAt){refreshAll();return;}
+  _upPill();
+},1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()>=_refreshNextAt)refreshAll(true);else _upPill();});
+_setRefreshDeadline();
 function openPrivacy(){sfx.open();document.getElementById('privacyOverlay').classList.add('active');document.body.style.overflow='hidden';}
 function closePrivacy(){document.getElementById('privacyOverlay').classList.remove('active');document.body.style.overflow='';}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePwModal();closeAdminPanel();closeOhh();closeKingfire();closeServers();closeProfile();closeMsgPanel();closeFriendsPanel();closePrivacy();document.getElementById('themeMenu').classList.remove('active');}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePwModal();closeAdminPanel();closeOhh();closeKingfire();closeServers();closeProfile();closePublicProfile();closeMsgPanel();closeFriendsPanel();closePrivacy();document.getElementById('themeMenu').classList.remove('active');}});
 const openPasswordModal=()=>{document.getElementById('adminPassword').value='';document.getElementById('pwError').textContent='';document.getElementById('passwordOverlay').classList.add('active');setTimeout(()=>document.getElementById('adminPassword').focus(),120);};
 const closePwModal=()=>document.getElementById('passwordOverlay').classList.remove('active');
 async function checkPassword(){
@@ -904,12 +988,13 @@ fbAuth.onAuthStateChanged(async user=>{
     if(friendsBtn) friendsBtn.style.display='flex';
     _curProfile = await loadOrCreateProfile(user);
     updateTopbarProfile();
-    await _syncPubUser(user, _curProfile);
+    await _syncCurrentPublicProfile();
     _startInboxPolling();
     _startFriendsPolling();
     _startHeartbeat();
   }else{
     _curUser=null; _curProfile=null;
+    closePublicProfile();
     loginBtn.style.display='flex';
     profileBtn.style.display='none';
     if(msgBtn) msgBtn.style.display='none';
@@ -921,22 +1006,44 @@ fbAuth.onAuthStateChanged(async user=>{
     _stopHeartbeat();
   }
 });
+const sanitizePseudo=name=>(name||'User').split(' ')[0].replace(/[^a-zA-Z0-9_\-.]/g,'').slice(0,20)||'User';
+const _normalizeSocialLinks=socialLinks=>{const src=socialLinks&&typeof socialLinks==='object'?socialLinks:{};return{youtube:(src.youtube||'').trim(),twitch:(src.twitch||'').trim(),spotify:(src.spotify||'').trim(),tiktok:(src.tiktok||'').trim()};};
+const _normalizeExternalUrl=url=>{const clean=(url||'').trim();if(!clean)return'';if(/^https?:\/\//i.test(clean))return clean;return`https://${clean.replace(/^\/+/,'')}`;};
+function _ensureProfileShape(profile,user=null){
+  if(!profile)return profile;
+  if(user){
+    profile.uid=profile.uid||user.uid;
+    profile.googleName=profile.googleName||user.displayName||'User';
+    profile.photoURL=user.photoURL||profile.photoURL||'';
+    profile.email=user.email||profile.email||'';
+  }
+  if(profile.description===undefined)profile.description='';
+  profile.socialLinks=_normalizeSocialLinks(profile.socialLinks);
+  if(profile.customPhoto===undefined)profile.customPhoto=null;
+  if(!profile.privacy||typeof profile.privacy!=='object')profile.privacy={profileVisible:true};
+  if(profile.privacy.profileVisible===undefined)profile.privacy.profileVisible=true;
+  if(!Array.isArray(profile.history))profile.history=[];
+  return profile;
+}
+const _profileRoleClass=role=>'role-'+(role||'Membre').toLowerCase().replace(/[^a-z]/g,'-');
+const _isProfileVisible=(profile=_curProfile)=>profile?.privacy?.profileVisible!==false;
+const _getProfileAvatar=(profile=_curProfile)=>profile?.customPhoto||profile?.photoURL||'';
+const _countActiveLinks=socialLinks=>Object.values(_normalizeSocialLinks(socialLinks)).filter(Boolean).length;
+const _buildPublicProfile=(profile,user=_curUser)=>{const base=_ensureProfileShape({...profile,socialLinks:{...(profile?.socialLinks||{})},privacy:{...(profile?.privacy||{})}},user);const visible=_isProfileVisible(base);return{uid:base.uid||user?.uid||'',pseudo:base.pseudo||'User',photoURL:_getProfileAvatar(base),role:base.role||'Membre',description:visible?(base.description||''):'',socialLinks:visible?_normalizeSocialLinks(base.socialLinks):_normalizeSocialLinks({}),profileVisible:visible,lastActive:Date.now()};};
 async function loadOrCreateProfile(user){
   const idToken=await user.getIdToken();
   let profile=null;
   try{const res=await fetch(`${FB}/users/${user.uid}.json?auth=${idToken}`);profile=res.ok?await res.json():null;}catch{profile=null;}
   if(profile&&profile.uid){
-    await fetch(`${FB}/users/${user.uid}/lastSeen.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(Date.now())});
+    profile=_ensureProfileShape(profile,user);
+    await fetch(`${FB}/users/${user.uid}.json?auth=${idToken}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({googleName:user.displayName||'User',photoURL:user.photoURL||'',email:user.email||'',lastSeen:Date.now(),description:profile.description,socialLinks:_normalizeSocialLinks(profile.socialLinks),customPhoto:profile.customPhoto,privacy:profile.privacy})});
     profile=await pushHistory(user,idToken,profile,'🔗 Connexion au site');
-    if(profile.description===undefined) profile.description='';
-    if(!profile.socialLinks) profile.socialLinks={};
-    if(profile.customPhoto===undefined) profile.customPhoto=null;
-    return profile;
+    return _ensureProfileShape(profile,user);
   }else{
-    const newProfile={uid:user.uid,googleName:user.displayName||'User',photoURL:user.photoURL||'',email:user.email||'',pseudo:sanitizePseudo(user.displayName||'User'),role:'Membre',createdAt:Date.now(),lastSeen:Date.now(),history:[{action:'🎉 Compte créé',ts:Date.now()}],description:'',socialLinks:{},customPhoto:null};
+    const newProfile={uid:user.uid,googleName:user.displayName||'User',photoURL:user.photoURL||'',email:user.email||'',pseudo:sanitizePseudo(user.displayName||'User'),role:'Membre',createdAt:Date.now(),lastSeen:Date.now(),history:[{action:'🎉 Compte créé',ts:Date.now()}],description:'',socialLinks:_normalizeSocialLinks({}),customPhoto:null,privacy:{profileVisible:true}};
     await fetch(`${FB}/users/${user.uid}.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(newProfile)});
     showToast('Bienvenue sur DLM-Corp ! 🎉');
-    return newProfile;
+    return _ensureProfileShape(newProfile,user);
   }
 }
 async function pushHistory(user,idToken,profile,action){
@@ -948,7 +1055,7 @@ async function pushHistory(user,idToken,profile,action){
 }
 const formatTs=ts=>new Date(ts).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
 async function signInGoogle(){try{sfx.click();await fbAuth.signInWithPopup(gProvider);}catch(e){if(e.code!=='auth/popup-closed-by-user')showToast('Erreur de connexion Google !');}}
-async function signOutUser(){await fbAuth.signOut();closeProfile();showToast('Déconnecté !');}
+async function signOutUser(){await fbAuth.signOut();closeProfile();closePublicProfile();showToast('Déconnecté !');}
 function updateTopbarProfile(){
   if(!_curProfile) return;
   const av=document.getElementById('topbarAvatar'),ps=document.getElementById('topbarPseudo');
@@ -956,23 +1063,34 @@ function updateTopbarProfile(){
   if(ps) ps.textContent=_curProfile.pseudo||'—';
 }
 function getDisplayAvatar(){
-  if(_curProfile?.customPhoto) return _curProfile.customPhoto;
-  return _curProfile?.photoURL||'';
+  return _getProfileAvatar();
 }
+async function _syncCurrentPublicProfile(){if(!_curUser||!_curProfile)return;await _syncPubUser(_curUser,_curProfile);await _fetchPubUsers();}
 function openProfile(){if(!_curProfile)return;sfx.open();document.getElementById('profilePanel').classList.add('active');renderProfilePanel();}
 function closeProfile(){document.getElementById('profilePanel').classList.remove('active');closePseudoEditor();}
 function renderProfilePanel(){
   if(!_curProfile) return;
+  _curProfile=_ensureProfileShape(_curProfile,_curUser);
   const av=document.getElementById('profAvatar'),ps=document.getElementById('profPseudo'),em=document.getElementById('profEmail'),badge=document.getElementById('profRoleBadge');
+  const visible=_isProfileVisible();
   if(av) av.src=getDisplayAvatar();
   if(ps) ps.textContent=_curProfile.pseudo||'—';
   if(em) em.textContent=_curProfile.email||'';
-  if(badge){const role=_curProfile.role||'Membre';badge.textContent=role;badge.className='prof-role-badge role-'+role.toLowerCase().replace(/[^a-z]/g,'-');}
+  if(badge){const role=_curProfile.role||'Membre';badge.textContent=role;badge.className='prof-role-badge '+_profileRoleClass(role);}
   document.getElementById('profDescription').value=_curProfile.description||'';
   document.getElementById('profYoutube').value=_curProfile.socialLinks?.youtube||'';
   document.getElementById('profTwitch').value=_curProfile.socialLinks?.twitch||'';
   document.getElementById('profSpotify').value=_curProfile.socialLinks?.spotify||'';
   document.getElementById('profTiktok').value=_curProfile.socialLinks?.tiktok||'';
+  document.getElementById('profLinksCount').textContent=_countActiveLinks(_curProfile.socialLinks);
+  document.getElementById('profHistoryCount').textContent=Array.isArray(_curProfile.history)?_curProfile.history.length:0;
+  document.getElementById('profVisibilityValue').textContent=visible?'Public':'Prive';
+  const visBadge=document.getElementById('profVisibilityBadge');
+  if(visBadge){visBadge.textContent=visible?'Profil visible':'Profil masque';visBadge.classList.toggle('is-hidden',!visible);}
+  const visToggle=document.getElementById('profVisibilityToggle');
+  if(visToggle){visToggle.textContent=visible?'Visible':'Masque';visToggle.classList.toggle('on',visible);}
+  const visText=document.getElementById('profVisibilityText');
+  if(visText)visText.textContent=visible?'Les autres membres peuvent ouvrir ton profil public.':'Ton profil public est masque pour les autres membres.';
   renderHistoryList();
 }
 function renderHistoryList(){
@@ -991,20 +1109,34 @@ async function savePseudo(){
   const old=_curProfile.pseudo,idToken=await _curUser.getIdToken();
   await fetch(`${FB}/users/${_curUser.uid}/pseudo.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(val)});
   _curProfile.pseudo=val;
-  await fetch(`${FB}/publicUsers/${_curUser.uid}/pseudo.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(val)});
   _curProfile=await pushHistory(_curUser,idToken,_curProfile,`✏️ Pseudo : ${old} → ${val}`);
+  await _syncCurrentPublicProfile();
   closePseudoEditor();renderProfilePanel();updateTopbarProfile();showToast('Pseudo mis à jour !');sfx.save();
 }
-const sanitizePseudo=name=>(name||'User').split(' ')[0].replace(/[^a-zA-Z0-9_\-.]/g,'').slice(0,20)||'User';
+async function toggleProfileVisibility(){
+  if(!_curUser||!_curProfile)return;
+  _curProfile.privacy={...(_curProfile.privacy||{}),profileVisible:!_isProfileVisible()};
+  renderProfilePanel();
+  const idToken=await _curUser.getIdToken();
+  await fetch(`${FB}/users/${_curUser.uid}/privacy.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(_curProfile.privacy)});
+  _curProfile=await pushHistory(_curUser,idToken,_curProfile,_isProfileVisible()?'👁 Profil public activé':'🙈 Profil public masqué');
+  await _syncCurrentPublicProfile();
+  renderProfilePanel();
+  showToast(_isProfileVisible()?'Profil public visible':'Profil masque');
+  sfx.save();
+}
 async function updateProfileData(){
   if(!_curUser||!_curProfile) return;
   const desc=document.getElementById('profDescription').value.trim().slice(0,50);
-  const socialLinks={youtube:document.getElementById('profYoutube').value.trim(),twitch:document.getElementById('profTwitch').value.trim(),spotify:document.getElementById('profSpotify').value.trim(),tiktok:document.getElementById('profTiktok').value.trim()};
+  const socialLinks=_normalizeSocialLinks({youtube:document.getElementById('profYoutube').value,twitch:document.getElementById('profTwitch').value,spotify:document.getElementById('profSpotify').value,tiktok:document.getElementById('profTiktok').value});
   const idToken=await _curUser.getIdToken();
-  await fetch(`${FB}/users/${_curUser.uid}/description.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(desc)});
-  await fetch(`${FB}/users/${_curUser.uid}/socialLinks.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(socialLinks)});
+  await Promise.all([
+    fetch(`${FB}/users/${_curUser.uid}/description.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(desc)}),
+    fetch(`${FB}/users/${_curUser.uid}/socialLinks.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(socialLinks)})
+  ]);
   _curProfile.description=desc;_curProfile.socialLinks=socialLinks;
   _curProfile=await pushHistory(_curUser,idToken,_curProfile,'✏️ Profil mis à jour (bio/liens)');
+  await _syncCurrentPublicProfile();
   showToast('Profil mis à jour !');renderProfilePanel();
 }
 function uploadCustomAvatar(input){
@@ -1017,6 +1149,7 @@ function uploadCustomAvatar(input){
     await fetch(`${FB}/users/${_curUser.uid}/customPhoto.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(base64)});
     _curProfile.customPhoto=base64;
     _curProfile=await pushHistory(_curUser,idToken,_curProfile,'🖼️ Avatar personnalisé uploadé');
+    await _syncCurrentPublicProfile();
     renderProfilePanel();updateTopbarProfile();showToast('Avatar mis à jour !');
   };
   reader.readAsDataURL(file);
@@ -1027,6 +1160,7 @@ async function resetAvatar(){
   await fetch(`${FB}/users/${_curUser.uid}/customPhoto.json?auth=${idToken}`,{method:'DELETE'});
   _curProfile.customPhoto=null;
   _curProfile=await pushHistory(_curUser,idToken,_curProfile,'🖼️ Réinitialisation avatar');
+  await _syncCurrentPublicProfile();
   renderProfilePanel();updateTopbarProfile();showToast('Avatar réinitialisé');
 }
 async function requestAccountDeletion(){
@@ -1035,6 +1169,46 @@ async function requestAccountDeletion(){
   const req={uid:_curUser.uid,pseudo:_curProfile.pseudo,email:_curProfile.email,ts:Date.now()};
   await fetch(`${FB}/deletionRequests/${_curUser.uid}.json?auth=${_authToken||idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(req)});
   showToast('Demande envoyée à l\'administration.');sfx.save();
+}
+function closePublicProfile(){document.getElementById('publicProfilePanel')?.classList.remove('active');}
+function _renderPublicProfileState(title,text){
+  const body=document.getElementById('publicProfileBody');
+  if(!body)return;
+  body.innerHTML=`<div class="pub-prof-state"><div class="pub-prof-state-title">${_esc(title)}</div><div class="pub-prof-state-text">${_esc(text)}</div></div>`;
+}
+function _renderPublicProfileCard(profile,{isSelf=false,preview=false}={}){
+  const body=document.getElementById('publicProfileBody');
+  if(!body)return;
+  const links=_normalizeSocialLinks(profile.socialLinks);
+  const linkEntries=[['YouTube',links.youtube],['Twitch',links.twitch],['Spotify',links.spotify],['TikTok',links.tiktok]].filter(([,value])=>value);
+  const linksHtml=linkEntries.length?linkEntries.map(([label,value])=>{const href=_normalizeExternalUrl(value);return`<a class="pub-prof-link" href="${_esc(href)}" target="_blank" rel="noopener noreferrer"><div><div class="pub-prof-link-name">${_esc(label)}</div><div class="pub-prof-link-url">${_esc(value)}</div></div><span>ouvrir</span></a>`;}).join(''):'<div class="pub-prof-empty">Aucun lien partage</div>';
+  const role=profile.role||'Membre';
+  const status=(Date.now()-(profile.lastActive||0))<5*60*1000?'En ligne':'Hors ligne';
+  const note=preview?(_isProfileVisible(_curProfile)?'Apercu de ton profil visible par les autres membres.':'Apercu prive. Les autres membres ne peuvent pas l ouvrir pour le moment.'):status;
+  document.getElementById('publicProfileSub').textContent=preview?'Apercu public':'Communaute DLM';
+  body.innerHTML=`<div class="pub-prof-card"><div class="pub-prof-top"><div class="pub-prof-avatar-wrap"><img class="pub-prof-avatar" src="${_esc(profile.photoURL||'')}" alt="" onerror="this.style.background='#333'"><span class="pub-prof-role ${_profileRoleClass(role)}">${_esc(role)}</span></div><div class="pub-prof-copy"><div class="pub-prof-kicker">${preview?'Ton profil public':'Profil membre'}</div><div class="pub-prof-name-row"><div class="pub-prof-pseudo">${_esc(profile.pseudo||'Utilisateur')}</div></div><div class="pub-prof-meta">${_esc(note)}</div></div></div><div class="pub-prof-bio">${_esc(profile.description||'Aucune bio partagee pour le moment.')}</div><div class="pub-prof-actions">${isSelf?'<button class="user-res-profile-btn primary" onclick="closePublicProfile();openProfile()">Modifier mon profil</button>':`<button class="user-res-profile-btn primary" onclick="closePublicProfile();openMsgPanel();startConversation('${profile.uid}','${_esc(profile.pseudo||'Utilisateur')}','${_esc(profile.photoURL||'')}')">Envoyer un message</button>`}</div></div><div class="pub-prof-card"><div class="pub-prof-header"><div><div class="pub-prof-title">Liens partages</div><div class="prof-card-sub">Plateformes et reseaux du membre</div></div></div><div class="pub-prof-links">${linksHtml}</div></div>`;
+}
+async function openOwnPublicPreview(){
+  if(!_curProfile)return;
+  sfx.open();
+  document.getElementById('publicProfilePanel').classList.add('active');
+  _renderPublicProfileCard(_buildPublicProfile(_curProfile,_curUser),{isSelf:true,preview:true});
+}
+async function openPublicProfile(uid){
+  if(!_curUser)return;
+  if(uid===_curUser.uid){openOwnPublicPreview();return;}
+  sfx.open();
+  document.getElementById('publicProfilePanel').classList.add('active');
+  _renderPublicProfileState('Chargement','Recuperation du profil membre...');
+  try{
+    await _fetchPubUsers();
+    const profile=_pubUsers[uid];
+    if(!profile){_renderPublicProfileState('Profil introuvable','Impossible de charger ce profil pour le moment.');return;}
+    if(profile.profileVisible===false){_renderPublicProfileState('Profil prive','Ce membre a choisi de masquer son profil public.');return;}
+    _renderPublicProfileCard(profile,{isSelf:false,preview:false});
+  }catch{
+    _renderPublicProfileState('Erreur','Une erreur est survenue pendant l affichage du profil.');
+  }
 }
 async function loadMembres(){
   if(!_authToken){showToast('Connexion admin requise !');return;}
@@ -1058,7 +1232,7 @@ async function loadMembres(){
 }
 async function setMemberRole(uid,role){
   if(!_authToken){showToast('Non autorisé !');return;}
-  try{const res=await fetch(`${FB}/users/${uid}/role.json?auth=${_authToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(role)});if(res.ok)showToast(`Rôle → ${role} ✓`);else showToast('Erreur Firebase !');}catch{showToast('Erreur réseau !');}
+  try{const res=await fetch(`${FB}/users/${uid}/role.json?auth=${_authToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(role)});if(res.ok){await fetch(`${FB}/publicUsers/${uid}/role.json?auth=${_authToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(role)});showToast(`Rôle → ${role} ✓`);}else showToast('Erreur Firebase !');}catch{showToast('Erreur réseau !');}
 }
 async function loadDeletionRequests(){
   if(!_authToken){showToast('Admin requis');return;}
@@ -1106,15 +1280,15 @@ const _fbReq=async(path,opts={})=>{let url=`${FB}/${path}.json`;if(_curUser){con
 const _fbAdm=(path,opts={})=>{if(!_authToken)return Promise.resolve(null);return fetch(`${FB}/${path}.json?auth=${_authToken}`,opts);};
 let _activePeerUid=null,_activeCid=null,_chatPollTimer=null,_inboxPollTimer=null,_lastMsgTs=0,_pubUsers={};
 let _admCurrentCid=null,_admCurrentConvData=null,_admCurrentParticipants=[];
-async function _syncPubUser(user,profile){if(!user||!profile)return;try{const tok=await user.getIdToken();await fetch(`${FB}/publicUsers/${user.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:user.uid,pseudo:profile.pseudo,photoURL:getDisplayAvatar(),lastActive:Date.now()})});}catch{}}
-async function _fetchPubUsers(){if(!_curUser)return;try{const tok=await _curUser.getIdToken();const r=await fetch(`${FB}/publicUsers.json?auth=${tok}`);if(r.ok){const d=await r.json();_pubUsers=d||{};}}catch{}}
+async function _syncPubUser(user,profile){if(!user||!profile)return;try{const tok=await user.getIdToken();await fetch(`${FB}/publicUsers/${user.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(_buildPublicProfile(profile,user))});}catch{}}
+async function _fetchPubUsers(){if(!_curUser)return;try{const tok=await _curUser.getIdToken();const r=await fetch(`${FB}/publicUsers.json?auth=${tok}`);if(r.ok){const d=await r.json();_pubUsers=Object.fromEntries(Object.entries(d||{}).map(([uid,data])=>[uid,{uid,...data,profileVisible:data?.profileVisible!==false,socialLinks:_normalizeSocialLinks(data?.socialLinks)}]));}}catch{}}
 function _updateBadge(n){const b=document.getElementById('msgBadge');if(!b)return;if(n>0){b.textContent=n>99?'99+':n;b.style.display='flex';}else b.style.display='none';}
 function _startInboxPolling(){_loadInbox(true);_stopInboxPolling();_inboxPollTimer=setInterval(()=>_loadInbox(true),12000);}
 function _stopInboxPolling(){clearInterval(_inboxPollTimer);_inboxPollTimer=null;}
 function openMsgPanel(){if(!_curUser)return;sfx.open();document.getElementById('msgPanel').classList.add('active');_setMsgView('msgInboxView');_loadInbox();}
 function closeMsgPanel(){document.getElementById('msgPanel').classList.remove('active');_stopChatPoll();}
 function _setMsgView(id){['msgInboxView','msgChatView','msgNewView'].forEach(v=>{const el=document.getElementById(v);if(el)el.classList.toggle('v-active',v===id);});}
-function showInboxView(){_setMsgView('msgInboxView');_stopChatPoll();_activePeerUid=null;_activeCid=null;_loadInbox();}
+function showInboxView(){_setMsgView('msgInboxView');_stopChatPoll();_activePeerUid=null;_activeCid=null;const peerBtn=document.getElementById('chatProfileBtn');if(peerBtn)peerBtn.style.display='none';_loadInbox();}
 function showNewMsgView(){_setMsgView('msgNewView');document.getElementById('userSearchInput').value='';_fetchPubUsers().then(()=>searchUsers(''));}
 async function _loadInbox(silent=false){
   if(!_curUser)return;const list=document.getElementById('convList');if(!list)return;
@@ -1137,10 +1311,17 @@ async function _loadInbox(silent=false){
 }
 async function openChat(peerUid,peerPseudo,peerPhoto){
   if(!_curUser)return;_activePeerUid=peerUid;_activeCid=_cid(_curUser.uid,peerUid);_lastMsgTs=0;
+  await _fetchPubUsers();
   document.getElementById('chatPeerName').textContent=peerPseudo;document.getElementById('chatPeerAv').src=peerPhoto;
+  const peerData=_pubUsers[peerUid]||{};
+  const peerHint=document.getElementById('chatPeerHint');
+  if(peerHint)peerHint.textContent=peerData.profileVisible===false?'Discussion privee · profil masque':'Discussion privee · profil disponible';
+  const peerBtn=document.getElementById('chatProfileBtn');
+  if(peerBtn)peerBtn.style.display=peerUid?'inline-flex':'none';
   document.getElementById('chatMessages').innerHTML='<div style="text-align:center;padding:24px;font-family:\'Space Mono\',monospace;font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:2px;">Chargement…</div>';
   _setMsgView('msgChatView');await _markRead();await _loadChatMsgs();_stopChatPoll();_chatPollTimer=setInterval(()=>_loadChatMsgs(true),3000);
 }
+function openActiveChatProfile(){if(_activePeerUid)openPublicProfile(_activePeerUid);}
 async function _markRead(){if(!_curUser||!_activeCid)return;try{const tok=await _curUser.getIdToken();await fetch(`${FB}/convs/${_activeCid}/unread_${_curUser.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'0'});_updateBadge(0);}catch{}}
 async function _loadChatMsgs(silent=false){
   if(!_curUser||!_activeCid)return;const container=document.getElementById('chatMessages');if(!container)return;
@@ -1197,9 +1378,13 @@ async function searchUsers(q) {
     const results = Object.values(_pubUsers).filter(u => u.uid !== _curUser.uid && (u.pseudo||'').toLowerCase().includes(lowerQ));
     if(!results.length) { container.innerHTML = '<div class="user-search-hint">Aucun résultat</div>'; return; }
     container.innerHTML = results.map(u => `
-      <div class="user-res-item" onclick="startConversation('${u.uid}','${_esc(u.pseudo)}','${_esc(u.photoURL||'')}')">
+      <div class="user-res-item">
         <img class="user-res-av" src="${_esc(u.photoURL||'')}" onerror="this.style.background='#333'">
-        <div style="flex:1"><div class="user-res-pseudo">${_esc(u.pseudo)}</div></div>
+        <div style="flex:1;min-width:0;"><div class="user-res-pseudo">${_esc(u.pseudo)}</div><div class="user-res-meta">${u.profileVisible===false?'Profil masque':'Profil visible'}</div></div>
+        <div class="user-res-actions">
+          <button class="user-res-profile-btn" onclick="openPublicProfile('${u.uid}')">Profil</button>
+          <button class="user-res-profile-btn primary" onclick="startConversation('${u.uid}','${_esc(u.pseudo)}','${_esc(u.photoURL||'')}')">Message</button>
+        </div>
       </div>
     `).join('');
   } catch { container.innerHTML = '<div class="user-search-hint">Erreur</div>'; }
@@ -1330,6 +1515,7 @@ function _updateFriendsBadge(n) {
 async function _loadFriendsAndRequests(silent = false) {
   if(!_curUser) return;
   try {
+    await _fetchPubUsers();
     const tok = await _curUser.getIdToken();
     const fRes = await fetch(`${FB}/friends/${_curUser.uid}.json?auth=${tok}`);
     const friends = fRes.ok ? await fRes.json() : {};
@@ -1381,13 +1567,14 @@ function renderFriendsList() {
   if(!cont) return;
   if(_myFriends.size === 0) { cont.innerHTML = '<div class="friends-empty">Aucun ami pour le moment</div>'; return; }
   const sorted = Array.from(_myFriends.entries()).sort((a,b) => (a[1].pseudo||'').localeCompare(b[1].pseudo||''));
-  const onlineNow = new Set();
   cont.innerHTML = sorted.map(([uid, data]) => {
-    const online = (Date.now() - (_pubUsers[uid]?.lastActive || data.lastActive || 0)) < 5*60*1000;
+    const profileData=_pubUsers[uid]||{};
+    const online = (Date.now() - (profileData.lastActive || data.lastActive || 0)) < 5*60*1000;
     return `<div class="friend-row">
       <div class="friend-av-wrap"><img class="friend-av" src="${_esc(data.photoURL||'')}" onerror="this.style.background='#333'"><div class="friend-online-dot ${online?'online':''}"></div></div>
-      <div class="friend-info"><div class="friend-pseudo">${_esc(data.pseudo||uid)}</div></div>
+      <div class="friend-info"><div class="friend-pseudo">${_esc(data.pseudo||uid)}</div><div class="fsearch-meta">${profileData.profileVisible===false?'Profil masque':'Profil visible'}</div></div>
       <div class="friend-actions">
+        <button class="friend-msg-btn friend-profile-btn" onclick="openPublicProfile('${uid}')">Profil</button>
         <button class="friend-msg-btn" onclick="quickMessage('${uid}','${_esc(data.pseudo)}','${_esc(data.photoURL||'')}')">💬</button>
         <button class="friend-del-btn" onclick="unfriend('${uid}')">✕</button>
       </div>
@@ -1429,7 +1616,8 @@ async function onFriendSearch(q) {
       else actionBtn = `<button class="friend-add-btn" onclick="sendFriendRequest('${u.uid}')">➕ Ajouter</button>`;
       return `<div class="fsearch-row">
         <img class="fsearch-av" src="${_esc(u.photoURL||'')}" onerror="this.style.background='#333'">
-        <div class="fsearch-info"><div class="fsearch-pseudo">${_esc(u.pseudo||u.uid)}</div></div>
+        <div class="fsearch-info"><div class="fsearch-pseudo">${_esc(u.pseudo||u.uid)}</div><div class="fsearch-meta">${u.profileVisible===false?'Profil masque':'Profil visible'}</div></div>
+        <button class="friend-msg-btn friend-profile-btn" onclick="openPublicProfile('${u.uid}')">Profil</button>
         ${actionBtn}
       </div>`;
     }).join('');
@@ -1499,8 +1687,8 @@ window.onload = async () => {
   startBoot();
   setupChromaEgg();
   setupKingfireEgg();
-  setInterval(refreshAll, 45000);
-  checkDiscordAPI();
+  _upPill();
+  refreshAll(true);
   if(fbAuth.currentUser) _fetchPubUsers();
 };
 </script>
