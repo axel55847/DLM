@@ -560,6 +560,21 @@ body.admin-mode .card-del-btn{display:block!important;}
 .footer-link:hover{color:var(--sub);}
 .footer-sep{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.12);}
 .footer-copy{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.1);text-transform:uppercase;letter-spacing:3px;}
+#viewProfilePanel{position:fixed;inset:0;z-index:7300;display:none;}
+#viewProfilePanel.active{display:flex!important;}
+#vpBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);}
+#viewProfileInner{position:absolute;top:0;right:0;bottom:0;width:min(460px,100vw);background:#060610;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;animation:adminIn .35s cubic-bezier(.2,.8,.2,1) both;overflow:hidden;}
+.vp-status{display:flex;align-items:center;gap:8px;margin:6px 0 14px;font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.28);}
+.vp-dot{width:8px;height:8px;border-radius:50%;background:#333;transition:.3s;flex-shrink:0;}
+.vp-status.online{color:#00ff41;}.vp-status.online .vp-dot{background:#00ff41;box-shadow:0 0 6px #00ff41;}
+.vp-social-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.vp-social-link{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.55);font-family:'Space Mono',monospace;font-size:9px;text-decoration:none;transition:.2s;font-weight:800;text-transform:uppercase;letter-spacing:1px;}
+.vp-social-link:hover{border-color:var(--sub);color:var(--sub);background:rgba(0,210,255,.04);}
+.vp-action-btn{width:100%;padding:12px;border-radius:11px;border:none;font-family:'Space Mono',monospace;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:.2s;margin-bottom:9px;}
+.vp-action-btn:hover{filter:brightness(1.12);transform:scale(1.01);}
+.vp-action-btn:disabled{opacity:.4;cursor:default;transform:none;filter:none;}
+.chat-peer-av{cursor:pointer;transition:.15s;}
+.chat-peer-av:hover{opacity:.82;transform:scale(1.07);}
 @media(max-width:600px){
   .corp-title{font-size:44px;letter-spacing:6px;}
   #srvCardsArea{padding:12px 10px;gap:10px;}
@@ -587,6 +602,7 @@ body.admin-mode .card-del-btn{display:block!important;}
 <div id="profilePanel"><div id="profileBackdrop" onclick="closeProfile()"></div><div id="profileInner"><div class="prof-header"><div><div class="adm-htitle">Mon Profil</div><div class="adm-hsub">Compte DLM</div></div><button class="prof-close" onclick="closeProfile()">×</button></div><div class="prof-identity"><div class="prof-avatar-wrap"><img class="prof-avatar" id="profAvatar" src="" alt=""><span class="prof-role-badge role-membre" id="profRoleBadge">Membre</span></div><div class="prof-pseudo-wrap"><div class="prof-pseudo" id="profPseudo">—</div><button class="prof-edit-btn" onclick="openPseudoEditor()">✏️</button></div><div class="prof-google-email" id="profEmail"></div><div class="prof-editor" id="pseudoEditor"><input type="text" class="prof-pseudo-input" id="pseudoInput" maxlength="20" placeholder="Nouveau pseudo..." onkeydown="if(event.key==='Enter')savePseudo()"><div class="prof-editor-actions"><button class="prof-save-btn" onclick="savePseudo()">Sauvegarder</button><button class="prof-cancel-btn" onclick="closePseudoEditor()">Annuler</button></div></div><div class="prof-avatar-upload"><label class="prof-avatar-label" for="customAvatarInput">📷 Changer avatar</label><input type="file" id="customAvatarInput" accept="image/jpeg,image/png,image/gif" style="display:none;" onchange="uploadCustomAvatar(this)"><button class="prof-reset-avatar" onclick="resetAvatar()">↺ Réinitialiser</button></div></div><div class="prof-body"><div class="prof-section-lbl">📝 Bio</div><textarea id="profDescription" class="prof-desc-textarea" maxlength="50" placeholder="Description (50 caractères max)"></textarea><div class="prof-section-lbl">🔗 Liens sociaux</div><input type="text" id="profYoutube" class="prof-social-input" placeholder="YouTube URL"><input type="text" id="profTwitch" class="prof-social-input" placeholder="Twitch URL"><input type="text" id="profSpotify" class="prof-social-input" placeholder="Spotify URL"><input type="text" id="profTiktok" class="prof-social-input" placeholder="TikTok URL"><button class="prof-update-btn" onclick="updateProfileData()">💾 Mettre à jour le profil</button><div class="prof-section-lbl">Historique d'activité</div><div class="prof-hist-list" id="profHistList"></div><button class="prof-delete-req-btn" onclick="requestAccountDeletion()">⚠️ Demander la suppression de mon compte</button><button class="prof-signout-btn" onclick="signOutUser()">🚪 Se déconnecter</button></div></div></div>
 <div id="msgPanel"><div id="msgBackdrop" onclick="closeMsgPanel()"></div><div id="msgInner"><div id="msgInboxView"><div class="msg-top-bar"><div><div class="msg-top-title">Messages</div><div class="msg-top-sub">DLM · Messagerie privée</div></div><button class="msg-close-btn" onclick="closeMsgPanel()">×</button></div><button class="msg-new-conv-btn" onclick="showNewMsgView()">✉️  Nouvelle conversation</button><div id="convList"><div class="conv-empty">Chargement…</div></div></div><div id="msgChatView"><div class="chat-top"><button class="chat-back" onclick="showInboxView()">←</button><img class="chat-peer-av" id="chatPeerAv" src="" alt=""><div><div class="chat-peer-name" id="chatPeerName">—</div><div class="chat-peer-hint">Discussion privée · DLM</div></div></div><div id="chatMessages"></div><div class="chat-input-row"><textarea id="chatInput" placeholder="Écrire un message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,78)+'px'"></textarea><button id="chatSendBtn" onclick="sendChatMsg()">➤</button></div></div><div id="msgNewView"><div class="new-msg-top"><button class="chat-back" onclick="showInboxView()">←</button><input type="text" id="userSearchInput" placeholder="Rechercher un pseudo…" oninput="searchUsers(this.value)"></div><div id="userSearchResults"><div class="user-search-hint">Tapez un pseudo pour rechercher un membre</div></div></div></div></div>
 <div id="friendsPanel"><div id="friendsBackdrop" onclick="closeFriendsPanel()"></div><div id="friendsInner"><div class="friends-header"><div><div class="adm-htitle">Amis</div><div class="adm-hsub">Communauté DLM · Réseau</div></div><button class="prof-close" onclick="closeFriendsPanel()">×</button></div><div class="friends-search-wrap"><input type="text" class="friends-search" id="friendSearchInput" placeholder="Rechercher un membre…" oninput="onFriendSearch(this.value)"></div><div class="friends-tabs"><button class="friends-tab active" id="ftab-friends" onclick="switchFriendsTab('friends')">👥 Amis <span id="friends-count-lbl" style="opacity:.4;font-size:8px;margin-left:4px;">0</span></button><button class="friends-tab" id="ftab-requests" onclick="switchFriendsTab('requests')">📩 Demandes <span class="friends-tab-badge" id="freq-badge" style="display:none;">0</span></button></div><div class="friends-tab-content" id="ftab-content-friends"><div id="friends-list-container"><div class="friends-empty">Chargement…</div></div></div><div class="friends-tab-content" id="ftab-content-requests" style="display:none;"><div id="friends-req-container"><div class="friends-empty">Chargement…</div></div></div></div></div>
+<div id="viewProfilePanel"><div id="vpBackdrop" onclick="closeViewProfile()"></div><div id="viewProfileInner"><div class="prof-header"><div><div class="adm-htitle">Profil membre</div><div class="adm-hsub">Communauté DLM</div></div><button class="prof-close" onclick="closeViewProfile()">×</button></div><div class="prof-identity"><div class="prof-avatar-wrap"><img class="prof-avatar" id="vpAvatar" src="" alt="" onerror="this.src=''"><span class="prof-role-badge role-membre" id="vpRoleBadge">Membre</span></div><div class="prof-pseudo-wrap"><div class="prof-pseudo" id="vpPseudo">—</div></div><div id="vpStatusBar" class="vp-status"><div class="vp-dot"></div><span id="vpStatusLabel">—</span></div></div><div class="prof-body"><div id="vpBioSection"></div><div id="vpLinksSection"></div><div style="margin-top:18px;display:flex;flex-direction:column;gap:8px;"><button class="vp-action-btn" id="vpMsgBtn" onclick="vpMessage()" style="background:var(--sub);color:#000;">💬 Envoyer un message</button><button class="vp-action-btn" id="vpFriendBtn" onclick="vpFriendAction()" style="background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.2);color:var(--sub);">➕ Ajouter en ami</button></div></div></div></div>
 <div id="privacyOverlay"><div id="privacyBackdrop" onclick="closePrivacy()"></div><div id="privacyPanel"><div class="pp-drag-handle"><div class="pp-drag-bar"></div></div><div class="pp-topbar"><div class="pp-title-block"><div class="pp-icon">🔒</div><div><div class="pp-title">Politique de Confidentialité</div><div class="pp-sub">DLM-Corp · RGPD · Données personnelles</div></div></div><button class="pp-close-btn" onclick="closePrivacy()">×</button></div><div class="pp-body"><div class="pp-section"><div class="pp-section-num">Article 01</div><div class="pp-section-title">Collecte des données personnelles</div><p class="pp-text">Lors de l'utilisation de la connexion via Google, nous collectons et stockons les informations suivantes dans notre base de données :</p><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Identité et Profil :&nbsp;</strong>Nom associé au compte Google, pseudonyme personnalisé, adresse e-mail et URL de la photo de profil.</li><li><strong style="color:rgba(255,255,255,.75);">Identifiants techniques :&nbsp;</strong>Identifiant unique (UID) permettant de lier votre profil à vos activités, et jetons d'authentification pour sécuriser vos sessions.</li><li><strong style="color:rgba(255,255,255,.75);">Données de gestion :&nbsp;</strong>Date de création du compte, rôle attribué et date de dernière connexion.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 02</div><div class="pp-section-title">Finalité du traitement</div><p class="pp-text">Ces données sont traitées pour les objectifs suivants :</p><ul class="pp-list"><li>Assurer l'authentification sécurisée des utilisateurs.</li><li>Gérer les comptes et les permissions au sein de la plateforme.</li><li>Assurer le suivi technique et la sécurité du service.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 03</div><div class="pp-section-title">Messagerie, Sécurité et Modération</div><p class="pp-text">Le site met à disposition un système de messagerie permettant aux utilisateurs d'échanger entre eux.</p><div class="pp-highlight"><span class="pp-highlight-icon">💾</span><div class="pp-highlight-text"><strong style="color:rgba(255,255,255,.8);">Stockage :&nbsp;</strong>Les messages sont enregistrés sur nos serveurs pour permettre leur consultation par les participants.</div></div><div class="pp-warning"><span style="font-size:18px;flex-shrink:0;margin-top:1px;">⚠️</span><div class="pp-warning-text"><strong style="color:rgba(255,255,255,.8);">Modération :&nbsp;</strong>L'équipe d'administration dispose d'un droit d'accès aux conversations en cas de comportement inapproprié.</div></div></div><div class="pp-section"><div class="pp-section-num">Article 04</div><div class="pp-section-title">Partage et Confidentialité</div><div class="pp-highlight"><span class="pp-highlight-icon">🛡️</span><div class="pp-highlight-text">Vos données sont strictement personnelles. Elles ne sont jamais vendues, louées ou partagées avec des partenaires tiers à des fins commerciales.</div></div></div><div class="pp-section"><div class="pp-section-num">Article 05</div><div class="pp-section-title">Conservation et Suppression des données</div><ul class="pp-list"><li><strong style="color:rgba(255,255,255,.75);">Conservation :&nbsp;</strong>Vos données sont conservées tant que votre compte est actif sur la plateforme.</li><li><strong style="color:rgba(255,255,255,.75);">Suppression :&nbsp;</strong>Vous pouvez demander la suppression de votre compte à tout moment. Cette action entraîne l'effacement définitif sous 30 jours.</li><li><strong style="color:rgba(255,255,255,.75);">Révocation :&nbsp;</strong>Vous pouvez annuler l'autorisation depuis les paramètres de sécurité de votre compte Google.</li></ul></div><div class="pp-section"><div class="pp-section-num">Article 06</div><div class="pp-section-title">Contact et Droits des utilisateurs</div><p class="pp-text">Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et d'effacement de vos informations.</p><div class="pp-contact-block"><div><div class="pp-contact-lbl">Adresse e-mail de contact</div><a class="pp-contact-email" href="axell01020304@gmail.com"><span class="__cf_email__" data-cfemail="117069747d7d212021232122212551767c70787d3f727e7c">[email&#160;]</span></a></div></div></div></div><div class="pp-footer-bar"><div class="pp-footer-note">DLM-Corp·2026</div><button class="pp-footer-accept" onclick="closePrivacy()">✓ J'ai compris</button></div></div></div>
 <div id="saveToast"></div>
 <div id="announceBanner"><span id="announceText"></span><button id="announceBannerClose" onclick="dismissBanner()">×</button></div>
@@ -773,7 +789,7 @@ setInterval(()=>{if(!_overlayOpen)return;_cnt--;if(_cnt<=0){_cnt=_TOT;_upPill();
 _upPill();
 function openPrivacy(){sfx.open();document.getElementById('privacyOverlay').classList.add('active');document.body.style.overflow='hidden';}
 function closePrivacy(){document.getElementById('privacyOverlay').classList.remove('active');document.body.style.overflow='';}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePwModal();closeAdminPanel();closeOhh();closeKingfire();closeServers();closeProfile();closeMsgPanel();closeFriendsPanel();closePrivacy();document.getElementById('themeMenu').classList.remove('active');}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePwModal();closeAdminPanel();closeOhh();closeKingfire();closeServers();closeProfile();closeMsgPanel();closeFriendsPanel();closeViewProfile();closePrivacy();document.getElementById('themeMenu').classList.remove('active');}});
 const openPasswordModal=()=>{document.getElementById('adminPassword').value='';document.getElementById('pwError').textContent='';document.getElementById('passwordOverlay').classList.add('active');setTimeout(()=>document.getElementById('adminPassword').focus(),120);};
 const closePwModal=()=>document.getElementById('passwordOverlay').classList.remove('active');
 async function checkPassword(){
@@ -1009,6 +1025,8 @@ async function updateProfileData(){
   await fetch(`${FB}/users/${_curUser.uid}/description.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(desc)});
   await fetch(`${FB}/users/${_curUser.uid}/socialLinks.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(socialLinks)});
   _curProfile.description=desc;_curProfile.socialLinks=socialLinks;
+  await fetch(`${FB}/publicUsers/${_curUser.uid}/description.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(desc)});
+  await fetch(`${FB}/publicUsers/${_curUser.uid}/socialLinks.json?auth=${idToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(socialLinks)});
   _curProfile=await pushHistory(_curUser,idToken,_curProfile,'✏️ Profil mis à jour (bio/liens)');
   showToast('Profil mis à jour !');renderProfilePanel();
 }
@@ -1063,7 +1081,7 @@ async function loadMembres(){
 }
 async function setMemberRole(uid,role){
   if(!_authToken){showToast('Non autorisé !');return;}
-  try{const res=await fetch(`${FB}/users/${uid}/role.json?auth=${_authToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(role)});if(res.ok)showToast(`Rôle → ${role} ✓`);else showToast('Erreur Firebase !');}catch{showToast('Erreur réseau !');}
+  try{const res=await fetch(`${FB}/users/${uid}/role.json?auth=${_authToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(role)});if(res.ok){await fetch(`${FB}/publicUsers/${uid}/role.json?auth=${_authToken}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(role)});showToast(`Rôle → ${role} ✓`);}else showToast('Erreur Firebase !');}catch{showToast('Erreur réseau !');}
 }
 async function loadDeletionRequests(){
   if(!_authToken){showToast('Admin requis');return;}
@@ -1111,7 +1129,7 @@ const _fbReq=async(path,opts={})=>{let url=`${FB}/${path}.json`;if(_curUser){con
 const _fbAdm=(path,opts={})=>{if(!_authToken)return Promise.resolve(null);return fetch(`${FB}/${path}.json?auth=${_authToken}`,opts);};
 let _activePeerUid=null,_activeCid=null,_chatPollTimer=null,_inboxPollTimer=null,_lastMsgTs=0,_pubUsers={};
 let _admCurrentCid=null,_admCurrentConvData=null,_admCurrentParticipants=[];
-async function _syncPubUser(user,profile){if(!user||!profile)return;try{const tok=await user.getIdToken();await fetch(`${FB}/publicUsers/${user.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:user.uid,pseudo:profile.pseudo,photoURL:getDisplayAvatar(),lastActive:Date.now()})});}catch{}}
+async function _syncPubUser(user,profile){if(!user||!profile)return;try{const tok=await user.getIdToken();await fetch(`${FB}/publicUsers/${user.uid}.json?auth=${tok}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:user.uid,pseudo:profile.pseudo,photoURL:getDisplayAvatar(),role:profile.role||'Membre',description:profile.description||'',socialLinks:profile.socialLinks||{},lastActive:Date.now()})});}catch{}}
 async function _fetchPubUsers(){if(!_curUser)return;try{const tok=await _curUser.getIdToken();const r=await fetch(`${FB}/publicUsers.json?auth=${tok}`);if(r.ok){const d=await r.json();_pubUsers=d||{};}}catch{}}
 function _updateBadge(n){const b=document.getElementById('msgBadge');if(!b)return;if(n>0){b.textContent=n>99?'99+':n;b.style.display='flex';}else b.style.display='none';}
 function _startInboxPolling(){_loadInbox(true);_stopInboxPolling();_inboxPollTimer=setInterval(()=>_loadInbox(true),12000);}
@@ -1135,14 +1153,14 @@ async function _loadInbox(silent=false){
       const peerUid=Object.keys(conv.participants||{}).find(u=>u!==_curUser.uid)||'';
       const pPseudo=pseudos[peerUid]||'Utilisateur';const pPhoto=photos[peerUid]||'';
       const unread=conv[`unread_${_curUser.uid}`]||0;totalUnread+=unread;
-      return `<div class="conv-item" onclick="openChat('${peerUid}','${_esc(pPseudo)}','${_esc(pPhoto)}')"><img class="conv-avatar" src="${_esc(pPhoto)}" alt="" onerror="this.style.background='#333'"><div class="conv-info"><div class="conv-pseudo">${_esc(pPseudo)}</div><div class="conv-last">${_esc(conv.lastText||'—')}</div></div><div class="conv-meta"><div class="conv-ts">${conv.lastTs?_tsShort(conv.lastTs):''}</div>${unread>0?`<div class="conv-unread-dot">${unread}</div>`:''}</div></div>`;
+      return `<div class="conv-item" onclick="openChat('${peerUid}','${_esc(pPseudo)}','${_esc(pPhoto)}')"><img class="conv-avatar" src="${_esc(pPhoto)}" alt="" onclick="event.stopPropagation();openViewProfile('${peerUid}')" style="cursor:pointer" onerror="this.style.background='#333'"><div class="conv-info"><div class="conv-pseudo">${_esc(pPseudo)}</div><div class="conv-last">${_esc(conv.lastText||'—')}</div></div><div class="conv-meta"><div class="conv-ts">${conv.lastTs?_tsShort(conv.lastTs):''}</div>${unread>0?`<div class="conv-unread-dot">${unread}</div>`:''}</div></div>`;
     }).join('');
     _updateBadge(totalUnread);
   }catch{if(!silent)list.innerHTML='<div class="conv-empty" style="color:#ff4b2b;">Erreur de chargement</div>';}
 }
 async function openChat(peerUid,peerPseudo,peerPhoto){
   if(!_curUser)return;_activePeerUid=peerUid;_activeCid=_cid(_curUser.uid,peerUid);_lastMsgTs=0;
-  document.getElementById('chatPeerName').textContent=peerPseudo;document.getElementById('chatPeerAv').src=peerPhoto;
+  document.getElementById('chatPeerName').textContent=peerPseudo;const _pav=document.getElementById('chatPeerAv');_pav.src=peerPhoto;_pav.onclick=()=>openViewProfile(peerUid);
   document.getElementById('chatMessages').innerHTML='<div style="text-align:center;padding:24px;font-family:\'Space Mono\',monospace;font-size:9px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:2px;">Chargement…</div>';
   _setMsgView('msgChatView');await _markRead();await _loadChatMsgs();_stopChatPoll();_chatPollTimer=setInterval(()=>_loadChatMsgs(true),3000);
 }
@@ -1390,8 +1408,8 @@ function renderFriendsList() {
   cont.innerHTML = sorted.map(([uid, data]) => {
     const online = (Date.now() - (_pubUsers[uid]?.lastActive || data.lastActive || 0)) < 5*60*1000;
     return `<div class="friend-row">
-      <div class="friend-av-wrap"><img class="friend-av" src="${_esc(data.photoURL||'')}" onerror="this.style.background='#333'"><div class="friend-online-dot ${online?'online':''}"></div></div>
-      <div class="friend-info"><div class="friend-pseudo">${_esc(data.pseudo||uid)}</div></div>
+      <div class="friend-av-wrap" style="cursor:pointer" onclick="openViewProfile('${uid}')"><img class="friend-av" src="${_esc(data.photoURL||'')}" onerror="this.style.background='#333'"><div class="friend-online-dot ${online?'online':''}"></div></div>
+      <div class="friend-info" style="cursor:pointer" onclick="openViewProfile('${uid}')"><div class="friend-pseudo">${_esc(data.pseudo||uid)}</div></div>
       <div class="friend-actions">
         <button class="friend-msg-btn" onclick="quickMessage('${uid}','${_esc(data.pseudo)}','${_esc(data.photoURL||'')}')">💬</button>
         <button class="friend-del-btn" onclick="unfriend('${uid}')">✕</button>
@@ -1405,8 +1423,8 @@ function renderRequestsList() {
   if(_incomingRequests.size === 0) { cont.innerHTML = '<div class="friends-empty">Aucune demande en attente</div>'; return; }
   cont.innerHTML = Array.from(_incomingRequests.entries()).map(([uid, data]) => `
     <div class="req-in-row">
-      <img class="req-in-av" src="${_esc(data.photoURL||'')}" onerror="this.style.background='#333'">
-      <div class="req-in-info"><div class="req-in-pseudo">${_esc(data.pseudo||uid)}</div></div>
+      <img class="req-in-av" src="${_esc(data.photoURL||'')}" onclick="openViewProfile('${uid}')" style="cursor:pointer" onerror="this.style.background='#333'">
+      <div class="req-in-info" style="cursor:pointer" onclick="openViewProfile('${uid}')"><div class="req-in-pseudo">${_esc(data.pseudo||uid)}</div></div>
       <div class="req-in-actions">
         <button class="req-accept-btn" onclick="acceptFriendRequest('${uid}')">✓ Accepter</button>
         <button class="req-decline-btn" onclick="declineFriendRequest('${uid}')">✕ Refuser</button>
@@ -1494,6 +1512,61 @@ function _startHeartbeat() {
   }, 120000);
 }
 function _stopHeartbeat() { clearInterval(_heartbeatTimer); _heartbeatTimer = null; }
+let _vpCurrentUid=null;
+async function openViewProfile(uid){
+  if(!_curUser||!uid)return;
+  if(uid===_curUser.uid){openProfile();return;}
+  _vpCurrentUid=uid;
+  sfx.open();
+  document.getElementById('viewProfilePanel').classList.add('active');
+  const vpPseudo=document.getElementById('vpPseudo'),vpAvatar=document.getElementById('vpAvatar'),vpRoleBadge=document.getElementById('vpRoleBadge');
+  const vpStatusBar=document.getElementById('vpStatusBar'),vpStatusLabel=document.getElementById('vpStatusLabel');
+  const vpBioSection=document.getElementById('vpBioSection'),vpLinksSection=document.getElementById('vpLinksSection');
+  const vpFriendBtn=document.getElementById('vpFriendBtn');
+  vpPseudo.textContent='…';vpAvatar.src='';vpBioSection.innerHTML='';vpLinksSection.innerHTML='';
+  vpStatusBar.className='vp-status';vpStatusLabel.textContent='…';
+  try{
+    const tok=await _curUser.getIdToken();
+    const r=await fetch(`${FB}/publicUsers/${uid}.json?auth=${tok}`);
+    const data=r.ok?await r.json():null;
+    if(!data){vpPseudo.textContent='Introuvable';return;}
+    const pseudo=data.pseudo||'Utilisateur';
+    const photo=data.photoURL||'';
+    const role=data.role||'Membre';
+    const description=data.description||'';
+    const socialLinks=data.socialLinks||{};
+    const lastActive=data.lastActive||0;
+    const online=(Date.now()-lastActive)<5*60*1000;
+    vpAvatar.src=photo;
+    vpPseudo.textContent=pseudo;
+    vpRoleBadge.textContent=role;
+    vpRoleBadge.className='prof-role-badge role-'+role.toLowerCase().replace(/[^a-z]/g,'-');
+    vpStatusBar.className='vp-status'+(online?' online':'');
+    vpStatusLabel.textContent=online?'En ligne':'Hors ligne';
+    if(description){vpBioSection.innerHTML=`<div class="prof-section-lbl">📝 Bio</div><div style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,.55);line-height:1.6;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);margin-bottom:16px;">${_esc(description)}</div>`;}
+    const socialDefs=[{key:'youtube',label:'YouTube',icon:'📺'},{key:'twitch',label:'Twitch',icon:'🎮'},{key:'spotify',label:'Spotify',icon:'🎵'},{key:'tiktok',label:'TikTok',icon:'🎵'}];
+    const activeLinks=socialDefs.filter(s=>socialLinks[s.key]);
+    if(activeLinks.length){vpLinksSection.innerHTML=`<div class="prof-section-lbl">🔗 Liens</div><div class="vp-social-links">${activeLinks.map(s=>`<a class="vp-social-link" href="${_esc(socialLinks[s.key])}" target="_blank">${s.icon} ${s.label}</a>`).join('')}</div>`;}
+    const isFriend=_myFriends.has(uid),isSent=_sentRequestsSet.has(uid),isIncoming=_incomingRequests.has(uid);
+    vpFriendBtn.disabled=false;vpFriendBtn.style.opacity='';
+    if(isFriend){vpFriendBtn.textContent='✓ Déjà ami';vpFriendBtn.disabled=true;vpFriendBtn.style.opacity='.4';}
+    else if(isSent){vpFriendBtn.textContent='Demande envoyée';vpFriendBtn.disabled=true;vpFriendBtn.style.opacity='.5';}
+    else if(isIncoming){vpFriendBtn.textContent='✓ Accepter la demande';}
+    else{vpFriendBtn.textContent='➕ Ajouter en ami';}
+  }catch(e){vpPseudo.textContent='Erreur';}
+}
+function closeViewProfile(){document.getElementById('viewProfilePanel').classList.remove('active');_vpCurrentUid=null;}
+function vpMessage(){
+  if(!_vpCurrentUid)return;
+  const uid=_vpCurrentUid,pseudo=document.getElementById('vpPseudo').textContent,photo=document.getElementById('vpAvatar').src;
+  closeViewProfile();openMsgPanel();openChat(uid,pseudo,photo);
+}
+function vpFriendAction(){
+  if(!_vpCurrentUid)return;
+  const uid=_vpCurrentUid,isIncoming=_incomingRequests.has(uid);
+  if(isIncoming){acceptFriendRequest(uid);closeViewProfile();}
+  else{sendFriendRequest(uid);const btn=document.getElementById('vpFriendBtn');btn.textContent='Demande envoyée';btn.disabled=true;btn.style.opacity='.5';}
+}
 window.onload = async () => {
   resize()
   initParticles();
